@@ -6,8 +6,8 @@ OPENVPN_CONF_DIR='/etc/openvpn/server'
 
 function configure_certificates {
   if [ ! -f '/etc/openvpn/server/ca.pem' ]; then
-    : "${OPENVPN_CA_CERT:? Missing OPENVPN_CA_CERT}"
-    echo "$OPENVPN_CA_CERT" > /etc/openvpn/server/ca.pem
+    : "${OPENVPN_CA_PEM:? Missing OPENVPN_CA_PEM}"
+    echo "$OPENVPN_CA_PEM" > /etc/openvpn/server/ca.pem
   fi
 
   if [ ! -f '/etc/openvpn/server/server.key' ]; then
