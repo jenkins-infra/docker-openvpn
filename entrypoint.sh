@@ -21,8 +21,8 @@ function configure_certificates {
   fi
 
   if [ ! -f '/etc/openvpn/server/dh.pem' ]; then
-    : "${OPENVPN_SERVER_PEM:? Missing OPENVPN_DH_PEM }"
-    echo "$OPENVPN_SERVER_PEM" > /etc/openvpn/server/dh.pem
+    : "${OPENVPN_DH_PEM:? Missing OPENVPN_DH_PEM }"
+    echo "$OPENVPN_DH_PEM" > /etc/openvpn/server/dh.pem
   fi
 }
 
