@@ -4,6 +4,13 @@ set -e
 
 OPENVPN_CONF_DIR='/etc/openvpn/server'
 
+function configure_tun {
+  [ -d /dev/net ] ||
+    mkdir -p /dev/net
+  [ -c /dev/net/tun ] ||
+    mknod /dev/net/tun c 10 200
+}
+
 function configure_certificates {
   if [ ! -f '/etc/openvpn/server/ca.pem' ]; then
     : "${OPENVPN_CA_PEM:? Missing OPENVPN_CA_PEM}"
@@ -48,6 +55,7 @@ function start_openvpn {
 }
 
 ensure_required_variables
+configure_tun
 configure_certificates
 configure_openvpn
 start_openvpn
