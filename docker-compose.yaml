@@ -4,10 +4,8 @@ volumes:
 services:
   vpn:
     build: .
-    privileged: true
     cap_add:
         - NET_ADMIN
-        - NET_BIND_SERVICE
     depends_on:
         - ldap
     environment:
