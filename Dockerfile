@@ -17,7 +17,8 @@ RUN \
   apt-get update &&\
   apt-get install -y openvpn openvpn-auth-ldap dnsmasq &&\
   apt-get clean &&\
-  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* &&\
+  mkdir /etc/ldap/ssl
 
 RUN chmod 0750 /entrypoint.sh
 

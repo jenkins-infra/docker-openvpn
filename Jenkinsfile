@@ -11,6 +11,7 @@ node('docker') {
     def container
     stage('Prepare Container') {
         timestamps {
+            checkout scm
             sh 'git rev-parse HEAD > GIT_COMMIT'
             shortCommit = readFile('GIT_COMMIT').take(6)
             def imageTag = "${env.BUILD_ID}-build${shortCommit}"

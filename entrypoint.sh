@@ -12,6 +12,11 @@ function configure_tun {
 }
 
 function configure_certificates {
+  if [ ! -f '/etc/ldap/ssl/cacert.pem' ]; then
+    : "${OPENVPN_LDAP_CA_PEM:? Missing OPENVPN_LDAP_CA_PEM}"
+    echo "$OPENVPN_LDAP_CA_PEM" > /etc/ldap/ssl/cacert.pem
+  fi
+
   if [ ! -f '/etc/openvpn/server/ca.pem' ]; then
     : "${OPENVPN_CA_PEM:? Missing OPENVPN_CA_PEM}"
     echo "$OPENVPN_CA_PEM" > /etc/openvpn/server/ca.pem
