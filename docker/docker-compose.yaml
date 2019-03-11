@@ -1,0 +1,32 @@
+version: '3'
+volumes:
+    elections:
+services:
+  vpn:
+    build: ..
+    cap_add:
+        - NET_ADMIN
+          #    depends_on:
+          #        - ldap
+    environment:
+        - "AUTH_LDAP_PASSWORD=s3cr3t"
+        - "AUTH_LDAP_URL=ldaps://ldap"
+        - "AUTH_LDAP_BINDDN=cn=admin,dc=jenkins-ci,dc=org"
+        - "AUTH_LDAP_GROUPS_MEMBER=cn=admins"
+    volumes:
+        - ../cert/pki/ca.crt:/etc/openvpn/server/ca.crt:ro
+        - ../cert/pki/ca.crt:/etc/ldap/ssl/cacert.crt:ro
+        - ../cert/pki/private/vpn.key:/etc/openvpn/server/server.key:ro
+        - ../cert/pki/issued/vpn.crt:/etc/openvpn/server/server.crt:ro
+        - ../cert/pki/dh.pem:/etc/openvpn/server/dh.pem:ro
+    entrypoint: /bin/bash
+    ports:
+        - 443:443
+
+  ldap:
+    image: jenkinsciinfra/ldap:12-builde29683
+    volumes:
+        - ../cert/pki/ca.crt:/etc/ldap/ssl/cacert.pem:ro
+        - ../cert/pki/issued/ldap.crt:/etc/ldap/ssl/cert.pem:ro
+        - ../cert/pki/private/ldap.key:/etc/ldap/ssl/privkey.key:ro
+        - ../docker/mock/mock.ldif:/var/backups/backup.latest.ldif:ro

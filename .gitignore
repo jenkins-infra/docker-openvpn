@@ -1,2 +1,4 @@
-certs
-*.pem
+**.pem
+**.key
+**.pass
+safessl-easyrsa.cnf
