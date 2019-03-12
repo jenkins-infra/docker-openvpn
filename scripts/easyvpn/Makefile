@@ -20,6 +20,7 @@ build.easyvpn:
 		-v "$$PWD":/easyvpn \
 		-w /easyvpn \
 		-e GOBIN=/easyvpn/bin \
+		-e GOPATH=/easyvpn \
 		golang:sandbox-$(GOLANG_VERSION) make build.project
 
 
