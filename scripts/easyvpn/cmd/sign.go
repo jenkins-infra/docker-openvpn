@@ -37,7 +37,6 @@ var signCmd = &cobra.Command{
 				files := []string{
 					path.Join(CertDir, "pki/issued", args[i]+".crt"),
 					path.Join(CertDir, "pki", "index.txt"),
-					path.Join(CertDir, "pki", "certs_by_serial"),
 					path.Join(CertDir, "pki", "serial"),
 				}
 				git.Add(files)
