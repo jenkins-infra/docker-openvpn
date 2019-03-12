@@ -35,10 +35,9 @@ var revokeCmd = &cobra.Command{
 			for i := 0; i < len(args); i++ {
 				msg := "[infra-admin] Revoke " + args[i] + "certificate"
 				files := []string{
-					path.Join(CertDir, "crl.pem"),
 					path.Join(CertDir, "pki", "index.txt"),
 					path.Join(CertDir, "pki", "issued", args[i]+".crt"),
-					path.Join(CertDir, "pki", "reqs", args[i]+".crt"),
+					path.Join(CertDir, "pki", "reqs", args[i]+".req"),
 					path.Join(CertDir, "pki", "index.txt.attr"),
 					path.Join(CertDir, "pki", "revoked"),
 				}
