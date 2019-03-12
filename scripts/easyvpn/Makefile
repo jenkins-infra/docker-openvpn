@@ -24,4 +24,3 @@ build.easyvpn:
 
 
 build: build.docker build.easyvpn
-	ln bin/easyvpn ../../easyvpn || true

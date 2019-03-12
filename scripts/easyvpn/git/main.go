@@ -46,7 +46,7 @@ func Commit(files []string, msg string) {
 }
 
 // Add create a new commit
-func Add(files []string, msg string) {
+func Add(files []string) {
 	args := []string{"add"}
 	for _, file := range files {
 		if _, err := os.Stat(file); err != nil {
@@ -62,6 +62,12 @@ func Add(files []string, msg string) {
 // Pull fetch from origin
 func Pull() {
 	args := []string{"pull"}
+	git(args...)
+}
+
+// Push the branch on remote master branch
+func Push() {
+	args := []string{"push", "origin", "master"}
 	git(args...)
 }
 

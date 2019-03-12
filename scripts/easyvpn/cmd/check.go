@@ -6,9 +6,6 @@ import (
 	"os"
 )
 
-// CertDir define the cert directory
-var CertDir string
-
 func init() {
 	rootCmd.AddCommand(checkCmd)
 	checkCmd.Flags().StringVarP(&CertDir, "cert", "c", "cert", "Cert Directory")

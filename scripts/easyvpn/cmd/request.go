@@ -2,12 +2,17 @@ package cmd
 
 import (
 	"../easyrsa"
+	"../git"
 	"fmt"
 	"github.com/spf13/cobra"
+	"path"
 )
 
 func init() {
 	rootCmd.AddCommand(requestCmd)
+	requestCmd.Flags().BoolVarP(&Commit, "commit", "", true, "git commit changes")
+	requestCmd.Flags().BoolVarP(&Push, "push", "", true, "git push changes")
+	requestCmd.Flags().StringVarP(&CertDir, "cert", "c", "cert", "Cert Directory")
 }
 
 var requestCmd = &cobra.Command{
@@ -22,6 +27,20 @@ var requestCmd = &cobra.Command{
 					fmt.Printf("%v\n", err)
 				}
 			}
+		}
+		if Commit {
+			for i := 0; i < len(args); i++ {
+				msg := "[infra-admin] Submit certificate request for " + args[i]
+				files := []string{
+					path.Join(CertDir, "pki/reqs", args[i]+".req"),
+				}
+				git.Add(files)
+				git.Commit(files, msg)
+			}
+		}
+
+		if Push {
+			git.Push()
 		}
 	},
 }
