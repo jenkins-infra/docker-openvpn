@@ -6,6 +6,7 @@ import (
 	"../helpers"
 	"fmt"
 	"github.com/spf13/cobra"
+	"os"
 	"path"
 )
 
@@ -31,9 +32,13 @@ var revokeCmd = &cobra.Command{
 			}
 		}
 
+		if err := os.Remove(path.Join(CertDir, "pki", "index.txt.old")); err != nil {
+			fmt.Println(err)
+		}
+
 		if Commit {
 			for i := 0; i < len(args); i++ {
-				msg := "[infra-admin] Revoke " + args[i] + "certificate"
+				msg := "[infra-admin] Revoke " + args[i] + " certificate"
 				files := []string{
 					path.Join(CertDir, "pki", "index.txt"),
 					path.Join(CertDir, "pki", "issued", args[i]+".crt"),
