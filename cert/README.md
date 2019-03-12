@@ -18,8 +18,8 @@ Then this certificate must be signed by an administrator.
 Feel free to follow next action points:
 
 * Fork this repository on your own Github account: [fork a repo](https://help.github.com/articles/fork-a-repo/)
-* Enter in the needed vpn network directory: `cd cert`
-* Create your private key and certificate request: `make request name=<your username>`
+* Build easyvpn cli: `make init`
+* Create your private key and certificate request: `./easyvpn request <your username>`
 * Create a new Pull Request on master branch: [create a pull request](https://help.github.com/articles/creating-a-pull-request/)
 * Grab a cup of coffee and wait patiently until an administrator issues your certificate.
 * Once ready your certificate can be retrieve from `./cert/pki/issued/<your_username>.crt`
@@ -44,14 +44,13 @@ This repository relies on [easy-rsa](https://github.com/OpenVPN/easy-rsa/blob/ma
 ### HowTo approve client access?
 In order to validate and sign a client certificate, your are going to do following actions
 
-* Enter in the vpn network directory: `cd cert`
-* Decrypt ca.key: `make decrypt`
-* Sign certificate request: `make sign`
+* Build easyvpn cli: `make init`
+* Sign certificate request: `./easyvpn sign <CN_to_sign>`
 
 ### HowTo revoke client access?
 
-* Enter in the vpn network directory: `cd cert`
-* Revoke certificate: `make revoke`
+* Build easyvpn cli: `make init`
+* Sign certificate request: `./easyvpn revoke <CN_to_sign>`
 
 ## Links
 * [jenkins-infra/azure](https://github.com/jenkins-infra/azure)
