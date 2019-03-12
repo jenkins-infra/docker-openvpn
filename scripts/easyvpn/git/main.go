@@ -3,7 +3,6 @@ package git
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"os/exec"
 )
 
@@ -32,12 +31,7 @@ func git(args ...string) {
 func Commit(files []string, msg string) {
 	args := []string{"commit"}
 	for _, file := range files {
-		if _, err := os.Stat(file); err != nil {
-			fmt.Println(err)
-		} else {
-			args = append(args, file)
-		}
-
+		args = append(args, file)
 	}
 	args = append(args, "-m")
 	args = append(args, msg)
@@ -49,12 +43,7 @@ func Commit(files []string, msg string) {
 func Add(files []string) {
 	args := []string{"add"}
 	for _, file := range files {
-		if _, err := os.Stat(file); err != nil {
-			fmt.Println(err)
-		} else {
-			args = append(args, file)
-		}
-
+		args = append(args, file)
 	}
 	git(args...)
 }
