@@ -69,8 +69,8 @@ func SignClientRequest(CNs []string) []error {
 
 	// Delete useless files generated from easyrsa
 	files := []string{
+		"index.txt.attr.old",
 		"index.txt.old",
-		"index.txt.attr",
 		"serial.old",
 		"extensions.temp"}
 
