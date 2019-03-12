@@ -9,6 +9,10 @@ ENV GOPATH=/home/gopher
 
 RUN \
   groupadd -g $GID gopher  && \
-  useradd -g $GID -u $UID -m gopher
+  useradd -g $GID -u $UID -m gopher && \
+  apt-get update && \
+    apt-get -y install --no-install-recommends make && \
+    apt-get clean && \
+    find /var/lib/apt/lists -type f -delete
 
 USER gopher

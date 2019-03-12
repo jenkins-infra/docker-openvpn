@@ -1,6 +1,10 @@
-.PHONY: build
+.PHONY: build.project build.docker build.easyvpn build
 
-GOLANG_VERSION="1.12"
+GOLANG_VERSION=1.12
+
+build.project:
+	go get
+	go build -v -o bin/easyvpn
 
 build.docker:
 	docker build \
@@ -16,9 +20,8 @@ build.easyvpn:
 		-v "$$PWD":/easyvpn \
 		-w /easyvpn \
 		-e GOBIN=/easyvpn/bin \
-		golang:sandbox-$(GOLANG_VERSION)
-		go get && go build -v
+		golang:sandbox-$(GOLANG_VERSION) make build.project
 
 
 build: build.docker build.easyvpn
-	ln bin/easyvpn ../../easyvpn
+	ln bin/easyvpn ../../easyvpn || true
