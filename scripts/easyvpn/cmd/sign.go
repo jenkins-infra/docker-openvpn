@@ -13,11 +13,9 @@ import (
 	"path"
 )
 
-var ccd string
 var certDir string
 var commit bool
 var config string
-var net string
 var push bool
 
 func init() {
@@ -48,7 +46,7 @@ var signCmd = &cobra.Command{
 		}
 
 		// Generate client config
-		file, err := ioutil.ReadFile(Config)
+		file, err := ioutil.ReadFile(config)
 		config := network.Config{}
 
 		if err != nil {
