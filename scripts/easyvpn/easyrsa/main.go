@@ -55,7 +55,7 @@ func RequestClientCert(CNs []string) []error {
 func RevokeClientCert(CNs []string) []error {
 	var errors []error
 	for _, CN := range CNs {
-		errors = append(errors, easyrsa("revoke", CN))
+		errors = append(errors, easyrsa("--batch", "revoke", CN))
 	}
 	return errors
 }

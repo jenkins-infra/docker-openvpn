@@ -3,6 +3,7 @@ package cmd
 import (
 	"../easyrsa"
 	"../git"
+	"../helpers"
 	"fmt"
 	"github.com/spf13/cobra"
 	"path"
@@ -20,6 +21,7 @@ var revokeCmd = &cobra.Command{
 	Short: "Revoke a client certificate",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		helpers.DecryptPrivateDir()
 		errors := easyrsa.RevokeClientCert(args)
 		if errors != nil {
 			for _, err := range errors {
@@ -34,12 +36,11 @@ var revokeCmd = &cobra.Command{
 				msg := "[infra-admin] Revoke " + args[i] + "certificate"
 				files := []string{
 					path.Join(CertDir, "crl.pem"),
-					path.Join(CertDir, "index.txt"),
-					path.Join(CertDir, "index.txt.attr"),
-					path.Join(CertDir, "reqs"),
-					path.Join(CertDir, "certs_by_serial"),
-					path.Join(CertDir, "issued"),
-					path.Join(CertDir, "revoked"),
+					path.Join(CertDir, "pki", "index.txt"),
+					path.Join(CertDir, "pki", "issued", args[i]+".crt"),
+					path.Join(CertDir, "pki", "reqs", args[i]+".crt"),
+					path.Join(CertDir, "pki", "index.txt.attr"),
+					path.Join(CertDir, "pki", "revoked"),
 				}
 				git.Add(files)
 				git.Commit(files, msg)
@@ -50,5 +51,6 @@ var revokeCmd = &cobra.Command{
 			git.Push()
 		}
 
+		helpers.CleanPrivateDir()
 	},
 }
