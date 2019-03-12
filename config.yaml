@@ -1,0 +1,11 @@
+networks:
+    - name: default
+      cidr: 10.8.0.0/24
+      routes:
+          - 10.0.1.0/24
+    - name: admin
+      cidr: 10.8.1.0/24
+      routes:
+          - 10.0.1.0/24
+          - 10.0.2.0/24
+          - 10.0.99.0/24

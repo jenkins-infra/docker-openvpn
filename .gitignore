@@ -2,3 +2,6 @@
 **.key
 **.pass
 safessl-easyrsa.cnf
+/easyvpn
+scripts/easyvpn/bin
+scripts/easyvpn/src
