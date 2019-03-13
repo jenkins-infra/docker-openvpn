@@ -172,7 +172,6 @@ func DeleteClientConfig(path string) error {
 func (n *Network) convertRoutesFormat() []string {
 	var result []string
 	for i := 0; i < len(n.Routes); i++ {
-		fmt.Printf("%v", n.Routes[i])
 		ip, network, err := net.ParseCIDR(n.Routes[i])
 		CheckErr(err)
 		networkMask := net.IP(network.Mask).String()
