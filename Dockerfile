@@ -11,6 +11,8 @@ RUN \
   useradd -d /var/lib/ldap/ -g openvpn -m -u 101 openvpn
 
 COPY cert/pki/ca.crt /etc/openvpn/server/ca.crt
+COPY cert/pki/crl.pem /etc/openvpn/server/crl.pem
+
 COPY cert/ccd /etc/openvpn/server/ccd
 # Missing COPY Revoking list
 COPY docker/config/server.conf /etc/openvpn/server/server.conf
