@@ -7,8 +7,6 @@ import (
 	"../network"
 	"fmt"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"os"
 	"path"
 )
@@ -46,38 +44,20 @@ var signCmd = &cobra.Command{
 		}
 
 		// Generate client config
-		file, err := ioutil.ReadFile(config)
-		config := network.Config{}
+		config := network.ReadConfigFile(config)
+
+		network, err := config.GetNetworkByName(net)
 
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		err = yaml.Unmarshal(file, &config)
 
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
+		for i := 0; i < len(args); i++ {
+			network.CreateClientConfig(args[i], ccd)
 
-		networkNotFound := false
-		for i := 0; i < len(config.Networks); i++ {
-			if config.Networks[i].Name == net {
-				networkNotFound = true
-				for j := 0; j < len(args); j++ {
-					network.CreateClientConfig(args[j], config.Networks[i].CIDR, ccd)
-				}
-			}
-		}
-
-		if !networkNotFound {
-			fmt.Printf("Network %v not founded", net)
-			os.Exit(1)
-		}
-
-		// Commit changes
-		if commit {
-			for i := 0; i < len(args); i++ {
+			// Commit changes
+			if commit {
 				msg := "[infra-admin] Sign certificate request for " + args[i]
 				files := []string{
 					path.Join(CertDir, "pki/issued", args[i]+".crt"),

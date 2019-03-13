@@ -5,8 +5,6 @@ import (
 	"../network"
 	"fmt"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"os"
 	"path"
 )
@@ -43,51 +41,34 @@ var configCmd = &cobra.Command{
 					git.Add(files)
 					git.Commit(files, msg)
 				}
-				if push {
-					git.Push()
-				}
 			}
-			os.Exit(0)
 		} else {
 
-			file, err := ioutil.ReadFile(configuration)
-			config := network.Config{}
-
-			if err != nil {
-				fmt.Println(err)
-				os.Exit(1)
-			}
-			err = yaml.Unmarshal(file, &config)
+			config := network.ReadConfigFile(config)
+			network, err := config.GetNetworkByName(net)
 
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
 
-			networkFounded := false
-			for i := 0; i < len(config.Networks); i++ {
-				if config.Networks[i].Name == net {
-					networkFounded = true
-					for j := 0; j < len(args); j++ {
-						network.CreateClientConfig(args[j], config.Networks[i].CIDR, ccd)
-						if commit {
-							msg := fmt.Sprintf("[infra-admin] Update %v network configuration", args[j])
-							files := []string{
-								path.Join(ccd, args[j]),
-							}
-							git.Add(files)
-							git.Commit(files, msg)
-						}
-						if push {
-							git.Push()
-						}
+			for j := 0; j < len(args); j++ {
+				network.CreateClientConfig(args[j], ccd)
+
+				if commit {
+					msg := fmt.Sprintf("[infra-admin] Update %v network configuration", args[j])
+					files := []string{
+						path.Join(ccd, args[j]),
 					}
+					git.Add(files)
+					git.Commit(files, msg)
 				}
+
 			}
-			if !networkFounded {
-				fmt.Printf("Network %v not founded in %v", net, configuration)
-				os.Exit(1)
-			}
+		}
+
+		if push {
+			git.Push()
 		}
 	},
 }

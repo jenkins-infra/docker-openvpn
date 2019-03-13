@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"net"
 	"os"
 	"path"
@@ -11,32 +13,58 @@ import (
 	"text/template"
 )
 
-// Config contains...
+// Config represents a list of network
 type Config struct {
-	Networks []struct {
-		Name  string   `yaml:"name"`
-		CIDR  string   `yaml:"cidr"`
-		Mask  string   `yaml:"mask"`
-		Route []string `yaml:"routes"`
-	} `yaml:"networks"`
+	Networks []Network `yaml:"networks"`
+}
+
+// Network represents a network information
+type Network struct {
+	Name   string   `yaml:"name"`
+	CIDR   string   `yaml:"cidr"`
+	Routes []string `yaml:"routes"`
 }
 
 type clientConfig struct {
 	IP      string
 	Netmask string
 	Routes  []string
-	Members []string
 }
-
-// DeleteClientConfig
-// GetAllNetworkMembers(name string)
-//
 
 var clientConfigTemplate = `ifconfig-push {{ .IP }} {{ .Netmask }}
 	{{- range .Routes }}
 push "route {{ . }}"
 	{{- end }}
 `
+
+// GetNetworkByName searchs for a network name in network configuration
+func (c *Config) GetNetworkByName(name string) (*Network, error) {
+	for i := 0; i < len(c.Networks); i++ {
+		if c.Networks[i].Name == name {
+			net := Network(c.Networks[i])
+			return &net, nil
+		}
+	}
+	return nil, fmt.Errorf("network %v not found", name)
+}
+
+// ReadConfigFile reads a network configuration file
+func ReadConfigFile(path string) *Config {
+	file, err := ioutil.ReadFile(path)
+	config := Config{}
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	err = yaml.Unmarshal(file, &config)
+
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	return &config
+}
 
 // Increment IP
 func inc(ip net.IP) {
@@ -55,9 +83,9 @@ func CheckErr(e error) {
 	}
 }
 
-func iprange(cidr string) ([]string, error) {
+func (n *Network) iprange() ([]string, error) {
 	var ips []string
-	ip, ipnet, err := net.ParseCIDR(cidr)
+	ip, ipnet, err := net.ParseCIDR(n.CIDR)
 	CheckErr(err)
 
 	for ip := ip.Mask(ipnet.Mask); ipnet.Contains(ip); inc(ip) {
@@ -111,6 +139,7 @@ func getAllUsedIP(ccd string) ([]string, error) {
 	}
 	return ipUsed, err
 }
+
 func isClientConfigured(cn string, clientNetwork string) bool {
 	if !isConfigFileExist(cn) {
 		return false
@@ -127,10 +156,9 @@ func isClientConfigured(cn string, clientNetwork string) bool {
 		return true
 	}
 	return false
-
 }
 
-// DeleteClientConfig remote a specify network client configuration
+// DeleteClientConfig remove a client network configuration
 func DeleteClientConfig(path string) error {
 	err := os.Remove(path)
 
@@ -140,31 +168,41 @@ func DeleteClientConfig(path string) error {
 	return err
 }
 
+// convertRoutesFormat() convert 192.168.0.1/24 CIDR to 192.168.0.1 255.255.255.0
+func (n *Network) convertRoutesFormat() []string {
+	var result []string
+	for i := 0; i < len(n.Routes); i++ {
+		fmt.Printf("%v", n.Routes[i])
+		ip, network, err := net.ParseCIDR(n.Routes[i])
+		CheckErr(err)
+		networkMask := net.IP(network.Mask).String()
+		result = append(result, fmt.Sprintf("%v %v", ip.String(), networkMask))
+	}
+	return result
+}
+
 // CreateClientConfig will generate a new client configuration under ccd
-func CreateClientConfig(cn string, clientNetwork string, ccd string) error {
-	if isClientConfigured(path.Join(ccd, cn), clientNetwork) {
-		fmt.Printf("Woop woop nothing to do for %v, he is already in the right network \n", cn)
+func (n *Network) CreateClientConfig(cn string, ccd string) error {
+	if isClientConfigured(path.Join(ccd, cn), n.CIDR) {
+		fmt.Printf("%v is already in network: %v\n", cn, n.Name)
 		return nil
 	}
 
-	_, network, err := net.ParseCIDR(clientNetwork)
+	freeIP, err := n.getFreeIP(ccd)
+	CheckErr(err)
 
-	CheckErr(err)
-	freeIP, err := getFreeIP(clientNetwork, ccd)
-	CheckErr(err)
+	_, network, err := net.ParseCIDR(n.CIDR)
 
 	config := clientConfig{
 		IP:      freeIP,
 		Netmask: net.IP(network.Mask).String(),
-		Routes: []string{
-			"10.8.0.1 255.255.255.0",
-			"10.9.0.1 255.255.255.0",
-		},
+		Routes:  n.convertRoutesFormat(),
 	}
+
 	tmpl, err := template.New(cn).Parse(clientConfigTemplate)
 	CheckErr(err)
 
-	file, err := os.Create(ccd + "/" + cn)
+	file, err := os.Create(path.Join(ccd, cn))
 	CheckErr(err)
 	defer file.Close()
 
@@ -174,8 +212,8 @@ func CreateClientConfig(cn string, clientNetwork string, ccd string) error {
 	return err
 }
 
-func getFreeIP(clientNetwork string, ccd string) (string, error) {
-	_, network, err := net.ParseCIDR(clientNetwork)
+func (n *Network) getFreeIP(ccd string) (string, error) {
+	_, network, err := net.ParseCIDR(n.CIDR)
 
 	if err != nil {
 		fmt.Println(err)
@@ -185,9 +223,7 @@ func getFreeIP(clientNetwork string, ccd string) (string, error) {
 
 	networkCIDR := fmt.Sprintf("%v/%v", networkIP, networkMask)
 
-	fmt.Printf("%v/%v\n", networkIP, networkMask)
-
-	iprange, err := iprange(networkCIDR)
+	iprange, err := n.iprange()
 	ipUsed, err := getAllUsedIP(ccd)
 
 	for i := 0; i < len(iprange); i++ {
