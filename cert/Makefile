@@ -4,15 +4,12 @@ PKI_DIR=pki
 
 clean: 
 	rm $(PKI_DIR)/private/ca.key
-	rm $(PKI_DIR)/private/ca.pass
 
 encrypt:
 	sops -e $(PKI_DIR)/private/ca.key > $(PKI_DIR)/private/ca.key.enc
-	sops -e $(PKI_DIR)/private/ca.pass > $(PKI_DIR)/private/ca.pass.enc
 
 decrypt:
 	sops -d $(PKI_DIR)/private/ca.key.enc > $(PKI_DIR)/private/ca.key
-	sops -d $(PKI_DIR)/private/ca.pass.enc > $(PKI_DIR)/private/ca.pass
 
 isNameDefined:
 	if [ -z "$(name)" ]; then echo "Missing argument name=<username>"; exit 1 ; fi

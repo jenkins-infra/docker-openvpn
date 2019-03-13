@@ -10,7 +10,7 @@ import (
 // DecryptPrivateDir decrypt ca private key and ca private key password
 func DecryptPrivateDir() {
 	dirname := "cert/pki/private/"
-	files := []string{"ca.key", "ca.pass"}
+	files := []string{"ca.key"}
 
 	for _, file := range files {
 		out, err := decrypt.File(dirname+file+".enc", "txt")
@@ -32,7 +32,7 @@ func DecryptPrivateDir() {
 // CleanPrivateDir delete decrypte ca private key and the file containing his password
 func CleanPrivateDir() {
 	dirname := "cert/pki/private/"
-	files := []string{"ca.key", "ca.pass"}
+	files := []string{"ca.key"}
 
 	for _, file := range files {
 		err := os.Remove(dirname + file)
