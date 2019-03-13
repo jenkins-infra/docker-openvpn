@@ -4,6 +4,7 @@ import (
 	"../easyrsa"
 	"../git"
 	"../helpers"
+	"../network"
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
@@ -31,6 +32,9 @@ var revokeCmd = &cobra.Command{
 				}
 			}
 		}
+		for i := range args {
+			network.DeleteClientConfig(path.Join(CertDir, "ccd", args[i]))
+		}
 
 		fileToDelete := []string{
 			path.Join(CertDir, "pki", "index.txt.old"),
@@ -54,6 +58,7 @@ var revokeCmd = &cobra.Command{
 					path.Join(CertDir, "pki", "certs_by_serial"),
 					path.Join(CertDir, "pki", "index.txt.attr"),
 					path.Join(CertDir, "pki", "revoked"),
+					path.Join(CertDir, "ccd", args[i]),
 				}
 				git.Add(files)
 				git.Commit(files, msg)
