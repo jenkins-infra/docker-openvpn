@@ -56,7 +56,7 @@ func Pull() {
 
 // Push the branch on remote master branch
 func Push() {
-	args := []string{"push", "origin", "master"}
+	args := []string{"push"}
 	git(args...)
 }
 
