@@ -1,4 +1,4 @@
-**.pem
+dh.pem
 **.key
 **.pass
 safessl-easyrsa.cnf
