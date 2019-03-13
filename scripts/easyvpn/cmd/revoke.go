@@ -32,8 +32,15 @@ var revokeCmd = &cobra.Command{
 			}
 		}
 
-		if err := os.Remove(path.Join(CertDir, "pki", "index.txt.old")); err != nil {
-			fmt.Println(err)
+		fileToDelete := []string{
+			path.Join(CertDir, "pki", "index.txt.old"),
+			path.Join(CertDir, "pki", "index.txt.attr.old"),
+		}
+
+		for i := range fileToDelete {
+			if err := os.Remove(fileToDelete[i]); err != nil {
+				fmt.Println(err)
+			}
 		}
 
 		if Commit {
@@ -44,6 +51,7 @@ var revokeCmd = &cobra.Command{
 					path.Join(CertDir, "pki", "index.txt"),
 					path.Join(CertDir, "pki", "issued", args[i]+".crt"),
 					path.Join(CertDir, "pki", "reqs", args[i]+".req"),
+					path.Join(CertDir, "pki", "certs_by_serial"),
 					path.Join(CertDir, "pki", "index.txt.attr"),
 					path.Join(CertDir, "pki", "revoked"),
 				}
