@@ -20,9 +20,10 @@ type Config struct {
 
 // Network represents a network information
 type Network struct {
-	Name   string   `yaml:"name"`
-	CIDR   string   `yaml:"cidr"`
-	Routes []string `yaml:"routes"`
+	Name    string   `yaml:"name"`
+	IPRange string   `yaml:"iprange"`
+	NetMask string   `yaml:"netmask"`
+	Routes  []string `yaml:"routes"`
 }
 
 type clientConfig struct {
@@ -85,7 +86,7 @@ func CheckErr(e error) {
 
 func (n *Network) iprange() ([]string, error) {
 	var ips []string
-	ip, ipnet, err := net.ParseCIDR(n.CIDR)
+	ip, ipnet, err := net.ParseCIDR(n.IPRange)
 	CheckErr(err)
 
 	for ip := ip.Mask(ipnet.Mask); ipnet.Contains(ip); inc(ip) {
@@ -182,7 +183,7 @@ func (n *Network) convertRoutesFormat() []string {
 
 // CreateClientConfig will generate a new client configuration under ccd
 func (n *Network) CreateClientConfig(cn string, ccd string) error {
-	if isClientConfigured(path.Join(ccd, cn), n.CIDR) {
+	if isClientConfigured(path.Join(ccd, cn), n.IPRange) {
 		fmt.Printf("%v is already in network: %v\n", cn, n.Name)
 		return nil
 	}
@@ -190,11 +191,9 @@ func (n *Network) CreateClientConfig(cn string, ccd string) error {
 	freeIP, err := n.getFreeIP(ccd)
 	CheckErr(err)
 
-	_, network, err := net.ParseCIDR(n.CIDR)
-
 	config := clientConfig{
 		IP:      freeIP,
-		Netmask: net.IP(network.Mask).String(),
+		Netmask: net.ParseIP(n.NetMask).String(),
 		Routes:  n.convertRoutesFormat(),
 	}
 
@@ -212,7 +211,7 @@ func (n *Network) CreateClientConfig(cn string, ccd string) error {
 }
 
 func (n *Network) getFreeIP(ccd string) (string, error) {
-	_, network, err := net.ParseCIDR(n.CIDR)
+	_, network, err := net.ParseCIDR(n.IPRange)
 
 	if err != nil {
 		fmt.Println(err)

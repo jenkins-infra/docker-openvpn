@@ -1,11 +1,19 @@
+
+# Follow network represent unused but available sub network
+#   10.8.0.0/26 # [10.8.0.1-10.8.0.62]
+#   10.8.0.128/26 # [10.8.0.129-10.8.0.190]
+
 networks:
     - name: default
-      cidr: 10.8.0.0/24
+      iprange: 10.8.0.64/26 # [10.8.0.65-10.8.0.126]
+      netmask: 255.255.255.0
       routes:
           - 10.0.1.0/24
     - name: admin
-      cidr: 10.8.1.0/24
+      iprange: 10.8.0.230/26 # [10.8.0.193-10.8.0.254]
+      netmask: 255.255.255.0
       routes:
           - 10.0.1.0/24
           - 10.0.2.0/24
           - 10.0.99.0/24
+
