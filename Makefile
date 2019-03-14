@@ -6,3 +6,6 @@ init:
 
 build.docker:
 	$(MAKE) -C docker build
+
+start:
+	$(MAKE) -C docker up
