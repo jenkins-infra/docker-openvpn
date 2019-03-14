@@ -12,4 +12,4 @@ publish:
 up: 
 	docker-compose build
 	docker-compose up -d
-	docker exec -i -t openvpn_ldap_1 /entrypoint/restore
+	docker exec -i -t docker_ldap_1 /entrypoint/restore

@@ -5,3 +5,7 @@ safessl-easyrsa.cnf
 /easyvpn
 scripts/easyvpn/bin
 scripts/easyvpn/src
+!cert/mock/private/alice.key
+!cert/mock/private/ca.key
+!cert/mock/private/kohsuke.key
+!cert/mock/private/ldap.key

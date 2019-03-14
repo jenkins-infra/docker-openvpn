@@ -1,32 +1,41 @@
 version: '3'
 volumes:
-    elections:
+    ldap_data:
 services:
   vpn:
     build: ..
+    depends_on:
+        - ldap
     cap_add:
         - NET_ADMIN
-          #    depends_on:
-          #        - ldap
+    depends_on:
+        - ldap
     environment:
         - "AUTH_LDAP_PASSWORD=s3cr3t"
         - "AUTH_LDAP_URL=ldaps://ldap"
         - "AUTH_LDAP_BINDDN=cn=admin,dc=jenkins-ci,dc=org"
-        - "AUTH_LDAP_GROUPS_MEMBER=cn=admins"
+        - "AUTH_LDAP_GROUPS_MEMBER=cn=all"
     volumes:
-        - ../cert/pki/ca.crt:/etc/openvpn/server/ca.crt:ro
-        - ../cert/pki/ca.crt:/etc/ldap/ssl/cacert.crt:ro
-        - ../cert/pki/private/vpn.key:/etc/openvpn/server/server.key:ro
-        - ../cert/pki/issued/vpn.crt:/etc/openvpn/server/server.crt:ro
-        - ../cert/pki/dh.pem:/etc/openvpn/server/dh.pem:ro
-    entrypoint: /bin/bash
+        - ./mock/vpn/ccd:/etc/openvpn/server/ccd
+        - ./mock/vpn/ca.crt:/etc/openvpn/server/ca.crt
+        - ./mock/vpn/ldapca.crt:/etc/ldap/ssl/cacert.crt
+        - ./mock/vpn/ca.crt:/etc/ldap/ssl/cacert.crt
+        - ./mock/vpn/vpn.key:/etc/openvpn/server/server.key
+        - ./mock/vpn/vpn.crt:/etc/openvpn/server/server.crt
+        - ./mock/vpn/dh.pem:/etc/openvpn/server/dh.pem
+        - ./mock/vpn/ca.crt:/etc/ssl/certs/ca-certificates.crt
     ports:
         - 443:443
 
+  # Don't forget to run /entrypoint/restore, once database is started
   ldap:
     image: jenkinsciinfra/ldap:12-builde29683
+    environment: 
+        - "OPENLDAP_DEBUG_LEVEL=1"
     volumes:
-        - ../cert/pki/ca.crt:/etc/ldap/ssl/cacert.pem:ro
-        - ../cert/pki/issued/ldap.crt:/etc/ldap/ssl/cert.pem:ro
-        - ../cert/pki/private/ldap.key:/etc/ldap/ssl/privkey.key:ro
-        - ../docker/mock/mock.ldif:/var/backups/backup.latest.ldif:ro
+        - ldap_data:/var/lib/ldap
+        - ./mock/ldap/ca.crt:/etc/ssl/certs/ca-certificates.crt
+        - ./mock/ldap/ca.crt:/etc/ldap/ssl/cacert.pem
+        - ./mock/ldap/ldap.crt:/etc/ldap/ssl/cert.pem
+        - ./mock/ldap/ldap.key:/etc/ldap/ssl/privkey.key
+        - ./mock/mock.ldif:/var/backups/backup.latest.ldif
