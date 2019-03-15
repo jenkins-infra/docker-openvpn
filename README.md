@@ -7,10 +7,11 @@ It includes following elements:
 * Manage client configuration and certificate
 
 ## CONNECTION
-In order to connect to this vpn, you client must be configured with your jenkins account username/password and certificate authentication
+In order to connect to this vpn, your vpn client must be configured with your jenkins account username/password and certificate authentication.
+Certificate authentication requires following files:
 
 * The **[ca.crt](https://github.com/jenkins-infra/openvpn/blob/master/cert/pki/ca.crt)**
-* **username.key** is located on your machine `cert/pki/private/<your_name>` !! Your private key **must** remain **secret**,
+* **username.key** cfr [HowTo Get client access](#howto-get-client-access) !! Your private key **must** remain **secret**,
 * **username.crt** is located in [cert/pki/issued](https://github.com/jenkins-infra/openvpn/tree/master/cert/pki/issued), once an administrator sign  your request and publish it.
 
 ```
@@ -32,22 +33,23 @@ group nobody
 ```
 
 ## CERTIFICATES
-This projects holds vpn keys for connecting on Jenkins Infrastructure.
+This projects holds vpn keys for connecting on Jenkins infrastructure vpn.
 
-If you think that you should have access to it or a specific network, feel free to read [HowTo Get client access](#howto-get-client-access).
+If you think that you should have access to this network, feel free to read [HowTo Get client access](#howto-get-client-access).
 
 ### Client
 #### HowTo get client access
-In order to Jenkins infrastructure private networks, you need a certificate containing your jenkins username as CN.
-Then this certificate must be signed by an administrator who also assign you a static IP.
+In order to access the Jenkins infrastructure private network, you need a certificate containing your jenkins username as CN.
+Then this certificate must be signed by an administrator who also assign you a static IP configuration.
 
 Feel free to follow next action points:
 
 * Fork this repository on your own Github account: [fork a repo](https://help.github.com/articles/fork-a-repo/)
 * Build easyvpn cli: `make init`
-* Create your private key and certificate request: `./easyvpn request <your username>`
-* Create a new Pull Request on jenkinsinfra/openvpn, staging branch: [create a pull request](https://help.github.com/articles/creating-a-pull-request/)
-* Grab a cup of coffee and wait patiently until an administrator issues your certificate.
+* Generate your private key and certificate request: `./easyvpn request <your username>`
+  Your private key will be generate in `cert/pki/private`, this key **must** remain **secret**.
+* Create a new Pull Request on jenkinsinfra/openvpn, staging branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
+* Grab a cup of coffee and wait patiently for an administrator to sign your certificate request.
 * Once an admin notify you that everything is right, your can then retrieve your certificate from `./cert/pki/issued/<your_username>.crt`
 
 #### HowTo show request information
