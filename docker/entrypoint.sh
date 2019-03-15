@@ -12,14 +12,14 @@ function configure_tun {
 }
 
 function configure_certificates {
-  if [ ! -f '/etc/ldap/ssl/cacert.pem' ]; then
+  if [ ! -f '/etc/ldap/ssl/cacert.crt' ]; then
     : "${OPENVPN_LDAP_CA_PEM:? Missing OPENVPN_LDAP_CA_PEM}"
-    echo "$OPENVPN_LDAP_CA_PEM" > /etc/ldap/ssl/cacert.pem
+    echo "$OPENVPN_LDAP_CA_PEM" > /etc/ldap/ssl/cacert.crt
   fi
 
-  if [ ! -f '/etc/openvpn/server/ca.pem' ]; then
+  if [ ! -f '/etc/openvpn/server/ca.crt' ]; then
     : "${OPENVPN_CA_PEM:? Missing OPENVPN_CA_PEM}"
-    echo "$OPENVPN_CA_PEM" > /etc/openvpn/server/ca.pem
+    echo "$OPENVPN_CA_PEM" > /etc/openvpn/server/ca.crt
   fi
 
   if [ ! -f '/etc/openvpn/server/server.key' ]; then
@@ -27,9 +27,9 @@ function configure_certificates {
     echo "$OPENVPN_SERVER_KEY" > /etc/openvpn/server/server.key
   fi
 
-  if [ ! -f '/etc/openvpn/server/server.pem' ]; then
+  if [ ! -f '/etc/openvpn/server/server.crt' ]; then
     : "${OPENVPN_SERVER_PEM:? Missing OPENVPN_SERVER_PEM }"
-    echo "$OPENVPN_SERVER_PEM" > /etc/openvpn/server/server.pem
+    echo "$OPENVPN_SERVER_PEM" > /etc/openvpn/server/server.crt
   fi
 
   if [ ! -f '/etc/openvpn/server/dh.pem' ]; then

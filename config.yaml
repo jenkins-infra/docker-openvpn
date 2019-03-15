@@ -1,0 +1,18 @@
+# Follow network settings are used to assign ip to vpn client
+# and accesses are limited by
+# https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp
+#
+networks:
+    - name: default
+      iprange: 10.8.0.1/24
+      netmask: 255.255.254.0
+      routes:
+          - 10.0.2.0/24
+    - name: admin
+      iprange: 10.8.1.1/24
+      netmask: 255.255.254.0
+      routes:
+          - 10.0.1.0/24
+          - 10.0.2.0/24
+          - 10.0.99.0/24
+
