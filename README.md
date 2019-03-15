@@ -2,16 +2,42 @@
 
 This project contents everything related to Jenkins infrastructure vpn. 
 It includes following elements:
+
 * Build an openvpn docker image integrated with [openldap](https://github.com/jenkins-infra/ldap).
 * Manage client configuration and certificate
+
+## CONNECTION
+In order to connect to this vpn, you client must be configured with your jenkins account username/password and certificate authentication
+
+* The **[ca.crt](https://github.com/jenkins-infra/openvpn/blob/master/cert/pki/ca.crt)**
+* **username.key** is located on your machine `cert/pki/private/<your_name>` !! Your private key **must** remain **secret**,
+* **username.crt** is located in [cert/pki/issued](https://github.com/jenkins-infra/openvpn/tree/master/cert/pki/issued), once an administrator sign  your request and publish it.
+
+```
+client
+remote vpn.jenkins.io 443
+ca "~/.openvpn/jenkins/ca.crt"
+cert "~/.openvpn/jenkins/username.crt"
+key "~/.openvpn/jenkins/username.key"
+auth-user-pass
+dev tun
+proto tcp
+nobind
+auth-nocache
+script-security 2
+persist-key
+persist-tun
+user nobody
+group nobody
+```
 
 ## CERTIFICATES
 This projects holds vpn keys for connecting on Jenkins Infrastructure.
 
 If you think that you should have access to it or a specific network, feel free to read [HowTo Get client access](#howto-get-client-access).
 
-## Client
-### HowTo get client access
+### Client
+#### HowTo get client access
 In order to Jenkins infrastructure private networks, you need a certificate containing your jenkins username as CN.
 Then this certificate must be signed by an administrator who also assign you a static IP.
 
@@ -24,24 +50,24 @@ Feel free to follow next action points:
 * Grab a cup of coffee and wait patiently until an administrator issues your certificate.
 * Once an admin notify you that everything is right, your can then retrieve your certificate from `./cert/pki/issued/<your_username>.crt`
 
-### HowTo show request information
+#### HowTo show request information
 
 * Enter in the vpn network directory: `cd cert`
 * Run `make show-req name=<username>`
 
-### HowTo show certificate information
+#### HowTo show certificate information
 
 * Enter in the vpn network directory: `cd cert`
 * Run `make show-certs name=<username>`
 
-## Administrator
-### HowTo become an administrator
+### Administrator
+#### HowTo become an administrator
 In order to add/revoke certificates, you must be allowed to decrypt `cert/pki/private/ca.key.enc`.
 This file is encrypted with [sops](https://github.com/mozilla/sops) and you are public gpg key must be added to .sops.yaml by an existing administrator in order to be allow to run `make decrypt`.
 
 This repository relies on [easy-rsa](https://github.com/OpenVPN/easy-rsa/blob/master/README.quickstart.md).
 
-### HowTo approve client access?
+#### HowTo approve client access?
 In order to validate and sign a client certificate, your are going to do following actions
 
 * Build easyvpn cli: `make init`
@@ -49,7 +75,7 @@ In order to validate and sign a client certificate, your are going to do followi
 * Sign certificate request: `./easyvpn sign <CN_to_sign>`
 * Update docker image in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp) configuration.
 
-### HowTo revoke client access?
+#### HowTo revoke client access?
 
 * Build easyvpn cli: `make init`
 * Revoke certificate: `./easyvpn revoke <CN_to_sign>`
