@@ -17,9 +17,9 @@ Certificate authentication requires following files:
 ```
 client
 remote vpn.jenkins.io 443
-ca "~/.openvpn/jenkins/ca.crt"
-cert "~/.openvpn/jenkins/username.crt"
-key "~/.openvpn/jenkins/username.key"
+ca "~/.cert/jenkins/ca.crt"
+cert "~/.cert/jenkins/username.crt"
+key "~/.cert/jenkins/username.key"
 auth-user-pass
 dev tun
 proto tcp
