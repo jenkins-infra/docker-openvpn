@@ -1,4 +1,4 @@
-.PHONY: build publish run
+.PHONY: build_osx build_windows build_linux init_osx init_linux init_windows
 
 build_osx:
 	go get -d
