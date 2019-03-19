@@ -27,16 +27,25 @@ pipeline {
     stage('Build Easyvpn Cli'){
       parralel {
         stage ('Build for OSX') {
+          agent {
+            label 'linux'
+          }
           steps {
             sh 'make init_osx'
           }
         }
         stage ('Build for Linux') {
+          agent {
+            label 'linux'
+          }
           steps {
             sh 'make init_linux'
           }
         }
         stage ('Build for Windows') {
+          agent {
+            label 'windows'
+          }
           steps {
             sh 'make init_windows'
           }
