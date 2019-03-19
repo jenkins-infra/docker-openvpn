@@ -1,27 +1,25 @@
-.PHONY: build.project build.docker build.easyvpn build
+.PHONY: build_osx build_windows build_linux init_osx init_linux init_windows
 
-GOLANG_VERSION=1.12
+build_osx:
+	go get -d
+	CGO_ENABLED=0 GOOS=darwin go build -a -installsuffix cgo -v .
 
-build.project:
-	go get
-	go build -v -o bin/easyvpn
+build_windows:
+	go get -d
+	CGO_ENABLED=0 GOOS=windows go build -v .
 
-build.docker:
-	docker build \
-		--build-arg VERSION=$(GOLANG_VERSION) \
-		--build-arg UID=$(shell id -u) \
-		--build-arg GID=$(shell id -g) \
-		-t golang:sandbox-$(GOLANG_VERSION) .
+build_linux:
+	go get -d
+	CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -v .
 
-build.easyvpn:
-	docker run \
-		--rm \
-		-i -t\
-		-v "$$PWD":/easyvpn \
-		-w /easyvpn \
-		-e GOBIN=/easyvpn/bin \
-		-e GOPATH=/easyvpn \
-		golang:sandbox-$(GOLANG_VERSION) make build.project
+init_osx:
+	docker run --rm -v "$$PWD":/easyvpn -w /easyvpn -e GOOS=windows golang:1.12 make build_osx
+	if [ -f ../../easyvpn ]; then rm ../../easyvpn ;fi
 
+init_linux:
+	docker run --rm -v "$$PWD":/easyvpn -w /easyvpn -e GOOS=windows golang:1.12 make build_linux
+	if [ -f ../../easyvpn ]; then rm ../../easyvpn fi
 
-build: build.docker build.easyvpn
+init_windows:
+	docker run --rm -v "$$PWD":/easyvpn -w /easyvpn -e GOOS=windows golang:1.12 make build_windows
+
