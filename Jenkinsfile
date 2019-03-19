@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    docker
+    label 'docker'
   }
 
   options {
@@ -11,10 +11,24 @@ pipeline {
     cron 'H/15 * * * *'
   }
   stages {
+    stage('Build Easyvpn cli for OSX') {
+      steps {
+        sh 'make init_osx'
+      }
+    }
+    stage('Build Easyvpn cli for Linux') {
+      steps {
+        sh 'make init_linux'
+      }
+    }
+    stage('Build Easyvpn cli for Windows') {
+      steps {
+        sh 'make init_windows'
+      }
+    }
     stage('Build OpenVPN Docker Image') {
       steps {
-          sh 'make build'
-        }
+          sh 'make build.docker'
       }
     }
     stage('Publish OpenVPN Docker Image'){
@@ -23,21 +37,6 @@ pipeline {
       }
       steps {
         make publish.docker
-      }
-    }
-    stage('Build Easyvpn Cli'){
-      steps{
-        parralel (
-          "OSX": {
-            make init_osx
-          }
-          "Windows": {
-            make init_windows
-          }
-          "Linux": {
-            make init_linux
-          }
-        )
       }
     }
   }
