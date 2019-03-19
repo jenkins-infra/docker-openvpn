@@ -30,10 +30,10 @@ pipeline {
         parralel (
           "OSX": {
             make init_osx
-          }
+          },
           "Windows": {
             make init_windows
-          }
+          },
           "Linux": {
             make init_linux
           }
