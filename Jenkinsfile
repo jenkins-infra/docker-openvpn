@@ -14,7 +14,6 @@ pipeline {
     stage('Build OpenVPN Docker Image') {
       steps {
           sh 'make build'
-        }
       }
     }
     stage('Publish OpenVPN Docker Image'){
