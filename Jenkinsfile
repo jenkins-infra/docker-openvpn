@@ -25,18 +25,22 @@ pipeline {
       }
     }
     stage('Build Easyvpn Cli'){
-      steps{
-        parralel (
-          "OSX": {
-            make init_osx
-          },
-          "Windows": {
-            make init_windows
-          },
-          "Linux": {
-            make init_linux
+      parralel {
+        stage ('Build for OSX') {
+          steps {
+            sh 'make init_osx'
           }
-        )
+        }
+        stage ('Build for Linux') {
+          steps {
+            sh 'make init_linux'
+          }
+        }
+        stage ('Build for Windows') {
+          steps {
+            sh 'make init_windows'
+          }
+        }
       }
     }
   }
