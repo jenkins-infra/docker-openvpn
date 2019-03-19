@@ -3,6 +3,9 @@
 build.docker:
 	$(MAKE) -C docker build
 
+publish.docker:
+	$(MAKE) -C docker publish
+
 start:
 	$(MAKE) -C docker up
 
