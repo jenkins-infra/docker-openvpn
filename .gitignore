@@ -2,9 +2,10 @@ dh.pem
 **.key
 **.pass
 safessl-easyrsa.cnf
+scripts/easyvpn/easyvpn
+scripts/easyvpn/easyvpn.exe
 /easyvpn
-scripts/easyvpn/bin
-scripts/easyvpn/src
+/easyvpn.exe
 !cert/mock/private/alice.key
 !cert/mock/private/ca.key
 !cert/mock/private/kohsuke.key
