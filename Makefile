@@ -1,4 +1,4 @@
-.PHONY: init
+.PHONY: init_linux init_windows init_osx start publish.docker build.docker
 
 build.docker:
 	$(MAKE) -C docker build
@@ -10,12 +10,12 @@ start:
 	$(MAKE) -C docker up
 
 init_windows:
-	$(MAKE) -C scripts/easyvpn init_windows
+	$(MAKE) -C utils/easyvpn init_windows
 
 init_linux:
-	$(MAKE) -C scripts/easyvpn init_linux
-	ln -f -s $(PWD)/scripts/easyvpn/easyvpn easyvpn
+	$(MAKE) -C utils/easyvpn init_linux
+	ln -f -s $(PWD)/utils/easyvpn/easyvpn easyvpn
 
 init_osx:
-	$(MAKE) -C scripts/easyvpn init_osx
-	ln -f -s $(PWD)/scripts/easyvpn/easyvpn easyvpn
+	$(MAKE) -C utils/easyvpn init_osx
+	ln -f -s $(PWD)/utils/easyvpn/easyvpn easyvpn

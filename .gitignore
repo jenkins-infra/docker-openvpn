@@ -2,8 +2,8 @@ dh.pem
 **.key
 **.pass
 safessl-easyrsa.cnf
-scripts/easyvpn/easyvpn
-scripts/easyvpn/easyvpn.exe
+utils/easyvpn/easyvpn
+utils/easyvpn/easyvpn.exe
 /easyvpn
 /easyvpn.exe
 !cert/mock/private/alice.key
