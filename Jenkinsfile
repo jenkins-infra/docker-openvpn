@@ -1,31 +1,44 @@
-#!/usr/bin/env groovy
+pipeline {
+  agent {
+    label 'docker'
+  }
 
-def imageName = 'jenkinsciinfra/openvpn'
+  options {
+    buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+  }
 
-properties([
-    buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5')),
-    pipelineTriggers([[$class:"SCMTrigger", scmpoll_spec:"H/15 * * * *"]]),
-])
-
-node('docker') {
-    def container
-    stage('Prepare Container') {
-        timestamps {
-            checkout scm
-            sh 'git rev-parse HEAD > GIT_COMMIT'
-            shortCommit = readFile('GIT_COMMIT').take(6)
-            def imageTag = "${env.BUILD_ID}-build${shortCommit}"
-            echo "Creating the container ${imageName}:${imageTag}"
-            container = docker.build("${imageName}:${imageTag}")
-        }
+  triggers {
+    cron 'H/15 * * * *'
+  }
+  stages {
+    stage('Build Easyvpn cli for OSX') {
+      steps {
+        sh 'make init_osx'
+      }
     }
-
-    /* Assuming we're not inside of a pull request or multibranch pipeline */
-    if (!(env.CHANGE_ID || env.BRANCH_NAME)) {
-        stage('Publish container') {
-            infra.withDockerCredentials {
-                timestamps { container.push() }
-            }
-        }
+    stage('Build Easyvpn cli for Linux') {
+      steps {
+        sh 'make init_linux'
+      }
     }
+    stage('Build Easyvpn cli for Windows') {
+      steps {
+        sh 'make init_windows'
+      }
+    }
+    stage('Build OpenVPN Docker Image') {
+      steps {
+          sh 'make build.docker'
+      }
+    }
+    stage('Publish OpenVPN Docker Image'){
+      when {
+        branch 'master'
+      }
+      steps {
+        make publish.docker
+      }
+    }
+  }
 }
+

@@ -48,7 +48,7 @@ Feel free to follow next action points:
 * Build easyvpn binary by running one of the following command depending on your 
   * `make init_osx`
   * `make init_linux`
-  * `make init_windows` then copy scripts/easyvpn/easyvpn.exe at the root of this repository
+  * `make init_windows` then copy utils/easyvpn/easyvpn.exe at the root of this repository
 * Generate your private key and certificate request: `./easyvpn request <your username>`
   Your private key will be generate in `cert/pki/private`, this key **must** remain **secret**.
 * Create a new Pull Request on jenkinsinfra/openvpn, staging branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
@@ -78,7 +78,7 @@ In order to validate and sign a client certificate, your are going to do followi
 * Build easyvpn binary by running one of the following command depending on your 
  * `make init_osx`
  * `make init_linux`
- * `make init_windows` then copy scripts/easyvpn/easyvpn.exe at the root of this repository
+ * `make init_windows` then copy utils/easyvpn/easyvpn.exe at the root of this repository
 * Git checkout on the right branch "staging"
 * Sign certificate request: `./easyvpn sign <CN_to_sign>`
 * Update docker image in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp) configuration.
@@ -88,7 +88,7 @@ In order to validate and sign a client certificate, your are going to do followi
 * Build easyvpn binary by running one of the following command depending on your 
  * `make init_osx`
  * `make init_linux`
- * `make init_windows` and copy scripts/easyvpn/easyvpn.exe at the root of this repository
+ * `make init_windows` and copy utils/easyvpn/easyvpn.exe at the root of this repository
 * Revoke certificate: `./easyvpn revoke <CN_to_sign>`
 * Update docker image in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp) configuration.
 

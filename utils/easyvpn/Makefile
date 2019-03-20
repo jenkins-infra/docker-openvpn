@@ -14,11 +14,9 @@ build_linux:
 
 init_osx:
 	docker run --rm -v "$$PWD":/easyvpn -w /easyvpn -e GOOS=windows golang:1.12 make build_osx
-	if [ -f ../../easyvpn ]; then rm ../../easyvpn ;fi
 
 init_linux:
 	docker run --rm -v "$$PWD":/easyvpn -w /easyvpn -e GOOS=windows golang:1.12 make build_linux
-	if [ -f ../../easyvpn ]; then rm ../../easyvpn fi
 
 init_windows:
 	docker run --rm -v "$$PWD":/easyvpn -w /easyvpn -e GOOS=windows golang:1.12 make build_windows
