@@ -1,4 +1,4 @@
-.PHONY: init
+.PHONY: init_linux init_windows init_osx start publish.docker build.docker
 
 build.docker:
 	$(MAKE) -C docker build
