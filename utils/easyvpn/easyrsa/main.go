@@ -6,29 +6,27 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strings"
 )
 
 var (
 	easyrsaDir = "cert"
-	debug      = true
 )
 
 func easyrsa(args ...string) error {
 	cmd := exec.Command("./easyrsa", args...)
 	cmd.Dir = easyrsaDir
 
-	fmt.Println(cmd.Dir)
-
 	var outb, errb bytes.Buffer
 	cmd.Stdout = &outb
-	cmd.Stderr = &errb
+	//cmd.Stderr = &errb
 
 	err := cmd.Run()
 
-	if debug {
-		fmt.Printf("Exec: %v", cmd.Args)
-		fmt.Printf("%v\n", outb.String())
-	}
+	fmt.Printf("Exec: %v/easyrsa %v\n", cmd.Dir, strings.Join(cmd.Args[1:], " "))
+	fmt.Printf("%v", outb.String())
+	fmt.Printf("---\n")
+	//fmt.Printf("%v\n", errb.String())
 
 	if err != nil {
 		fmt.Println(errb.String())
@@ -76,6 +74,7 @@ func SignClientRequest(CNs []string) []error {
 		"extensions.temp"}
 
 	for _, file := range files {
+		fmt.Printf("Deleting unneeded file: %v\n", file)
 		err := os.Remove(path.Join(easyrsaDir, "pki", file))
 		if err != nil {
 			fmt.Println(err)
