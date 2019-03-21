@@ -34,9 +34,10 @@ pipeline {
     stage('Publish OpenVPN Docker Image'){
       when {
         branch 'master'
+        environment name: 'JENKINS_URL', value: 'https://trusted.ci.jenkins.io:1443/'
       }
       steps {
-        make publish.docker
+          sh 'make publish.docker'
       }
     }
   }
