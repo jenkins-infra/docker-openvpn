@@ -5,25 +5,33 @@ pipeline {
 
   options {
     buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+    timeout(time: 1, unit: 'HOURS')
+    timestamps()
   }
 
   triggers {
-    cron 'H/15 * * * *'
+    pollSCM('H/15 * * * *')
   }
+
   stages {
-    stage('Build Easyvpn cli for OSX') {
-      steps {
-        sh 'make init_osx'
-      }
-    }
-    stage('Build Easyvpn cli for Linux') {
-      steps {
-        sh 'make init_linux'
-      }
-    }
-    stage('Build Easyvpn cli for Windows') {
-      steps {
-        sh 'make init_windows'
+    stage("Build Easyvpn"){
+      failFast true
+      parallel {
+        stage('OSX') {
+          steps {
+            sh 'make init_osx'
+          }
+        }
+        stage('Linux') {
+          steps {
+            sh 'make init_linux'
+          }
+        }
+        stage('Windows') {
+          steps {
+            sh 'make init_windows'
+          }
+        }
       }
     }
     stage('Build OpenVPN Docker Image') {
@@ -34,9 +42,10 @@ pipeline {
     stage('Publish OpenVPN Docker Image'){
       when {
         branch 'master'
+        environment name: 'JENKINS_URL', value: 'https://trusted.ci.jenkins.io:1443/'
       }
       steps {
-        make publish.docker
+          sh 'make publish.docker'
       }
     }
   }
