@@ -32,6 +32,9 @@ user nobody
 group nobody
 ```
 
+**With network manager client, you must enable the option :
+`Use this connection only for resources on its network`**
+
 ## CERTIFICATES
 This projects holds vpn keys for connecting on Jenkins infrastructure vpn.
 
