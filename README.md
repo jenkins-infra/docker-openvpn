@@ -35,7 +35,7 @@ group nobody
 **With network manager client, you must enable the option :
 `Use this connection only for resources on its network`**
 
-Windows only
+### Windows only
 If you want to use multiple VPN connections at the same time with OpenVPN, you have to install a new TAP adapter. This can be very easily by running *as Admin* the `C:\Program Files\TAP-Windows\bin\addtap.bat`. The TAP-Windows tool is installed in parallel of OpenVPN.
 
 ## CERTIFICATES
