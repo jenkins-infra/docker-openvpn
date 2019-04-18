@@ -35,6 +35,9 @@ group nobody
 **With network manager client, you must enable the option :
 `Use this connection only for resources on its network`**
 
+### Windows only
+If you want to use multiple VPN connections at the same time with OpenVPN, you have to install a new TAP adapter. This can be very easily by running *as Admin* the `C:\Program Files\TAP-Windows\bin\addtap.bat`. The TAP-Windows tool is installed in parallel of OpenVPN.
+
 ## CERTIFICATES
 This projects holds vpn keys for connecting on Jenkins infrastructure vpn.
 
@@ -55,6 +58,7 @@ Feel free to follow next action points:
 * Generate your private key and certificate request: `./easyvpn request <your username>`
   Your private key will be generate in `cert/pki/private`, this key **must** remain **secret**.
 * Create a new Pull Request on jenkinsinfra/openvpn, staging branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
+* Open a INFRA ticket on [JIRA](https://issues.jenkins-ci.org) referencing your PR
 * Grab a cup of coffee and wait patiently for an administrator to sign your certificate request.
 * Once an admin notify you that everything is right, your can then retrieve your certificate from `./cert/pki/issued/<your_username>.crt`
 
