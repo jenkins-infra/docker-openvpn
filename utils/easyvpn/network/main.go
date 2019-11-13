@@ -224,11 +224,13 @@ func (n *Network) getFreeIP(ccd string) (string, error) {
 	iprange, err := n.iprange()
 	ipUsed, err := getAllUsedIP(ccd)
 
-	for i := 0; i < len(iprange); i++ {
-		for j := 0; j < len(ipUsed); j++ {
+	for j := 0; j < len(ipUsed); j++ {
+		// Restart from 0 as ipUsed is not sorted
+		for i := 0; i < len(iprange); i++ {
 			if network.Contains(net.ParseIP(ipUsed[j])) && (iprange[i] == ipUsed[j]) {
 				fmt.Printf("Found used ip: %v\n", ipUsed[j])
 				iprange = append(iprange[:i], iprange[i+1:]...)
+				break
 			}
 		}
 
