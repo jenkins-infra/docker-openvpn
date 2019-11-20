@@ -73,6 +73,18 @@ Feel free to follow the next action points:
 * Enter in the VPN network directory: `cd cert`
 * Run `make show-certs name=<username>`
 
+#### Howto validate your vpn access
+
+You can test if your private key matches your certificate and certificate request by running following commands:
+
+```
+openssl pkey -in <your_private_key> -pubout -outform pem | sha256sum
+==
+openssl x509 -in <your_certificate> -pubkey -noout -outform pem | sha256sum
+==
+openssl req -in <your_certificate_request> -pubkey -noout -outform pem | sha256sum
+```
+
 ### Administrator
 #### HowTo become an administrator
 To add/revoke certificates, you must be allowed to decrypt `cert/pki/private/ca.key.enc`.
