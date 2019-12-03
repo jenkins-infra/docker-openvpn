@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./cmd"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/cmd"
 )
 
 func main() {

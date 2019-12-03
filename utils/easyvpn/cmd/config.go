@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"../git"
-	"../network"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/git"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/network"
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"

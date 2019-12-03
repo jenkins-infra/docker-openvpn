@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"../checks"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/checks"
 	"github.com/spf13/cobra"
 	"os"
 )
