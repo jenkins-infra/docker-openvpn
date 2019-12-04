@@ -2,7 +2,7 @@ package helpers
 
 import (
 	"fmt"
-	"go.mozilla.org/sops/decrypt"
+	"go.mozilla.org/sops/v3/decrypt"
 	"log"
 	"os"
 )
