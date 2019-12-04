@@ -1,10 +1,10 @@
 package cmd
 
 import (
-	"../easyrsa"
-	"../git"
-	"../helpers"
-	"../network"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/easyrsa"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/git"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/helpers"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/network"
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"

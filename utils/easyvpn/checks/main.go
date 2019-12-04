@@ -1,8 +1,8 @@
 package checks
 
 import (
-	"../easyrsa"
-	"../helpers"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/easyrsa"
+	"github.com/jenkins-infra/openvpn/utils/easyvpn/helpers"
 	"errors"
 	"fmt"
 	"path"
