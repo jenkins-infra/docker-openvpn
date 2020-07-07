@@ -71,7 +71,7 @@ Feel free to follow the next action points:
 #### HowTo show certificate information
 
 * Enter in the VPN network directory: `cd cert`
-* Run `make show-certs name=<username>`
+* Run `make show-cert name=<username>`
 
 #### Howto validate your vpn access
 
