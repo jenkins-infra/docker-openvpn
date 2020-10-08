@@ -36,6 +36,14 @@ group nobody
 
 `Use this connection only for resources on its network`
 
+#### DNS Problems
+
+If you are having issues connecting to resources behind the VPN, but the VPN appears to be working correctly, check your DNS settings.  Some providers seem to filter out requests to the zone.  To test, try `dig release.ci.jenkins.io`.
+
+To enable a different DNS provider only when connected to the VPN you can add the following to you OpenVPN config file
+
+```dhcp-option DNS 8.8.8.8```
+
 ### Windows only
 If you want to use multiple VPN connections at the same time with OpenVPN, you have to install a new TAP adapter. This can be very easily by running *as Admin* the `C:\Program Files\TAP-Windows\bin\addtap.bat`. The TAP-Windows tool is installed in parallel with OpenVPN.
 
