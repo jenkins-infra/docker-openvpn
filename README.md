@@ -112,6 +112,17 @@ To validate and sign a client certificate, you are going to execute the followin
 * Revoke certificate: `./easyvpn revoke <CN_to_sign>`
 * Update Docker image tag in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp) configuration.
 
+#### HowTo review certificate revocation list
+
+If the certificate revocation list expired, then the openvpn logs will contains errors like 'VERIFY ERROR: depth=0, error=CRL has expired:...'
+We can run `openssl crl -in cert/pki/crl.pem -noout -text` to validate that the crl expired and that we need to generate a new one.
+
+To generate a new one:
+* Decrypt ca.key `sops -d cert/pki/private/ca.key.enc > cert/pki/private/ca.key`
+* Generate a new crl.pem - `cd cert ; ./easyrsa gen-crl`
+* Publish the new crl.pem - `git add cert/pki/crl.pem && git commit cert/pki/crl.pem -s -m 'Renew revocation list certificate'`
+* Delete local ca.key - `rm cert/pki/private/ca.key`
+
 ## DOCKER
 ### CONFIGURATION
 This image can be configured at runtime with different environment variables.
