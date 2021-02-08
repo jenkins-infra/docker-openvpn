@@ -6,7 +6,6 @@ utils/easyvpn/easyvpn
 utils/easyvpn/easyvpn.exe
 /easyvpn
 /easyvpn.exe
-!cert/mock/private/alice.key
-!cert/mock/private/ca.key
-!cert/mock/private/kohsuke.key
-!cert/mock/private/ldap.key
+!docker/mock/**
+*.swp
+.DS_Store
