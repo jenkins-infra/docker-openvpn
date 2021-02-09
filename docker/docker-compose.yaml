@@ -1,11 +1,10 @@
-version: '3'
+version: '2'
 volumes:
     ldap_data:
 services:
   vpn:
     build: ..
-    depends_on:
-        - ldap
+    # image: jenkinsciinfra/openvpn@sha256:da7df2af12676863b3aa4b52e48650a8ba11692a0cbf582f86c7425945160496
     cap_add:
         - NET_ADMIN
     depends_on:
@@ -16,26 +15,26 @@ services:
         - "AUTH_LDAP_BINDDN=cn=admin,dc=jenkins-ci,dc=org"
         - "AUTH_LDAP_GROUPS_MEMBER=cn=all"
     volumes:
-        - ./mock/vpn/ccd:/etc/openvpn/server/ccd
-        - ./mock/vpn/ca.crt:/etc/openvpn/server/ca.crt
-        - ./mock/vpn/ldapca.crt:/etc/ldap/ssl/cacert.crt
-        - ./mock/vpn/ca.crt:/etc/ldap/ssl/cacert.crt
-        - ./mock/vpn/vpn.key:/etc/openvpn/server/server.key
-        - ./mock/vpn/vpn.crt:/etc/openvpn/server/server.crt
-        - ./mock/vpn/dh.pem:/etc/openvpn/server/dh.pem
-        - ./mock/vpn/ca.crt:/etc/ssl/certs/ca-certificates.crt
+        - ./mock/vpn/ccd:/etc/openvpn/server/ccd:ro
+        - ./mock/vpn/ca.crt:/etc/openvpn/server/ca.crt:ro
+        - ./mock/ldap/ca.crt:/usr/local/share/ca-certificates/ldapca.crt:ro
+        - ./mock/vpn/vpn.crt:/etc/openvpn/server/server.crt:ro
+        - ./mock/vpn/dh.pem:/etc/openvpn/server/dh.pem:ro
+        - ./mock/vpn/vpn.key:/etc/openvpn/server/server.key:ro
+        - ./mock/vpn/ca.crt:/usr/local/share/ca-certificates/ca.crt:ro
+        - ./mock/clients:/root/openvpn-client:ro
     ports:
         - 443:443
 
   # Don't forget to run /entrypoint/restore, once database is started
   ldap:
-    image: jenkinsciinfra/ldap:12-builde29683
+    image: jenkinsciinfra/ldap@sha256:bee8e769077e82984ada23d25b06c7f42130a4b9f9fa92ead20916e01c1af8de
     environment:
         - "OPENLDAP_DEBUG_LEVEL=1"
     volumes:
         - ldap_data:/var/lib/ldap
-        - ./mock/ldap/ca.crt:/etc/ssl/certs/ca-certificates.crt
-        - ./mock/ldap/ca.crt:/etc/ldap/ssl/cacert.pem
-        - ./mock/ldap/ldap.crt:/etc/ldap/ssl/cert.pem
-        - ./mock/ldap/ldap.key:/etc/ldap/ssl/privkey.key
-        - ./mock/mock.ldif:/var/backups/backup.latest.ldif
+        - ./mock/ldap/ca.crt:/usr/local/share/ca-certificates/ca.crt:ro
+        - ./mock/ldap/ca.crt:/etc/ldap/ssl-ca/ca.crt:ro # Override the Let's Encrypt CA embeded in the image
+        - ./mock/ldap/ldap.crt:/etc/ldap/ssl/cert.pem:ro
+        - ./mock/ldap/ldap.key:/etc/ldap/ssl/privkey.key:ro
+        - ./mock/mock.ldif:/var/backups/backup.latest.ldif:ro
