@@ -8,6 +8,9 @@ publish.docker:
 
 start:
 	$(MAKE) -C docker up
+	# Sleeping is good for your health buddy!
+	sleep 5
+	$(MAKE) -C docker client-connect
 
 init_windows:
 	$(MAKE) -C utils/easyvpn init_windows

@@ -109,6 +109,7 @@ To validate and sign a client certificate, you are going to execute the followin
  * `make init_windows` then copy utils/easyvpn/easyvpn.exe at the root of this repository
 * Git checkout on the right branch "staging"
 * Sign certificate request: `./easyvpn sign <CN_to_sign>`
+* Merge staging into master
 * Update Docker image tag in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp) configuration.
 
 #### HowTo revoke client access?

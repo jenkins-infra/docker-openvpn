@@ -12,10 +12,9 @@ function configure_tun {
 }
 
 function configure_certificates {
-  if [ ! -f '/etc/ldap/ssl/cacert.crt' ]; then
-    : "${OPENVPN_LDAP_CA_PEM:? Missing OPENVPN_LDAP_CA_PEM}"
-    echo "$OPENVPN_LDAP_CA_PEM" > /etc/ldap/ssl/cacert.crt
-  fi
+  # If custom CA are provided in /usr/local/share/ca-certificates/*.crt,
+  # then this command ensures that these CAs are added to the default CA bundle
+  update-ca-certificates
 
   if [ ! -f '/etc/openvpn/server/ca.crt' ]; then
     : "${OPENVPN_CA_PEM:? Missing OPENVPN_CA_PEM}"
