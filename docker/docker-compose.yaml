@@ -3,8 +3,8 @@ volumes:
     ldap_data:
 services:
   vpn:
-    #build: ..
-    image: jenkinsciinfra/openvpn@sha256:da7df2af12676863b3aa4b52e48650a8ba11692a0cbf582f86c7425945160496
+    build: ..
+    # image: jenkinsciinfra/openvpn@sha256:da7df2af12676863b3aa4b52e48650a8ba11692a0cbf582f86c7425945160496
     cap_add:
         - NET_ADMIN
     depends_on:
@@ -17,7 +17,7 @@ services:
     volumes:
         - ./mock/vpn/ccd:/etc/openvpn/server/ccd:ro
         - ./mock/vpn/ca.crt:/etc/openvpn/server/ca.crt:ro
-        - ./mock/ldap/ca.crt:/etc/ldap/ssl/cacert.crt:ro
+        - ./mock/ldap/ca.crt:/usr/local/share/ca-certificates/ldapca.crt:ro
         - ./mock/vpn/vpn.crt:/etc/openvpn/server/server.crt:ro
         - ./mock/vpn/dh.pem:/etc/openvpn/server/dh.pem:ro
         - ./mock/vpn/vpn.key:/etc/openvpn/server/server.key:ro
