@@ -30,7 +30,7 @@ services:
   # Don't forget to run /entrypoint/restore, once database is started
   ldap:
     image: jenkinsciinfra/ldap:12-builde29683
-    environment: 
+    environment:
         - "OPENLDAP_DEBUG_LEVEL=1"
     volumes:
         - ldap_data:/var/lib/ldap
