@@ -59,7 +59,7 @@ If you think that you should have access to this network, feel free to read [How
 
 #### HowTo get client access
 
-To access the Jenkins infrastructure private network, you need a certificate containing your Jenkins username as CN.
+To access the Jenkins infrastructure private network, you need a certificate containing your [Jenkins username](https://accounts.jenkins.io/) as CN ([commonName](https://docs.oracle.com/javase/7/docs/technotes/tools/solaris/keytool.html#DName)).
 Then this certificate must be signed by an administrator who also assigns you a static IP configuration.
 
 Feel free to follow the next action points:
