@@ -111,13 +111,6 @@ group nobody
 * Enter in the VPN network directory: `cd cert`
 * Run `make show-req name=<your-jenkins-username>`
 
-#### HowTo show certificate information
-
-* Install [sops](https://github.com/mozilla/sops)
-* Enter in the VPN network directory: `cd ~/.cert`
-* Run `make decrypt`
-* Run `make show-cert name=<your-jenkins-username>`
-
 #### Howto validate your certificate
 
 You can test if your private key matches your certificate and certificate request by running following commands:
@@ -138,6 +131,14 @@ To add/revoke certificates, you must be allowed to decrypt `cert/pki/private/ca.
 This file is encrypted with [sops](https://github.com/mozilla/sops) and your public gpg key must be added to .sops.yaml by an existing administrator.
 
 This repository relies on [easy-rsa](https://github.com/OpenVPN/easy-rsa/blob/master/README.quickstart.md).
+
+
+#### HowTo show certificate information
+
+* Install [sops](https://github.com/mozilla/sops)
+* Enter in the VPN network directory: `cd ~/.cert`
+* Run `make decrypt`
+* Run `make show-cert name=<your-jenkins-username>`
 
 #### HowTo approve client access?
 
