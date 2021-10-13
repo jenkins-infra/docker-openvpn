@@ -103,7 +103,7 @@ openssl req -in <your_certificate_request> -pubkey -noout -outform pem | sha256s
 #### HowTo become an administrator
 
 To add/revoke certificates, you must be allowed to decrypt `cert/pki/private/ca.key.enc`.
-This file is encrypted with [sops](https://github.com/mozilla/sops) and you are public gpg key must be added to .sops.yaml by an existing administrator to be allowed to run `make decrypt`.
+This file is encrypted with [sops](https://github.com/mozilla/sops) and your public gpg key must be added to .sops.yaml by an existing administrator.
 
 This repository relies on [easy-rsa](https://github.com/OpenVPN/easy-rsa/blob/master/README.quickstart.md).
 
@@ -115,7 +115,8 @@ To validate and sign a client certificate, you are going to execute the followin
   * `make init_osx`
   * `make init_linux`
   * `make init_windows` then copy utils/easyvpn/easyvpn.exe at the root of this repository
-* Git checkout on the right branch "staging"
+* Merge the Pull Request of the requester to staging.
+* Git checkout on the right branch "staging" to retrieve the CRL from the requester
 * Sign certificate request: `./easyvpn sign <CN_to_sign>`
 * Merge staging into master
 * Update Docker image tag in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp) configuration.
