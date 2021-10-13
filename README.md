@@ -15,31 +15,36 @@ Certificate authentication requires the following files:
 * **username.key** cfr [HowTo Get client access](#howto-get-client-access) !! Your private key **must** remain **secret**,
 * **username.crt** is located in [cert/pki/issued](https://github.com/jenkins-infra/openvpn/tree/master/cert/pki/issued), once an administrator signs  your request and publish it.
 
-```text
-client
-remote vpn.jenkins.io 443
-ca "~/.cert/jenkins/ca.crt"
-cert "~/.cert/jenkins/username.crt"
-key "~/.cert/jenkins/username.key"
-auth-user-pass
-dev tun
-proto tcp
-nobind
-auth-nocache
-script-security 2
-persist-key
-persist-tun
-user nobody
-group nobody
-```
-
-**With network manager client, you must enable the option :**
+**With NetworkManager client, you must enable the option :**
 
 `Use this connection only for resources on its network`
 
 ### DNS Problems
 
-If you are having issues connecting to resources behind the VPN, but the VPN appears to be working correctly, check your DNS settings.  Some providers seem to filter out requests to the zone.  To test, try `dig release.ci.jenkins.io`.
+If you are having issues connecting to resources behind the VPN, but the VPN appears to be working correctly, check your DNS settings.  Some providers seem to filter out requests to the zone.  To test, try `dig release.ci.jenkins.io`, you should get something like this:
+<details><summary>dig output</summary>
+```
+; <<>> DiG 9.10.6 <<>> release.ci.jenkins.io
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 13457
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1220
+;; QUESTION SECTION:
+;release.ci.jenkins.io.         IN      A
+
+;; ANSWER SECTION:
+release.ci.jenkins.io.  3600    IN      CNAME   private.aks.jenkins.io.
+private.aks.jenkins.io. 3600    IN      A       10.0.2.5
+
+;; Query time: 80 msec
+;; SERVER: 192.168.1.254#53(192.168.1.254)
+;; WHEN: Tue Oct 12 20:49:59 CEST 2021
+;; MSG SIZE  rcvd: 92
+```
+</details>
 
 To enable a different DNS provider only when connected to the VPN you can add the following to you OpenVPN config file
 
@@ -64,38 +69,62 @@ Then this certificate must be signed by an administrator who also assigns you a 
 
 Feel free to follow the next action points:
 
-* Fork this repository on your own Github account: [fork a repo](https://help.github.com/articles/fork-a-repo/)
-* Build EASYVPN binary by running one of the following commands depending on your
+* [Fork](https://help.github.com/articles/fork-a-repo/) this repository on your own Github account: [fork the repo](https://github.com/jenkins-infra/openvpn/fork)
+* Clone your fork locally: `git clone https://github.com/<your-github-username>/openvpn && cd openvpn`
+* Build EASYVPN binary by running one of the following commands depending on your OS:
   * `make init_osx`
   * `make init_linux`
   * `make init_windows` then copy utils/easyvpn/easyvpn.exe at the root of this repository
-* Generate your private key and certificate request: `./easyvpn request <your username>`
-  Your private key will be generated in `cert/pki/private`, this key **must** remain **secret**.
-* Create a new Pull Request on jenkinsinfra/openvpn, staging branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
+* Generate your private key and certificate request: `./easyvpn request <your-jenkins-username>`
+  Your private key will be generated in `./cert/pki/private`, this key **must** remain **secret**.
+* Create a new Pull Request on [jenkinsinfra/openvpn](https://github.com/jenkins-infra/openvpn), `staging` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
 * Open an INFRA ticket on [JIRA](https://issues.jenkins-ci.org) referencing your PR
-* Grab a cup of coffee and wait patiently for an administrator to sign your certificate request.
-* Once an admin notify you that everything is right, you can then retrieve your certificate from `./cert/pki/issued/<your_username>.crt`
+* Grab a cup of coffee and wait patiently for an administrator to sign your certificate request
+* Once an admin notify you that everything is right, you can [sync your fork](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) then pull it to retrieve your certificate from `./cert/pki/issued/<your-jenkins-username>.crt`
+* We recommend you to move the `./cert` folder to an hidden folder in your home (`~/.cert`)
+* You can finally create the config file used by your VPN client (example here for Tunnelblick, an OSX VPN client, opening this file from the Finder should launch it)  
+
+_jenkins-infra.ovpn_
+```text
+client
+remote vpn.jenkins.io 443
+ca "~/.cert/pki/ca.crt"
+cert "~/.cert/pki/issued/<your-jenkins-username>.crt"
+key "~/.cert/pki/private/<your-jenkins-username>.key"
+auth-user-pass
+dev tun
+proto tcp
+nobind
+auth-nocache
+script-security 2
+persist-key
+persist-tun
+user nobody
+group nobody
+```
 
 #### HowTo show request information
 
 * Enter in the VPN network directory: `cd cert`
-* Run `make show-req name=<username>`
+* Run `make show-req name=<your-jenkins-username>`
 
 #### HowTo show certificate information
 
-* Enter in the VPN network directory: `cd cert`
-* Run `make show-cert name=<username>`
+* Install [sops](https://github.com/mozilla/sops)
+* Enter in the VPN network directory: `cd ~/.cert`
+* Run `make decrypt`
+* Run `make show-cert name=<your-jenkins-username>`
 
-#### Howto validate your vpn access
+#### Howto validate your certificate
 
 You can test if your private key matches your certificate and certificate request by running following commands:
 
 ```bash
-openssl pkey -in <your_private_key> -pubout -outform pem | sha256sum
-# ==
-openssl x509 -in <your_certificate> -pubkey -noout -outform pem | sha256sum
-# ==
-openssl req -in <your_certificate_request> -pubkey -noout -outform pem | sha256sum
+openssl pkey -in ~/.cert/pki/private/<your-jenkins-username>.key -pubout -outform pem | sha256sum
+# Should be equal to
+openssl x509 -in ~/.cert/pki/issued/<your-jenkins-username>.crt -pubkey -noout -outform pem | sha256sum
+# And also equal to
+openssl req -in ~/.cert/pki/reqs/<your-jenkins-username>.req -pubkey -noout -outform pem | sha256sum
 ```
 
 ### Administrator
