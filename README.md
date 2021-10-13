@@ -74,7 +74,7 @@ Feel free to follow the next action points:
 
 * [Fork](https://help.github.com/articles/fork-a-repo/) this repository on your own Github account: [fork the repo](https://github.com/jenkins-infra/openvpn/fork)
 * Clone your fork locally: `git clone https://github.com/<your-github-username>/openvpn && cd openvpn`
-* Build EASYVPN binary by running one of the following commands depending on your OS:
+* Build EASYVPN binary by running one of the following commands depending on your operating system:
   * `make init_osx`
   * `make init_linux`
   * `make init_windows` then copy utils/easyvpn/easyvpn.exe at the root of this repository
