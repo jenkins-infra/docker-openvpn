@@ -46,6 +46,7 @@ private.aks.jenkins.io. 3600    IN      A       10.0.2.5
 ;; WHEN: Tue Oct 12 20:49:59 CEST 2021
 ;; MSG SIZE  rcvd: 92
 ```
+
 </details>
 
 To enable a different DNS provider only when connected to the VPN you can add the following to you OpenVPN config file
