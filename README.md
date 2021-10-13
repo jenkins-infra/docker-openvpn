@@ -22,8 +22,10 @@ Certificate authentication requires the following files:
 ### DNS Problems
 
 If you are having issues connecting to resources behind the VPN, but the VPN appears to be working correctly, check your DNS settings.  Some providers seem to filter out requests to the zone.  To test, try `dig release.ci.jenkins.io`, you should get something like this:
-<details><summary>dig output</summary>
-```
+
+<details><summary>dig output (click to expand)</summary>
+
+```text
 ; <<>> DiG 9.10.6 <<>> release.ci.jenkins.io
 ;; global options: +cmd
 ;; Got answer:
