@@ -15,7 +15,9 @@ To connect to this VPN, your VPN client must be configured with your [Jenkins ac
 
 * The CertificateAuthority **[`ca.crt`](https://github.com/jenkins-infra/openvpn/blob/master/cert/pki/ca.crt)**
 * Your private key **`<your-jenkins-username>.key`**
+
   > ### your private key **must** remain **secret**!
+
 * Your certificate **`<your-jenkins-username>.crt`**
 
 See [HowTo Get client access](#howto-get-client-access) below.
