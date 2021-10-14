@@ -180,7 +180,7 @@ To validate and sign a client certificate, you are going to execute the followin
 
 #### HowTo review certificate revocation list
 
-If the CLR expired, then the OpenVPN logs will contains errors like 'VERIFY ERROR: depth=0, error=CRL has expired:...'
+If the [CRL (Certificate Revocation list)](https://en.wikipedia.org/wiki/Certificate_revocation_list) expired, then the OpenVPN logs will contain errors like 'VERIFY ERROR: depth=0, error=CRL has expired:...'
 We can run `openssl crl -in ./cert/pki/crl.pem -noout -text` to validate that the CRL expired and that we need to generate a new one.
 
 To generate a new CRL:
