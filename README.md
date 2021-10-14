@@ -136,8 +136,6 @@ private.aks.jenkins.io. 3600    IN      A       10.0.2.5
 To enable a different DNS provider only when connected to the VPN you can add the following to you OpenVPN config file:
 
 ```dhcp-option DNS 8.8.8.8```
-
-
 ## Administrator
 
 ### HowTo become an administrator
