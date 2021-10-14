@@ -45,7 +45,7 @@ Feel free to follow the next action points:
 * Create a new Pull Request on [jenkinsinfra/openvpn](https://github.com/jenkins-infra/openvpn), `staging` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
 * Open an INFRA ticket on [JIRA](https://issues.jenkins-ci.org) referencing your PR
 * Grab a cup of coffee and wait patiently for an administrator to sign your certificate request
-* Once an admin notify you that everything is right, you can [sync your fork](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) then pull it to retrieve your certificate from `./cert/pki/issued/<your-jenkins-username>.crt`
+* Once an admin notifies you that everything is setup, you can [sync your fork](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) then pull it to retrieve your certificate from `./cert/pki/issued/<your-jenkins-username>.crt`
 * We recommend you to move the generated files and the ca.cert to an hidden folder in your home (`~/.cert`):
 
   ```bash
