@@ -206,6 +206,7 @@ Some examples can be found inside [docker-compose.yaml](docker/docker-compose.ya
 ### Testing
 
 To test this image, you need a "mock" ldap and SSL certificates, then go in the root folder and run `make start` to start the ldap and vpn service.
+
 > #### Certificates must be readable by UID 101!
 
 
