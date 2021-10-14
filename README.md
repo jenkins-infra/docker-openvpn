@@ -60,6 +60,7 @@ Feel free to follow the next action points:
 Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, opening this file from the Finder should launch it:  
 
   _jenkins-infra.ovpn_
+
   ```text
   client
   remote vpn.jenkins.io 443
