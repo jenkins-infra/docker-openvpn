@@ -38,8 +38,10 @@ Feel free to follow the next action points:
   * `make init_linux`
   * `make init_windows` then copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
 * Generate your private key and certificate request: `./easyvpn request <your-jenkins-username>`  
-  Your private key will be generated in `./cert/pki/private`  
+  Your private key will be generated in `./cert/pki/private`
+
   > ### This key **must** remain **secret**!
+
 * Create a new Pull Request on [jenkinsinfra/openvpn](https://github.com/jenkins-infra/openvpn), `staging` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
 * Open an INFRA ticket on [JIRA](https://issues.jenkins-ci.org) referencing your PR
 * Grab a cup of coffee and wait patiently for an administrator to sign your certificate request
