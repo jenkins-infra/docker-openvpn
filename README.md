@@ -85,7 +85,6 @@ Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, ope
 
 If you want to use multiple VPN connections at the same time with OpenVPN, you have to install a new TAP adapter. This can be very easily by running *as Admin* the `C:\Program Files\TAP-Windows\bin\addtap.bat`. The [TAP-Windows](https://community.openvpn.net/openvpn/wiki/ManagingWindowsTAPDrivers) tool is installed in parallel with OpenVPN.
 
-
 ### HowTo show request information
 
 * Enter in the VPN network directory: `cd ~/.cert`
@@ -136,6 +135,7 @@ private.aks.jenkins.io. 3600    IN      A       10.0.2.5
 To enable a different DNS provider only when connected to the VPN you can add the following to you OpenVPN config file:
 
 ```dhcp-option DNS 8.8.8.8```
+
 ## Administrator
 
 ### HowTo become an administrator
@@ -144,7 +144,6 @@ To add/revoke certificates, you must be allowed to decrypt `./cert/pki/private/c
 This file is encrypted with [sops](https://github.com/mozilla/sops) and your public gpg key must be added to `./.sops.yaml` by an existing administrator.
 
 This repository relies on [easy-rsa](https://github.com/OpenVPN/easy-rsa/blob/master/README.quickstart.md).
-
 
 ### HowTo show certificate information
 
@@ -206,7 +205,6 @@ Some examples can be found inside [docker-compose.yaml](docker/docker-compose.ya
 To test this image, you need a "mock" ldap and SSL certificates, then go in the root folder and run `make start` to start the ldap and vpn service.
 
 > #### Certificates must be readable by UID 101!
-
 
 ## Infrastructure
 
