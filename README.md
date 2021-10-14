@@ -47,12 +47,14 @@ Feel free to follow the next action points:
 * Grab a cup of coffee and wait patiently for an administrator to sign your certificate request
 * Once an admin notify you that everything is right, you can [sync your fork](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) then pull it to retrieve your certificate from `./cert/pki/issued/<your-jenkins-username>.crt`
 * We recommend you to move the generated files and the ca.cert to an hidden folder in your home (`~/.cert`):
+
   ```bash
   mkdir -p ~/.cert/jenkins-infra
   mv ./cert/pki/issued/<your-jenkins-username>.crt ~/.cert/jenkins-infra/<your-jenkins-username>.crt
   mv ./cert/pki/private/<your-jenkins-username>.key ~/.cert/jenkins-infra/<your-jenkins-username>.key
   cp ./cert/pki/ca.crt ~/.cert/jenkins-infra/ca.crt
   ```
+
 * You can finally create the config file used by your VPN client.
 
 Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, opening this file from the Finder should launch it:  
