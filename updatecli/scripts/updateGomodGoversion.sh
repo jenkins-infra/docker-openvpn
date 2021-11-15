@@ -13,8 +13,17 @@ go_version="${2}"
 new_version="$(echo "${go_version}" | cut -d. -f1,2)"
 tmp_dir="$(mktemp -d)"
 
-## Ensures that the correct golang version is used
+## Ensures that there is a golang version installed
 {
+  if ! command -v go
+  then
+    curl --silent --show-error --location --output "${tmp_dir}/go.tgz" \
+      "https://golang.org/dl/go${go_version}.$(uname -s | tr '[:upper:]' '[:lower:]')-amd64.tar.gz"
+    mkdir -p "${tmp_dir}/.bin"
+    tar xzf "${tmp_dir}/go.tgz" -C "${tmp_dir}/.bin"
+    export PATH="${PATH}":"${tmp_dir}"/.bin/go/bin
+  fi
+
   command -v go
   go version
 } >&2
