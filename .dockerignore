@@ -1,3 +1,4 @@
 certs*
 docker/mock
 ca.pem
+hadolint.json

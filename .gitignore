@@ -9,3 +9,4 @@ utils/easyvpn/easyvpn.exe
 !docker/mock/**
 *.swp
 .DS_Store
+hadolint.json
