@@ -1,0 +1,34 @@
+---
+name: Execute updatecli process
+
+on:
+  # Allow to be run manually
+  workflow_dispatch:
+  schedule:
+    # Run once per week (to avoid alert fatigue)
+    - cron: '0 2 * * 1' # Every monday at 2am UTC
+  push:
+  pull_request:
+jobs:
+  updatecli:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Diff
+        continue-on-error: true
+        uses: updatecli/updatecli-action@v1
+        with:
+          command: diff
+          flags: "--config ./updatecli/updatecli.d --values ./updatecli/values.github-action.yaml"
+        env:
+          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Apply
+        uses: updatecli/updatecli-action@v1
+        if: github.ref == 'refs/heads/main'
+        with:
+          command: apply
+          flags: "--config ./updatecli/updatecli.d --values ./updatecli/values.github-action.yaml"
+        env:
+          UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
