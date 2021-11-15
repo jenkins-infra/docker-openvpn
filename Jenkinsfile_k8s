@@ -17,11 +17,15 @@ parallel(
     ) {
       node(POD_LABEL) {
         container('golang') {
-          sh '''
-          make build_osx
-          make build_linux
-          make build_windows
-          '''
+          checkout scm
+          dir('utils/easyvpn') {
+            sh '''
+            apk add --no-cache make
+            make build_osx
+            make build_linux
+            make build_windows
+            '''
+          }
         }
       }
     }

@@ -10,3 +10,4 @@ utils/easyvpn/easyvpn.exe
 *.swp
 .DS_Store
 hadolint.json
+*.tar
