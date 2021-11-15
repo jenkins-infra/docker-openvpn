@@ -18,6 +18,7 @@ parallel(
       node(POD_LABEL) {
         container('golang') {
           sh '''
+          apk add --no-cache make
           make build_osx
           make build_linux
           make build_windows
