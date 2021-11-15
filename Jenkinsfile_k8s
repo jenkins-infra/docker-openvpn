@@ -31,14 +31,11 @@ parallel(
     }
   },
   'docker-image': {
-    // Do not rebuild the image when triggered by a periodic job
-    if (!currentBuild.getBuildCauses().contains("hudson.triggers.TimerTrigger")){
-      buildDockerAndPublishImage('openvpn', [
-        mainBranch: 'main',
-        automaticSemanticVersioning: true,
-        gitCredentials: 'github-app-infra'
-      ])
-    }
+    buildDockerAndPublishImage('openvpn', [
+      mainBranch: 'main',
+      automaticSemanticVersioning: true,
+      gitCredentials: 'github-app-infra'
+    ])
   },
   'updatecli': {
     withCredentials([string(credentialsId: 'updatecli-github-token', variable: 'UPDATECLI_GITHUB_TOKEN')]) {
