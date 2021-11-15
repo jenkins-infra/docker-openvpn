@@ -13,7 +13,7 @@ If you think that you should have access to this network, feel free to read [How
 
 To connect to this VPN, your VPN client must be configured with your [Jenkins account](https://accounts.jenkins.io/) and certificate authentication, requiring the following files:
 
-* The CertificateAuthority **[`ca.crt`](https://github.com/jenkins-infra/openvpn/blob/master/cert/pki/ca.crt)**
+* The CertificateAuthority **[`ca.crt`](https://github.com/jenkins-infra/openvpn/blob/main/cert/pki/ca.crt)**
 * Your private key **`<your-jenkins-username>.key`**
 
   > ### your private key **must** remain **secret**!
@@ -26,7 +26,7 @@ See [HowTo Get client access](#howto-get-client-access) below.
 
 ### HowTo get client access
 
-To access the Jenkins infrastructure private network, you need a certificate containing your [Jenkins username](https://accounts.jenkins.io/) as CN ([commonName](https://docs.oracle.com/javase/7/docs/technotes/tools/solaris/keytool.html#DName)).  
+To access the Jenkins infrastructure private network, you need a certificate containing your [Jenkins username](https://accounts.jenkins.io/) as CN ([commonName](https://docs.oracle.com/javase/7/docs/technotes/tools/solaris/keytool.html#DName)).
 Then this certificate must be signed by an administrator who also assigns you a static IP configuration.
 
 Feel free to follow the next action points:
@@ -37,12 +37,12 @@ Feel free to follow the next action points:
   * `make init_osx`
   * `make init_linux`
   * `make init_windows` then copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
-* Generate your private key and certificate request: `./easyvpn request <your-jenkins-username>`  
+* Generate your private key and certificate request: `./easyvpn request <your-jenkins-username>`
   Your private key will be generated in `./cert/pki/private`
 
   > ### This key **must** remain **secret**!
 
-* Create a new Pull Request on [jenkinsinfra/openvpn](https://github.com/jenkins-infra/openvpn), `staging` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
+* Create a new Pull Request on [jenkinsinfra/openvpn](https://github.com/jenkins-infra/openvpn), `main` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
 * Open an INFRA ticket on [JIRA](https://issues.jenkins-ci.org) referencing your PR
 * Grab a cup of coffee and wait patiently for an administrator to sign your certificate request
 * Once an admin notifies you that everything is setup, you can [sync your fork](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) then pull it to retrieve your certificate from `./cert/pki/issued/<your-jenkins-username>.crt`
@@ -57,7 +57,7 @@ Feel free to follow the next action points:
 
 * You can finally create the config file used by your VPN client.
 
-Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, opening this file from the Finder should launch it:  
+Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, opening this file from the Finder should launch it:
 
   _jenkins-infra.ovpn_
 
@@ -160,11 +160,18 @@ To validate and sign a client certificate, you are going to execute the followin
   * `make init_osx`
   * `make init_linux`
   * `make init_windows` then copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
-* Merge the Pull Request of the requester to the `staging` branch.
-* Git checkout on the right branch `staging` to retrieve the [CRL](https://en.wikipedia.org/wiki/Certificate_revocation_list) from the requester
+* Using [the official GitHub command line `gh`](https://github.com/cli/cli), checkout the Pull Request of by the requester
+  to retrieve their [CRL](https://en.wikipedia.org/wiki/Certificate_revocation_list) your local machine:
+
+```shell
+gh pr checkout <Pull Request ID>
+```
+
 * Sign the certificate request: `./easyvpn sign <CN_to_sign>`
-* Merge `staging` into `master`
-* Update the Docker image tag in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp) configuration.
+* Commit and push on the current PR with `git add . && git commit -s -m "Sign CRL of <requester name>" && git push`
+* Approve and merge the Pull Request to the `main` branch with the signed CRL
+* Once merged, a new tag should be created automatically with automatic publishing of the image
+* The Docker image tag should be automatically updated in the next 24h in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp) configuration.
 
 ### HowTo revoke client access?
 
@@ -173,7 +180,7 @@ To validate and sign a client certificate, you are going to execute the followin
   * `make init_linux`
   * `make init_windows` and copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
 * Revoke the certificate: `./easyvpn revoke <CN_to_sign>`
-* Update the Docker image tag in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp) configuration.
+* The Docker image tag should be automatically updated in the next 24h in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp) configuration.
 
 #### HowTo review certificate revocation list
 
@@ -211,7 +218,7 @@ To test this image, you need a "mock" ldap and SSL certificates, then go in the 
 This project is designed to work with the following requirements:
 
 * Machine provisioned by [Terraform](https://github.com/jenkins-infra/azure)
-* Service configured and orchestrated by [Puppet](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp)
+* Service configured and orchestrated by [Puppet](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp)
 
 ## Contributing
 
@@ -230,7 +237,7 @@ Please report any issue on the Jenkins infrastructure [project](https://issues.j
 
 * [How to contribute to OSS?](https://opensource.guide/how-to-contribute/)
 * [jenkins-infra/azure](https://github.com/jenkins-infra/azure)
-* [jenkins-infra/jenkins-infra](https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp)
+* [jenkins-infra/jenkins-infra](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp)
 * [jenkins-infra/openvpn](https://github.com/jenkins-infra/openvpn)
 * [mozilla/sops](https://github.com/mozilla/sops)
 * [openvpn/easy-rsa](https://github.com/OpenVPN/easy-rsa)

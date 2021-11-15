@@ -1,2 +1,4 @@
-# See https://github.com/jenkinsci/.github/blob/master/.github/release-drafter.adoc
-_extends: jenkins-infra/.github
+_extends: .github
+
+name-template: 'next'
+tag-template: 'next'

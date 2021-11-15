@@ -1,0 +1,47 @@
+parallel(
+  failFast: true,
+  'Build Easyvpn': {
+    podTemplate(
+      containers: [
+        containerTemplate(
+          name: 'golang',
+          image: 'golang:1.13.7-alpine',
+          command: 'cat',
+          ttyEnabled: true,
+          resourceRequestCpu: '2',
+          resourceLimitCpu: '2',
+          resourceRequestMemory: '2Gi',
+          resourceLimitMemory: '2Gi',
+        ),
+      ]
+    ) {
+      node(POD_LABEL) {
+        container('golang') {
+          sh '''
+          make build_osx
+          make build_linux
+          make build_windows
+          '''
+        }
+      }
+    }
+  },
+  'docker-image': {
+    // Do not rebuild the image when triggered by a periodic job
+    if (!currentBuild.getBuildCauses().contains("hudson.triggers.TimerTrigger")){
+      buildDockerAndPublishImage('openvpn', [
+        mainBranch: 'main',
+        automaticSemanticVersioning: true,
+        gitCredentials: 'github-app-infra'
+      ])
+    }
+  },
+  'updatecli': {
+    withCredentials([string(credentialsId: 'updatecli-github-token', variable: 'UPDATECLI_GITHUB_TOKEN')]) {
+      updatecli(action: 'diff')
+      if (env.BRANCH_NAME == 'main') {
+        updatecli(action: 'apply', cronTriggerExpression: '@weekly')
+      }
+    }
+  },
+)

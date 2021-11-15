@@ -1,6 +1,6 @@
 # Follow network settings are used to assign ip to vpn client
 # and accesses are limited by
-# https://github.com/jenkins-infra/jenkins-infra/blob/staging/dist/profile/manifests/openvpn.pp
+# https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp
 #
 networks:
     - name: default
@@ -15,4 +15,3 @@ networks:
           - 10.0.1.0/24
           - 10.0.2.0/24
           - 10.0.99.0/24
-

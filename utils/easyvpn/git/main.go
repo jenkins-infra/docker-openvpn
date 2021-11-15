@@ -9,6 +9,8 @@ import (
 
 var debug = false
 
+const defaultBranch string = "main"
+
 func git(args ...string) (string, error) {
 
 	cmd := exec.Command("git", args...)
@@ -82,7 +84,7 @@ func getRepoOwner() (string, error) {
 	return owner, nil
 }
 
-// Push the branch on remote master branch
+// Push the branch on the principal branch
 func Push() {
 	branch := getLocalBranch()
 	owner, err := getRepoOwner()
@@ -90,12 +92,12 @@ func Push() {
 	git(args...)
 
 	if err == nil {
-		fmt.Printf("You can now open your Pull Request via \n\t https://github.com/jenkins-infra/openvpn/compare/staging...%v:%v\n", owner, branch)
+		fmt.Printf("You can now open your Pull Request via \n\t https://github.com/jenkins-infra/openvpn/compare/%v...%v:%v\n", defaultBranch, owner, branch)
 	}
 }
 
 // Rebase from origin
 func Rebase() {
-	args := []string{"rebase", "origin/master"}
+	args := []string{"rebase", fmt.Sprintf("origin/%v", defaultBranch)}
 	git(args...)
 }

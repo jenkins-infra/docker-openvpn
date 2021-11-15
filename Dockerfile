@@ -27,4 +27,4 @@ RUN \
 
 RUN chmod 0750 /entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh" ] 
+ENTRYPOINT ["/entrypoint.sh" ]
