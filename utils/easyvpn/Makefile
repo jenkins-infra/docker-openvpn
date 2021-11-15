@@ -15,10 +15,10 @@ build_linux:
 	GO111MODULE=on CGO_ENABLED=0 GOOS=linux go build -installsuffix cgo -v .
 
 init_osx:
-	docker run --rm -v "$(CURDIR)":/easyvpn -w /easyvpn -e GOOS=windows golang:$(GOLANG_VERSION)-alpine make build_osx
+	docker run --rm -v "$(CURDIR)":/easyvpn -w /easyvpn -e GOOS=windows golang:$(GOLANG_VERSION) make build_osx
 
 init_linux:
-	docker run --rm -v "$(CURDIR)":/easyvpn -w /easyvpn -e GOOS=windows golang:$(GOLANG_VERSION)-alpine make build_linux
+	docker run --rm -v "$(CURDIR)":/easyvpn -w /easyvpn -e GOOS=windows golang:$(GOLANG_VERSION) make build_linux
 
 init_windows:
-	docker run --rm -v "$(CURDIR)":/easyvpn -w /easyvpn -e GOOS=windows golang:$(GOLANG_VERSION)-alpine make build_windows
+	docker run --rm -v "$(CURDIR)":/easyvpn -w /easyvpn -e GOOS=windows golang:$(GOLANG_VERSION) make build_windows

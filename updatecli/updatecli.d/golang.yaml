@@ -60,8 +60,8 @@ targets:
     kind: file
     spec:
       file: ./Jenkinsfile_k8s
-      matchPattern: 'golang:.*-alpine'
-      replacePattern: 'golang:{{ source `latestGoVersion` }}-alpine'
+      matchPattern: 'golang:.*'
+      replacePattern: 'golang:{{ source `latestGoVersion` }}'
     scm:
       github:
         user: "{{ .github.user }}"
