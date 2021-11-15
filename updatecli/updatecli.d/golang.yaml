@@ -37,3 +37,37 @@ targets:
         token: "{{ requiredEnv .github.token }}"
         username: "{{ .github.username }}"
         branch: "{{ .github.branch }}"
+  updateMakefile:
+    name: "Update the golang docker image version in the Makefile for easyvpn"
+    sourceID: latestGoVersion
+    kind: file
+    spec:
+      file: ./utils/easyvpn/Makefile
+      matchPattern: 'GOLANG_VERSION \?= .*'
+      replacePattern: 'GOLANG_VERSION ?= {{ source `latestGoVersion` }}'
+    scm:
+      github:
+        user: "{{ .github.user }}"
+        email: "{{ .github.email }}"
+        owner: "{{ .github.owner }}"
+        repository: "{{ .github.repository }}"
+        token: "{{ requiredEnv .github.token }}"
+        username: "{{ .github.username }}"
+        branch: "{{ .github.branch }}"
+  updateJenkinsfile:
+    name: "Update the golang docker image version for the Jenkinsfile pod container agent"
+    sourceID: latestGoVersion
+    kind: file
+    spec:
+      file: ./Jenkinsfile_k8s
+      matchPattern: 'golang:.*-alpine'
+      replacePattern: 'golang:{{ source `latestGoVersion` }}-alpine'
+    scm:
+      github:
+        user: "{{ .github.user }}"
+        email: "{{ .github.email }}"
+        owner: "{{ .github.owner }}"
+        repository: "{{ .github.repository }}"
+        token: "{{ requiredEnv .github.token }}"
+        username: "{{ .github.username }}"
+        branch: "{{ .github.branch }}"
