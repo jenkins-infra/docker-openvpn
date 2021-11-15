@@ -31,6 +31,8 @@ tmp_dir="$(mktemp -d)"
 ## Copy go mod's directory to a temp directory an start working from this temp. dir.
 cp -r "${go_mod_dir}"/* "${tmp_dir}" >&2
 cd "${tmp_dir}" >&2
+GOPATH="$(mktemp -d)"
+export GOPATH
 
 ## Update go mod properly
 go mod edit -go="${new_version}" >&2
