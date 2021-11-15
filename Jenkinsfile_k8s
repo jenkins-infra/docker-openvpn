@@ -19,12 +19,7 @@ parallel(
         container('golang') {
           checkout scm
           dir('utils/easyvpn') {
-            sh '''
-            apk add --no-cache make
-            make build_osx
-            make build_linux
-            make build_windows
-            '''
+            sh 'make build_linux'
           }
         }
       }
