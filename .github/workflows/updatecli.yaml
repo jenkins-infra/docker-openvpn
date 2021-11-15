@@ -15,7 +15,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Diff
         continue-on-error: true
         uses: updatecli/updatecli-action@v1
@@ -26,7 +25,7 @@ jobs:
           UPDATECLI_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Apply
         uses: updatecli/updatecli-action@v1
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/staging'
         with:
           command: apply
           flags: "--config ./updatecli/updatecli.d --values ./updatecli/values.github-action.yaml"
