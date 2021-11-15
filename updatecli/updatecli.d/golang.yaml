@@ -1,0 +1,39 @@
+---
+title: "Bump golang version"
+sources:
+  latestGoVersion:
+    kind: githubRelease
+    name: Get the latest Golang version
+    spec:
+      owner: "golang"
+      repository: "go"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      versionFilter:
+        kind: regex
+        pattern: 'go1.(\d*).(\d*)'
+    transformers:
+      - trimPrefix: "go"
+  updatedGoMod:
+    kind: shell
+    depends_on:
+      - latestGoVersion
+    spec:
+      command: ./updatecli/scripts/updateGomodGoversion.sh ./utils/easyvpn/go.mod {{ source "latestGoVersion" }}
+
+targets:
+  updateGomod:
+    name: "Update the golang version in the go.mod files"
+    sourceID: updatedGoMod
+    kind: file
+    spec:
+      file: ./utils/easyvpn/go.mod
+    scm:
+      github:
+        user: "{{ .github.user }}"
+        email: "{{ .github.email }}"
+        owner: "{{ .github.owner }}"
+        repository: "{{ .github.repository }}"
+        token: "{{ requiredEnv .github.token }}"
+        username: "{{ .github.username }}"
+        branch: "{{ .github.branch }}"
