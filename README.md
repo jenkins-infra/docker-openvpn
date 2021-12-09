@@ -13,7 +13,7 @@ If you think that you should have access to this network, feel free to read [How
 
 To connect to this VPN, your VPN client must be configured with your [Jenkins account](https://accounts.jenkins.io/) and certificate authentication, requiring the following files:
 
-* The CertificateAuthority **[`ca.crt`](https://github.com/jenkins-infra/openvpn/blob/main/cert/pki/ca.crt)**
+* The CertificateAuthority **[`ca.crt`](https://github.com/jenkins-infra/docker-openvpn/blob/main/cert/pki/ca.crt)**
 * Your private key **`<your-jenkins-username>.key`**
 
   > ### your private key **must** remain **secret**!
@@ -31,8 +31,8 @@ Then this certificate must be signed by an administrator who also assigns you a 
 
 Feel free to follow the next action points:
 
-* [Fork](https://help.github.com/articles/fork-a-repo/) this repository on your own Github account: [fork the repo](https://github.com/jenkins-infra/openvpn/fork)
-* Clone your fork locally: `git clone https://github.com/<your-github-username>/openvpn && cd openvpn`
+* [Fork](https://help.github.com/articles/fork-a-repo/) this repository on your own Github account: [fork the repo](https://github.com/jenkins-infra/docker-openvpn/fork)
+* Clone your fork locally: `git clone https://github.com/<your-github-username>/docker-openvpn && cd docker-openvpn`
 * Build EASYVPN binary by running one of the following commands depending on your operating system:
   * `make init_osx`
   * `make init_linux`
@@ -42,7 +42,7 @@ Feel free to follow the next action points:
 
   > ### This key **must** remain **secret**!
 
-* Create a new Pull Request on [jenkinsinfra/openvpn](https://github.com/jenkins-infra/openvpn), `main` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
+* Create a new Pull Request on [jenkinsinfra/docker-openvpn](https://github.com/jenkins-infra/docker-openvpn), `main` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
 * Open an INFRA ticket on [JIRA](https://issues.jenkins-ci.org) referencing your PR
 * Grab a cup of coffee and wait patiently for an administrator to sign your certificate request
 * Once an admin notifies you that everything is setup, you can [sync your fork](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) then pull it to retrieve your certificate from `./cert/pki/issued/<your-jenkins-username>.crt`
@@ -238,6 +238,6 @@ Please report any issue on the Jenkins infrastructure [project](https://issues.j
 * [How to contribute to OSS?](https://opensource.guide/how-to-contribute/)
 * [jenkins-infra/azure](https://github.com/jenkins-infra/azure)
 * [jenkins-infra/jenkins-infra](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp)
-* [jenkins-infra/openvpn](https://github.com/jenkins-infra/openvpn)
+* [jenkins-infra/docker-openvpn](https://github.com/jenkins-infra/docker-openvpn)
 * [mozilla/sops](https://github.com/mozilla/sops)
 * [openvpn/easy-rsa](https://github.com/OpenVPN/easy-rsa)
