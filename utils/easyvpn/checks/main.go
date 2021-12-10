@@ -1,13 +1,14 @@
 package checks
 
 import (
-	"github.com/jenkins-infra/openvpn/utils/easyvpn/easyrsa"
-	"github.com/jenkins-infra/openvpn/utils/easyvpn/helpers"
 	"errors"
 	"fmt"
 	"path"
 	"sort"
 	"strings"
+
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/easyrsa"
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/helpers"
 )
 
 // IsAllCertsSigned validate that every requested certificate are signed

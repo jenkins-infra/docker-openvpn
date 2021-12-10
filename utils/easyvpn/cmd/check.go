@@ -1,9 +1,10 @@
 package cmd
 
 import (
-	"github.com/jenkins-infra/openvpn/utils/easyvpn/checks"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/checks"
+	"github.com/spf13/cobra"
 )
 
 func init() {

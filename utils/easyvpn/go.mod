@@ -1,4 +1,4 @@
-module github.com/jenkins-infra/openvpn/utils/easyvpn
+module github.com/jenkins-infra/docker-openvpn/utils/easyvpn
 
 go 1.17
 

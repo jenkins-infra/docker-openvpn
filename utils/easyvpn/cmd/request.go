@@ -1,11 +1,12 @@
 package cmd
 
 import (
-	"github.com/jenkins-infra/openvpn/utils/easyvpn/easyrsa"
-	"github.com/jenkins-infra/openvpn/utils/easyvpn/git"
 	"fmt"
-	"github.com/spf13/cobra"
 	"path"
+
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/easyrsa"
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/git"
+	"github.com/spf13/cobra"
 )
 
 func init() {
