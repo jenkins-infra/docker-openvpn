@@ -92,7 +92,7 @@ func Push() {
 	git(args...)
 
 	if err == nil {
-		fmt.Printf("You can now open your Pull Request via \n\t https://github.com/jenkins-infra/openvpn/compare/%v...%v:%v\n", defaultBranch, owner, branch)
+		fmt.Printf("You can now open your Pull Request via \n\t https://github.com/jenkins-infra/docker-openvpn/compare/%v...%v:%v\n", defaultBranch, owner, branch)
 	}
 }
 

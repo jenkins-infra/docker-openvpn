@@ -1,14 +1,15 @@
 package cmd
 
 import (
-	"github.com/jenkins-infra/openvpn/utils/easyvpn/easyrsa"
-	"github.com/jenkins-infra/openvpn/utils/easyvpn/git"
-	"github.com/jenkins-infra/openvpn/utils/easyvpn/helpers"
-	"github.com/jenkins-infra/openvpn/utils/easyvpn/network"
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
 	"path"
+
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/easyrsa"
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/git"
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/helpers"
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/network"
+	"github.com/spf13/cobra"
 )
 
 var certDir string
