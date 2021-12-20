@@ -25,19 +25,7 @@ parallel(
       }
     }
   },
-  'docker-image': {
-    buildDockerAndPublishImage('openvpn', [
-      mainBranch: 'main',
-      automaticSemanticVersioning: true,
-      gitCredentials: 'github-app-infra'
-    ])
-  },
-  'updatecli': {
-    withCredentials([string(credentialsId: 'updatecli-github-token', variable: 'UPDATECLI_GITHUB_TOKEN')]) {
-      updatecli(action: 'diff', containerMemory: '1024Mi')
-      if (env.BRANCH_NAME == 'main') {
-        updatecli(action: 'apply', cronTriggerExpression: '@weekly', containerMemory: '1024Mi')
-      }
-    }
+  'docker-and-updatecli': {
+    parallelDockerUpdatecli([imageName: 'openvpn', containerMemory: '1024Mi'])
   },
 )
