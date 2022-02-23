@@ -63,3 +63,14 @@ targets:
         'golang:{{ source `latestGoVersion` }}'
     scmID: default
 
+pullrequests:
+  default:
+    kind: github
+    scmID: default
+    targets:
+      - updateGomod
+      - updateMakefile
+      - updateJenkinsfile
+    spec:
+      labels:
+        - dependencies
