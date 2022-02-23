@@ -69,6 +69,8 @@ pullrequests:
     scmID: default
     targets:
       - updateGomod
+      - updateMakefile
+      - updateJenkinsfile
     spec:
       labels:
         - dependencies
