@@ -1,3 +1,5 @@
+def dockerImage = 'jenkinsciinfra/hashicorp-tools:0.3.5' // Tracked by updatecli
+
 parallel(
   failFast: true,
   'Build Easyvpn': {
@@ -26,6 +28,6 @@ parallel(
     }
   },
   'docker-and-updatecli': {
-    parallelDockerUpdatecli([imageName: 'openvpn', containerMemory: '1024Mi'])
+    parallelDockerUpdatecli([imageName: 'openvpn', updatecliConfig: [containerMemory: '1024Mi', updatecliDockerImage: dockerImage]])
   },
 )
