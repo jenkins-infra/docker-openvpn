@@ -194,6 +194,28 @@ To generate a new CRL:
 * Publish the new crl.pem - `git add ./cert/pki/crl.pem && git commit ./cert/pki/crl.pem -s -m 'Renew revocation list certificate'`
 * Delete local ca.key - `rm ./cert/pki/private/ca.key`
 
+### How to Renew Server-side Certificate?
+
+* Build EASYVPN binary by running one of the following commands depending on your
+  * `make init_osx`
+  * `make init_linux`
+  * `make init_windows` and copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
+* Revoke actual certificate (even if it is already expired): `./easyvpn revoke vpn.jenkins.io`
+* Generate a new certificate + key, with the server DNS as argument: `./easyvpn request vpn.jenkins.io`
+
+  > The generated key is in `./cert/pki/private/vpn.jenkins.io.key` **must** remain **secret**!
+
+* Sign the request as a "server" request:
+
+  ```shell
+  cd ./certs # Mandatory to run the signing command from this repository
+  ./easyrsa --batch sign-req server vpn.jenkins.io
+  ```
+
+* Ensure that you git-added, git-commited and pushed the changes, without ANY secrets (should be git-ignored)
+
+* Update the secrets in the encrypted hieradata for OpenVPN in <https://github.com/jenkins-infra/jenkins-infra>
+
 ## Docker
 
 ### Configuration
