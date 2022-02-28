@@ -75,6 +75,7 @@ Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, ope
   script-security 2
   persist-key
   persist-tun
+  remote-cert-tls server
   user nobody
   group nobody
   ```
@@ -140,16 +141,22 @@ To enable a different DNS provider only when connected to the VPN you can add th
 
 ### HowTo become an administrator
 
-To add/revoke certificates, you must be allowed to decrypt `./cert/pki/private/ca.key.enc`.
-This file is encrypted with [sops](https://github.com/mozilla/sops) and your public gpg key must be added to `./.sops.yaml` by an existing administrator.
+To add/revoke certificates, you must be allowed to decrypt sensitive files such as `./cert/pki/private/ca.key.enc`.
 
-This repository relies on [easy-rsa](https://github.com/OpenVPN/easy-rsa/blob/master/README.quickstart.md).
+These files are encrypted with [sops](https://github.com/mozilla/sops), your public gpg key must be added to `./.sops.yaml` by an existing administrator to decrypt them.
+
+This repository relies on [easy-rsa](https://github.com/OpenVPN/easy-rsa/blob/master/README.quickstart.md), used under the hood by a custom Golang CLI wrapper named `easyvpn`.
+
+### HowTo Decrypt the Certificate Authority Key
+
+* Ensure that you are an administrator (Check the section [HowTo become an administrator](#howto-become-an-administrator))
+* Execute the command `make -C cert decrypt` from the root of the repository to decrypt the ca.key to `./cert/pki/private/ca.key` (which is a **secret** that **must remain git-ignored**)
 
 ### HowTo show certificate information
 
 * Install [sops](https://github.com/mozilla/sops)
 * Enter in the VPN network directory: `cd ~/.cert`
-* Run `make decrypt`
+* Decrypt the required files as described in [HowTo Decrypt the Certificate Authority Key](#howto-decrypt-the-certificate-authority-key)
 * Run `make show-cert name=<your-jenkins-username>`
 
 #### HowTo approve client access?
@@ -189,10 +196,33 @@ We can run `openssl crl -in ./cert/pki/crl.pem -noout -text` to validate that th
 
 To generate a new CRL:
 
-* Decrypt ca.key `sops -d ./cert/pki/private/ca.key.enc > ./cert/pki/private/ca.key`
+* Decrypt the required files as described in [HowTo Decrypt the Certificate Authority Key](#howto-decrypt-the-certificate-authority-key)
 * Generate a new crl.pem - `cd cert ; ./easyrsa gen-crl ; cd ..`
 * Publish the new crl.pem - `git add ./cert/pki/crl.pem && git commit ./cert/pki/crl.pem -s -m 'Renew revocation list certificate'`
 * Delete local ca.key - `rm ./cert/pki/private/ca.key`
+
+### How to Renew Server-side Certificate?
+
+* Build EASYVPN binary by running one of the following commands depending on your operating system:
+  * `make init_osx`
+  * `make init_linux`
+  * `make init_windows` and copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
+* Decrypt the required files as described in [HowTo Decrypt the Certificate Authority Key](#howto-decrypt-the-certificate-authority-key)
+* Revoke actual certificate (even if it is already expired): `./easyvpn revoke vpn.jenkins.io`
+* Generate a new certificate + key, with the server DNS as argument: `./easyvpn request vpn.jenkins.io`
+
+  > The generated key is in `./cert/pki/private/vpn.jenkins.io.key` **must** remain **secret**!
+
+* Sign the request as a "server" request:
+
+  ```shell
+  cd ./certs # Running the signing command from this folder is mandatory.
+  ./easyrsa --batch sign-req server vpn.jenkins.io
+  ```
+
+* Ensure that you git-added, git-commited and pushed the changes, without ANY secrets (which should be git-ignored)
+
+* Update the secrets in the encrypted hieradata for OpenVPN in <https://github.com/jenkins-infra/jenkins-infra>
 
 ## Docker
 
