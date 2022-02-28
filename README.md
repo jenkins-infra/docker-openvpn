@@ -141,16 +141,16 @@ To enable a different DNS provider only when connected to the VPN you can add th
 
 ### HowTo become an administrator
 
-To add/revoke certificates, you must be allowed to decrypt the sensitive encrypted files such as `./cert/pki/private/ca.key.enc`.
+To add/revoke certificates, you must be allowed to decrypt sensitive files such as `./cert/pki/private/ca.key.enc`.
 
-These files are encrypted with [sops](https://github.com/mozilla/sops) and your public gpg key must be added to `./.sops.yaml` by an existing administrator.
+These files are encrypted with [sops](https://github.com/mozilla/sops), your public gpg key must be added to `./.sops.yaml` by an existing administrator to decrypt them.
 
-This repository relies on [easy-rsa](https://github.com/OpenVPN/easy-rsa/blob/master/README.quickstart.md) which is used under the hood by a custom Golang CLI wrapper named `easyvpn`.
+This repository relies on [easy-rsa](https://github.com/OpenVPN/easy-rsa/blob/master/README.quickstart.md), used under the hood by a custom Golang CLI wrapper named `easyvpn`.
 
 ### HowTo Decrypt the Certificate Authority Key
 
 * Ensure that you are an administrator (Check the section [HowTo become an administrator](#howto-become-an-administrator))
-* Execute the command `make -C cert decrypt` from the root of the repository to decrypt the ca.key to `./cert/pki/private/ca.key` (which is a secret that must remain git-ignored)
+* Execute the command `make -C cert decrypt` from the root of the repository to decrypt the ca.key to `./cert/pki/private/ca.key` (which is a **secret** that **must remain git-ignored**)
 
 ### HowTo show certificate information
 
@@ -203,7 +203,7 @@ To generate a new CRL:
 
 ### How to Renew Server-side Certificate?
 
-* Build EASYVPN binary by running one of the following commands depending on your
+* Build EASYVPN binary by running one of the following commands depending on your operating system:
   * `make init_osx`
   * `make init_linux`
   * `make init_windows` and copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
@@ -216,11 +216,11 @@ To generate a new CRL:
 * Sign the request as a "server" request:
 
   ```shell
-  cd ./certs # Mandatory to run the signing command from this repository
+  cd ./certs # Running the signing command from this folder is mandatory.
   ./easyrsa --batch sign-req server vpn.jenkins.io
   ```
 
-* Ensure that you git-added, git-commited and pushed the changes, without ANY secrets (should be git-ignored)
+* Ensure that you git-added, git-commited and pushed the changes, without ANY secrets (which should be git-ignored)
 
 * Update the secrets in the encrypted hieradata for OpenVPN in <https://github.com/jenkins-infra/jenkins-infra>
 
