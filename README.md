@@ -75,6 +75,7 @@ Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, ope
   script-security 2
   persist-key
   persist-tun
+  remote-cert-tls server
   user nobody
   group nobody
   ```
