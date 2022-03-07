@@ -7,7 +7,7 @@ parallel(
       containers: [
         containerTemplate(
           name: 'golang',
-          image: 'golang:1.17.7',
+          image: 'golang:1.17.8',
           command: 'cat',
           ttyEnabled: true,
           resourceRequestCpu: '2',
