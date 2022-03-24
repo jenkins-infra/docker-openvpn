@@ -1,4 +1,4 @@
-def dockerImage = 'jenkinsciinfra/hashicorp-tools:0.4.4' // Tracked by updatecli
+def dockerImage = 'jenkinsciinfra/hashicorp-tools:0.4.6' // Tracked by updatecli
 
 parallel(
   failFast: true,
