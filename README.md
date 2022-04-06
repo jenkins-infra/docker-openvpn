@@ -31,6 +31,7 @@ Then this certificate must be signed by an administrator who also assigns you a 
 
 Feel free to follow the next action points:
 
+* Open an issue on [jenkins-infra/helpdesk](https://github.com/jenkins-infra/helpdesk) describing the reason why you need an access to the VPN
 * [Fork](https://help.github.com/articles/fork-a-repo/) this repository on your own Github account: [fork the repo](https://github.com/jenkins-infra/docker-openvpn/fork)
 * Clone your fork locally: `git clone https://github.com/<your-github-username>/docker-openvpn && cd docker-openvpn`
 * Build EASYVPN binary by running one of the following commands depending on your operating system:
@@ -42,7 +43,6 @@ Feel free to follow the next action points:
 
   > ⚠️ This key **must** remain **secret**! ⚠️
 
-* Open an issue on [jenkins-infra/helpdesk](https://github.com/jenkins-infra/helpdesk) describing the reason why you need an access to the VPN
 * Create a new pull request on [jenkins-infra/docker-openvpn](https://github.com/jenkins-infra/docker-openvpn)
   * From your local branch (usually the `main` branch)
   * Targeted to the remote `main` branch
