@@ -42,8 +42,13 @@ Feel free to follow the next action points:
 
   > ⚠️ This key **must** remain **secret**! ⚠️
 
-* Create a new Pull Request on [jenkins-infra/docker-openvpn](https://github.com/jenkins-infra/docker-openvpn), `main` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
-* Open an INFRA ticket on [JIRA](https://issues.jenkins-ci.org) referencing your PR
+* Open an issue on [jenkins-infra/helpdesk](https://github.com/jenkins-infra/helpdesk) describing the reason why you need an access to the VPN
+* Create a new pull request on [jenkins-infra/docker-openvpn](https://github.com/jenkins-infra/docker-openvpn)
+  * From your local branch (usually the `main` branch)
+  * Targeted to the remote `main` branch
+  * References the helpdesk issue in the PR message
+  * [GitHub documentation on how to create a pull request](https://help.github.com/articles/creating-a-pull-request/)
+
 * Grab a cup of coffee and wait patiently for an administrator to sign your certificate request
 * Once an admin notifies you that everything is setup, you can [sync your fork](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) then pull it to retrieve your certificate from `./cert/pki/issued/<your-jenkins-username>.crt`
 * We recommend you to move the generated files and the ca.cert to an hidden folder in your home (`~/.cert`):
@@ -176,7 +181,8 @@ gh pr checkout <Pull Request ID>
 ```
 
 * Sign the certificate request: `./easyvpn sign <CN_to_sign>`
-* Commit and push on the current PR with `git add . && git commit -s -m "Sign CRL of <requester name>" && git push`
+* A git commit is automatically created on the local branch
+* Push the approval commit on the current pull request with `git push` (the remote and local branch name are configured by the `gh` command line)
 * Approve and merge the Pull Request to the `main` branch with the signed CRL
 * Once merged, a new tag should be created automatically with automatic publishing of the image
 * The Docker image tag should be automatically updated in the next 24h in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp) configuration.
@@ -188,6 +194,8 @@ gh pr checkout <Pull Request ID>
   * `make init_linux`
   * `make init_windows` and copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
 * Revoke the certificate: `./easyvpn revoke <CN_to_sign>`
+* A git commit is automatically created on the local branch
+* Push the revocation commit (PR or branch, whatever you choose)
 * The Docker image tag should be automatically updated in the next 24h in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp) configuration.
 
 #### HowTo review certificate revocation list
@@ -257,12 +265,12 @@ Feel free to contribute to this image by:
 
 1. Fork this project into your account
 2. Make your changes in your local fork
-3. Submit a pull request with a description and a link to a Jira ticket
+3. Submit a pull request with a description and a link to a [jenkins-infra/helpdesk issue](https://github.com/jenkins-infra/helpdesk)
 4. Ask for a review
 
 ## Issue
 
-Please report any issue on the Jenkins infrastructure [project](https://issues.jenkins-ci.org/secure/Dashboard.jspa)
+Please report any issue on the Jenkins infrastructure [jenkins-infra/helpdesk tracker](https://github.com/jenkins-infra/helpdesk)
 
 ## Links
 
