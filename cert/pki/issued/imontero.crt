@@ -1,0 +1,126 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number:
+            cf:c3:3c:4f:d7:97:23:47:91:7d:e5:9a:7f:44:0a:d9
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN=vpn.jenkins.io
+        Validity
+            Not Before: Apr  6 09:06:10 2022 GMT
+            Not After : Mar 21 09:06:10 2025 GMT
+        Subject: CN=imontero
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (4096 bit)
+                Modulus:
+                    00:c8:17:d9:f7:21:20:45:99:6a:0d:37:a4:51:ad:
+                    bd:c3:a4:cf:62:fb:bd:c4:d7:c1:a1:bd:7a:aa:6d:
+                    e2:e1:b6:2c:aa:0e:f9:e7:d1:96:84:e7:e4:eb:1b:
+                    72:27:92:6e:67:92:0a:2a:70:dc:de:5b:65:98:e4:
+                    eb:4e:8c:27:54:d6:54:76:16:f2:7f:5e:79:5f:9e:
+                    b0:e2:b2:cc:4e:b9:e3:7a:2f:19:9b:65:df:2d:6a:
+                    f4:11:19:2e:fd:57:22:4c:e0:e1:79:de:9f:33:3d:
+                    eb:d0:d1:93:e7:fc:b1:72:73:78:01:9b:ab:f9:f9:
+                    91:f6:e7:56:ca:53:2a:51:31:77:58:41:fe:9b:bd:
+                    5b:1f:f6:93:13:6c:38:c9:85:dd:f1:dc:1a:b7:8b:
+                    4a:10:5e:07:ab:34:25:0d:02:c4:9b:0d:96:08:fa:
+                    a7:69:b8:6a:56:44:73:8a:50:94:a8:cb:b8:5c:88:
+                    e7:fd:85:f2:84:ae:c3:fc:f5:5e:c1:14:22:99:43:
+                    6f:50:74:d3:66:11:a2:a7:47:a0:da:22:12:6c:43:
+                    0c:36:9b:0e:14:db:1a:8f:ab:9f:46:99:4f:d9:82:
+                    b3:73:56:94:4b:6b:03:7e:ae:a3:8b:bf:67:f1:31:
+                    6e:f1:40:cb:5a:0a:a4:35:a6:a0:4c:5e:ea:e4:73:
+                    ea:ec:01:72:62:11:bc:1e:3f:6d:98:de:1b:eb:70:
+                    b5:0d:f7:82:1a:b5:ec:bc:08:7e:54:48:67:55:ff:
+                    17:d8:06:b3:4a:c4:88:f8:65:a1:35:c8:bf:ef:e1:
+                    d2:e6:80:e3:68:2a:d4:78:73:9b:b4:b8:8d:0a:46:
+                    5b:39:23:4d:ee:37:07:fb:3b:43:e5:a5:67:90:d0:
+                    c7:d3:e1:a5:fa:8f:d1:66:aa:62:9f:1b:45:9a:82:
+                    5e:25:45:3b:14:b6:5c:f0:c8:c5:ac:fc:83:00:4e:
+                    dd:09:f7:d1:3b:df:d9:1e:58:88:a9:78:45:5f:27:
+                    f7:42:c7:ff:6e:17:5e:f8:01:a0:d7:9b:da:1e:a6:
+                    89:02:38:5e:92:ad:82:76:10:4a:3c:f4:39:7b:09:
+                    8d:7f:a7:57:92:f0:75:81:23:52:77:c2:67:0e:3b:
+                    81:d8:31:34:ba:c8:60:68:3c:93:b6:4d:53:2e:63:
+                    78:f1:d0:52:f8:e3:f4:59:88:60:c7:a5:ed:c2:43:
+                    f6:ee:76:00:6e:e9:1c:61:32:ab:c6:aa:56:0e:36:
+                    61:6d:dd:00:d8:04:90:07:ba:2f:f8:04:33:62:a0:
+                    4b:df:61:92:f1:76:e7:75:c6:f3:65:b7:48:0c:3c:
+                    76:11:6d:cb:01:61:45:2b:25:88:91:4e:37:f1:05:
+                    57:8e:35
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            X509v3 Subject Key Identifier: 
+                93:22:62:F3:33:9B:C2:1E:A4:48:D9:8F:32:43:25:D1:2B:70:1E:75
+            X509v3 Authority Key Identifier: 
+                keyid:87:A7:C5:75:37:0B:14:6C:BF:46:04:8C:2A:52:E9:5D:DA:51:DC:E6
+                DirName:/CN=vpn.jenkins.io
+                serial:08:01:AA:6D:1B:31:40:4F:7B:9C:75:54:54:78:B5:36:65:3B:7C:B3
+
+            X509v3 Extended Key Usage: 
+                TLS Web Client Authentication
+            X509v3 Key Usage: 
+                Digital Signature
+    Signature Algorithm: sha256WithRSAEncryption
+         24:5f:e0:84:cc:8f:56:fd:5b:17:f6:86:66:22:10:23:f2:41:
+         85:34:0a:03:80:96:27:29:4a:b4:91:2b:96:c0:fa:e8:6e:64:
+         e0:ff:17:9a:e0:1f:d5:10:f2:2e:25:1b:b5:63:6b:4a:6a:9c:
+         c4:28:d7:d2:4f:74:40:7b:e5:d9:e1:44:67:e1:33:94:a1:87:
+         bf:d8:e7:a5:08:d1:70:ce:97:11:26:6e:f9:48:23:35:46:2e:
+         41:01:87:66:cf:a0:2a:03:ee:da:e1:f8:c9:da:eb:27:b9:17:
+         87:62:58:df:d4:a7:53:3b:55:0a:32:ea:97:87:2d:a1:a8:8c:
+         86:f8:33:6a:c7:a2:5c:65:d8:71:d0:32:32:28:07:f5:d4:ec:
+         58:71:24:51:76:89:8a:d2:f7:6c:14:4d:3d:79:d9:63:87:95:
+         78:a1:fe:3f:29:ce:90:bd:6e:cc:20:bc:14:22:2c:e0:43:82:
+         51:c7:cc:9d:93:14:dc:35:1d:f9:84:ae:5b:84:8a:25:15:3e:
+         01:37:df:d9:fa:b9:a4:61:4f:5a:d4:00:27:1d:5d:dc:f8:b4:
+         f4:9c:e1:9f:0c:c2:74:ee:b3:f3:a9:66:67:23:39:af:40:e0:
+         42:20:63:60:fe:f0:66:33:9f:ea:cf:65:6c:ea:1c:ea:fb:d8:
+         23:46:5f:fd:44:15:5b:3e:1b:92:53:f0:fb:79:c4:9e:1c:06:
+         cc:fb:19:62:ca:28:32:d1:af:76:05:46:23:53:47:f0:50:21:
+         9d:8a:7d:a1:1e:28:5d:56:bb:06:d5:31:74:52:2e:2d:d9:84:
+         dc:6e:c7:6f:05:09:6b:86:55:50:4b:99:d5:00:1b:9a:46:c0:
+         24:2c:96:00:9b:06:96:a4:e6:2f:d6:6d:d0:b7:ea:bb:73:2f:
+         fb:13:bf:3a:9e:9e:67:f0:b8:44:89:50:93:05:07:59:63:0a:
+         d4:ba:64:76:7d:0d:64:d4:07:4b:c2:69:0c:80:75:44:49:27:
+         89:b9:53:e8:18:62:01:96:3a:9e:b2:30:e3:0a:2c:be:63:27:
+         6b:04:d5:4c:b6:d8:55:83:d5:71:03:3c:04:52:70:0a:b1:2e:
+         a8:0b:1e:08:78:8a:80:7b:9e:55:67:b6:aa:10:7a:b6:31:ce:
+         94:61:13:21:af:2a:19:b0:05:30:84:ab:2d:aa:22:c4:01:be:
+         43:19:7d:fa:fc:53:d2:5b:10:32:e0:9e:44:33:51:c1:dd:0e:
+         6b:ed:84:e6:9e:e7:2f:69:28:2a:11:4e:73:d3:e3:7b:62:46:
+         47:59:22:34:03:c4:e4:56:9b:ae:0d:48:04:74:94:52:fd:13:
+         1d:61:5c:6b:46:d9:0b:67
+-----BEGIN CERTIFICATE-----
+MIIFXTCCA0WgAwIBAgIRAM/DPE/XlyNHkX3lmn9ECtkwDQYJKoZIhvcNAQELBQAw
+GTEXMBUGA1UEAwwOdnBuLmplbmtpbnMuaW8wHhcNMjIwNDA2MDkwNjEwWhcNMjUw
+MzIxMDkwNjEwWjATMREwDwYDVQQDDAhpbW9udGVybzCCAiIwDQYJKoZIhvcNAQEB
+BQADggIPADCCAgoCggIBAMgX2fchIEWZag03pFGtvcOkz2L7vcTXwaG9eqpt4uG2
+LKoO+efRloTn5OsbcieSbmeSCipw3N5bZZjk606MJ1TWVHYW8n9eeV+esOKyzE65
+43ovGZtl3y1q9BEZLv1XIkzg4XnenzM969DRk+f8sXJzeAGbq/n5kfbnVspTKlEx
+d1hB/pu9Wx/2kxNsOMmF3fHcGreLShBeB6s0JQ0CxJsNlgj6p2m4alZEc4pQlKjL
+uFyI5/2F8oSuw/z1XsEUIplDb1B002YRoqdHoNoiEmxDDDabDhTbGo+rn0aZT9mC
+s3NWlEtrA36uo4u/Z/ExbvFAy1oKpDWmoExe6uRz6uwBcmIRvB4/bZjeG+twtQ33
+ghq17LwIflRIZ1X/F9gGs0rEiPhloTXIv+/h0uaA42gq1Hhzm7S4jQpGWzkjTe43
+B/s7Q+WlZ5DQx9PhpfqP0WaqYp8bRZqCXiVFOxS2XPDIxaz8gwBO3Qn30Tvf2R5Y
+iKl4RV8n90LH/24XXvgBoNeb2h6miQI4XpKtgnYQSjz0OXsJjX+nV5LwdYEjUnfC
+Zw47gdgxNLrIYGg8k7ZNUy5jePHQUvjj9FmIYMel7cJD9u52AG7pHGEyq8aqVg42
+YW3dANgEkAe6L/gEM2KgS99hkvF253XG82W3SAw8dhFtywFhRSsliJFON/EFV441
+AgMBAAGjgaUwgaIwCQYDVR0TBAIwADAdBgNVHQ4EFgQUkyJi8zObwh6kSNmPMkMl
+0StwHnUwVAYDVR0jBE0wS4AUh6fFdTcLFGy/RgSMKlLpXdpR3OahHaQbMBkxFzAV
+BgNVBAMMDnZwbi5qZW5raW5zLmlvghQIAaptGzFAT3ucdVRUeLU2ZTt8szATBgNV
+HSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJKoZIhvcNAQELBQADggIB
+ACRf4ITMj1b9Wxf2hmYiECPyQYU0CgOAlicpSrSRK5bA+uhuZOD/F5rgH9UQ8i4l
+G7Vja0pqnMQo19JPdEB75dnhRGfhM5Shh7/Y56UI0XDOlxEmbvlIIzVGLkEBh2bP
+oCoD7trh+Mna6ye5F4diWN/Up1M7VQoy6peHLaGojIb4M2rHolxl2HHQMjIoB/XU
+7FhxJFF2iYrS92wUTT152WOHlXih/j8pzpC9bswgvBQiLOBDglHHzJ2TFNw1HfmE
+rluEiiUVPgE339n6uaRhT1rUACcdXdz4tPSc4Z8MwnTus/OpZmcjOa9A4EIgY2D+
+8GYzn+rPZWzqHOr72CNGX/1EFVs+G5JT8Pt5xJ4cBsz7GWLKKDLRr3YFRiNTR/BQ
+IZ2KfaEeKF1WuwbVMXRSLi3ZhNxux28FCWuGVVBLmdUAG5pGwCQslgCbBpak5i/W
+bdC36rtzL/sTvzqenmfwuESJUJMFB1ljCtS6ZHZ9DWTUB0vCaQyAdURJJ4m5U+gY
+YgGWOp6yMOMKLL5jJ2sE1Uy22FWD1XEDPARScAqxLqgLHgh4ioB7nlVntqoQerYx
+zpRhEyGvKhmwBTCEqy2qIsQBvkMZffr8U9JbEDLgnkQzUcHdDmvthOae5y9pKCoR
+TnPT43tiRkdZIjQDxORWm64NSAR0lFL9Ex1hXGtG2Qtn
+-----END CERTIFICATE-----
