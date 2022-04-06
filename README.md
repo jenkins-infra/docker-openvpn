@@ -16,7 +16,7 @@ To connect to this VPN, your VPN client must be configured with your [Jenkins ac
 * The CertificateAuthority **[`ca.crt`](https://github.com/jenkins-infra/docker-openvpn/blob/main/cert/pki/ca.crt)**
 * Your private key **`<your-jenkins-username>.key`**
 
-  > ### your private key **must** remain **secret**!
+  > ⚠️ your private key **must** remain **secret**! ⚠️
 
 * Your certificate **`<your-jenkins-username>.crt`**
 
@@ -40,9 +40,9 @@ Feel free to follow the next action points:
 * Generate your private key and certificate request: `./easyvpn request <your-jenkins-username>`
   Your private key will be generated in `./cert/pki/private`
 
-  > ### This key **must** remain **secret**!
+  > ⚠️ This key **must** remain **secret**! ⚠️
 
-* Create a new Pull Request on [jenkinsinfra/docker-openvpn](https://github.com/jenkins-infra/docker-openvpn), `main` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
+* Create a new Pull Request on [jenkins-infra/docker-openvpn](https://github.com/jenkins-infra/docker-openvpn), `main` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
 * Open an INFRA ticket on [JIRA](https://issues.jenkins-ci.org) referencing your PR
 * Grab a cup of coffee and wait patiently for an administrator to sign your certificate request
 * Once an admin notifies you that everything is setup, you can [sync your fork](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) then pull it to retrieve your certificate from `./cert/pki/issued/<your-jenkins-username>.crt`
@@ -59,7 +59,7 @@ Feel free to follow the next action points:
 
 Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, opening this file from the Finder should launch it:
 
-  _jenkins-infra.ovpn_
+* File `jenkins-infra.ovpn`:
 
   ```text
   client
@@ -107,6 +107,7 @@ openssl req -in ~/.cert/pki/reqs/<your-jenkins-username>.req -pubkey -noout -out
 
 If you are having issues connecting to resources behind the VPN, but the VPN appears to be working correctly, check your DNS settings.  Some providers seem to filter out requests to the zone.  To test, try `dig release.ci.jenkins.io`, you should get something like this:
 
+<!-- markdownlint-disable MD033 -->
 <details><summary>dig output (click to expand)</summary>
 
 ```text
@@ -241,7 +242,7 @@ Some examples can be found inside [docker-compose.yaml](docker/docker-compose.ya
 
 To test this image, you need a "mock" ldap and SSL certificates, then go in the root folder and run `make start` to start the ldap and vpn service.
 
-> #### Certificates must be readable by UID 101!
+> ⚠️ Certificates must be readable by UID 101! ⚠️
 
 ## Infrastructure
 
