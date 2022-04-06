@@ -16,7 +16,7 @@ To connect to this VPN, your VPN client must be configured with your [Jenkins ac
 * The CertificateAuthority **[`ca.crt`](https://github.com/jenkins-infra/docker-openvpn/blob/main/cert/pki/ca.crt)**
 * Your private key **`<your-jenkins-username>.key`**
 
-  > ### your private key **must** remain **secret**!
+  > ⚠️ your private key **must** remain **secret**! ⚠️
 
 * Your certificate **`<your-jenkins-username>.crt`**
 
@@ -31,6 +31,7 @@ Then this certificate must be signed by an administrator who also assigns you a 
 
 Feel free to follow the next action points:
 
+* Open an issue on [jenkins-infra/helpdesk](https://github.com/jenkins-infra/helpdesk) describing the reason why you need an access to the VPN
 * [Fork](https://help.github.com/articles/fork-a-repo/) this repository on your own Github account: [fork the repo](https://github.com/jenkins-infra/docker-openvpn/fork)
 * Clone your fork locally: `git clone https://github.com/<your-github-username>/docker-openvpn && cd docker-openvpn`
 * Build EASYVPN binary by running one of the following commands depending on your operating system:
@@ -40,10 +41,14 @@ Feel free to follow the next action points:
 * Generate your private key and certificate request: `./easyvpn request <your-jenkins-username>`
   Your private key will be generated in `./cert/pki/private`
 
-  > ### This key **must** remain **secret**!
+  > ⚠️ This key **must** remain **secret**! ⚠️
 
-* Create a new Pull Request on [jenkinsinfra/docker-openvpn](https://github.com/jenkins-infra/docker-openvpn), `main` branch: [How to Create a pull request](https://help.github.com/articles/creating-a-pull-request/)
-* Open an INFRA ticket on [JIRA](https://issues.jenkins-ci.org) referencing your PR
+* Create a new pull request on [jenkins-infra/docker-openvpn](https://github.com/jenkins-infra/docker-openvpn)
+  * From your local branch (usually the `main` branch)
+  * Targeted to the remote `main` branch
+  * References the helpdesk issue in the PR message
+  * [GitHub documentation on how to create a pull request](https://help.github.com/articles/creating-a-pull-request/)
+
 * Grab a cup of coffee and wait patiently for an administrator to sign your certificate request
 * Once an admin notifies you that everything is setup, you can [sync your fork](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks/syncing-a-fork) then pull it to retrieve your certificate from `./cert/pki/issued/<your-jenkins-username>.crt`
 * We recommend you to move the generated files and the ca.cert to an hidden folder in your home (`~/.cert`):
@@ -55,18 +60,14 @@ Feel free to follow the next action points:
   cp ./cert/pki/ca.crt ~/.cert/jenkins-infra/ca.crt
   ```
 
-* You can finally create the config file used by your VPN client.
-
-Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, opening this file from the Finder should launch it:
-
-  _jenkins-infra.ovpn_
+* Then, create the following configuration file (wether your are on Linux, macOS or Windows) `jenkins-infra.ovpn` on your Desktop:
 
   ```text
   client
   remote vpn.jenkins.io 443
-  ca "~/.cert/jenkins-infra/ca.crt"
-  cert "~/.cert/jenkins-infra/<your-jenkins-username>.crt"
-  key "~/.cert/jenkins-infra/<your-jenkins-username>.key"
+  ca "/absolute/path/to/.cert/ca.crt"
+  cert "/absolute/path/to/.cert/<your-jenkins-username>.crt"
+  key "/absolute/path/to/.cert/<your-jenkins-username>.key"
   auth-user-pass
   dev tun
   proto tcp
@@ -80,7 +81,13 @@ Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, ope
   group nobody
   ```
 
-> #### With the [NetworkManager](https://wiki.archlinux.org/title/NetworkManager) client, **you must enable** the option `Use this connection only for resources on its network`
+  * Some important rules:
+    * The file name does not matter but it MUST have an extension `.ovpn` to let your system detect it
+    * The content of the file does not support the `~` shortcut, neither variables (`$HOME`/`%HOME%`). Please use absolute paths.
+  * Then import this file (e.g. double click or use the appropriate command line) into  your VPN tool:
+    * on macOS, we recommend using [Tunnelblick](https://tunnelblick.net/), an OpenVPN client
+    * on Linux, we recommend using [NetworkManager](https://wiki.archlinux.org/title/NetworkManager) client. Note that in that case, **you must enable** the option `Use this connection only for resources on its network`
+    * on Windows, we recommend using [OpenVPN Connect](https://openvpn.net/client-connect-vpn-for-windows/) client.
 
 #### Windows only
 
@@ -107,6 +114,7 @@ openssl req -in ~/.cert/pki/reqs/<your-jenkins-username>.req -pubkey -noout -out
 
 If you are having issues connecting to resources behind the VPN, but the VPN appears to be working correctly, check your DNS settings.  Some providers seem to filter out requests to the zone.  To test, try `dig release.ci.jenkins.io`, you should get something like this:
 
+<!-- markdownlint-disable MD033 -->
 <details><summary>dig output (click to expand)</summary>
 
 ```text
@@ -175,7 +183,8 @@ gh pr checkout <Pull Request ID>
 ```
 
 * Sign the certificate request: `./easyvpn sign <CN_to_sign>`
-* Commit and push on the current PR with `git add . && git commit -s -m "Sign CRL of <requester name>" && git push`
+* A git commit is automatically created on the local branch
+* Push the approval commit on the current pull request with `git push` (the remote and local branch name are configured by the `gh` command line)
 * Approve and merge the Pull Request to the `main` branch with the signed CRL
 * Once merged, a new tag should be created automatically with automatic publishing of the image
 * The Docker image tag should be automatically updated in the next 24h in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp) configuration.
@@ -187,6 +196,8 @@ gh pr checkout <Pull Request ID>
   * `make init_linux`
   * `make init_windows` and copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
 * Revoke the certificate: `./easyvpn revoke <CN_to_sign>`
+* A git commit is automatically created on the local branch
+* Push the revocation commit (PR or branch, whatever you choose)
 * The Docker image tag should be automatically updated in the next 24h in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp) configuration.
 
 #### HowTo review certificate revocation list
@@ -241,7 +252,7 @@ Some examples can be found inside [docker-compose.yaml](docker/docker-compose.ya
 
 To test this image, you need a "mock" ldap and SSL certificates, then go in the root folder and run `make start` to start the ldap and vpn service.
 
-> #### Certificates must be readable by UID 101!
+> ⚠️ Certificates must be readable by UID 101! ⚠️
 
 ## Infrastructure
 
@@ -256,12 +267,12 @@ Feel free to contribute to this image by:
 
 1. Fork this project into your account
 2. Make your changes in your local fork
-3. Submit a pull request with a description and a link to a Jira ticket
+3. Submit a pull request with a description and a link to a [jenkins-infra/helpdesk issue](https://github.com/jenkins-infra/helpdesk)
 4. Ask for a review
 
 ## Issue
 
-Please report any issue on the Jenkins infrastructure [project](https://issues.jenkins-ci.org/secure/Dashboard.jspa)
+Please report any issue on the Jenkins infrastructure [jenkins-infra/helpdesk tracker](https://github.com/jenkins-infra/helpdesk)
 
 ## Links
 
