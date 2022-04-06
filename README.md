@@ -60,18 +60,14 @@ Feel free to follow the next action points:
   cp ./cert/pki/ca.crt ~/.cert/jenkins-infra/ca.crt
   ```
 
-* You can finally create the config file used by your VPN client.
-
-Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, opening this file from the Finder should launch it:
-
-* File `jenkins-infra.ovpn`:
+* Then, create the following configuration file (wether your are on Linux, macOS or Windows) `jenkins-infra.ovpn` on your Desktop:
 
   ```text
   client
   remote vpn.jenkins.io 443
-  ca "~/.cert/jenkins-infra/ca.crt"
-  cert "~/.cert/jenkins-infra/<your-jenkins-username>.crt"
-  key "~/.cert/jenkins-infra/<your-jenkins-username>.key"
+  ca "/absolute/path/to/.cert/ca.crt"
+  cert "/absolute/path/to/.cert/<your-jenkins-username>.crt"
+  key "/absolute/path/to/.cert/<your-jenkins-username>.key"
   auth-user-pass
   dev tun
   proto tcp
@@ -85,7 +81,13 @@ Example here for [Tunnelblick](https://tunnelblick.net/), an OSX VPN client, ope
   group nobody
   ```
 
-> #### With the [NetworkManager](https://wiki.archlinux.org/title/NetworkManager) client, **you must enable** the option `Use this connection only for resources on its network`
+  * Some important rules:
+    * The file name does not matter but it MUST have an extension `.ovpn` to let your system detect it
+    * The content of the file does not support the `~` shortcut, neither variables (`$HOME`/`%HOME%`). Please use absolute paths.
+  * Then import this file (e.g. double click or use the appropriate command line) into  your VPN tool:
+    * on macOS, we recommend using [Tunnelblick](https://tunnelblick.net/), an OpenVPN client
+    * on Linux, we recommend using [NetworkManager](https://wiki.archlinux.org/title/NetworkManager) client. Note that in that case, **you must enable** the option `Use this connection only for resources on its network`
+    * on Windows, we recommend using [OpenVPN Connect](https://openvpn.net/client-connect-vpn-for-windows/) client.
 
 #### Windows only
 
