@@ -89,7 +89,7 @@ Feel free to follow the next action points:
     * on Linux, we recommend using [NetworkManager](https://wiki.archlinux.org/title/NetworkManager) client. Note that in that case, **you must enable** the option `Use this connection only for resources on its network`
     * on Windows, we recommend using [OpenVPN Connect](https://openvpn.net/client-connect-vpn-for-windows/) client.
 
-* ⚠️ When connecting, your VPN client requires a username and password. Use your Jenkins project account (same username + password as accounts.jenkins.io, issues.jenkins.io, ci.jenkins.io, etc.).
+* ⚠️ When connecting, your VPN client requires a username and password. Use your Jenkins project account (same username + password as accounts.jenkins.io, issues.jenkins.io, ci.jenkins.io).
 
 #### Windows only
 
