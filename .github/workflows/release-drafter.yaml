@@ -4,6 +4,7 @@ name: Release Drafter
 on:
   workflow_dispatch:
   push:
+  release:
 
 jobs:
   update_release_draft:
