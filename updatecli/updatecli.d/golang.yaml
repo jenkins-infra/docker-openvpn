@@ -15,18 +15,18 @@ scms:
 
 sources:
   latestGoVersion:
-    kind: githubRelease
+    kind: githubrelease
     name: Get the latest Golang version
     spec:
       owner: "golang"
       repository: "go"
       token: "{{ requiredEnv .github.token }}"
       username: "{{ .github.username }}"
-      versionFilter:
+      versionfilter:
         kind: regex
         pattern: 'go1\.(\d*)\.(\d*)$'
     transformers:
-      - trimPrefix: "go"
+      - trimprefix: "go"
   updatedGoMod:
     kind: shell
     depends_on:
@@ -50,8 +50,8 @@ targets:
     kind: file
     spec:
       file: ./utils/easyvpn/Makefile
-      matchPattern: 'GOLANG_VERSION \?= .*'
-      replacePattern: 'GOLANG_VERSION ?= {{ source "latestGoVersion" }}'
+      matchpattern: 'GOLANG_VERSION \?= .*'
+      replacepattern: 'GOLANG_VERSION ?= {{ source "latestGoVersion" }}'
     scmid: default
   updateJenkinsfile:
     name: "Update the golang docker image version for the Jenkinsfile pod container agent"
@@ -59,9 +59,9 @@ targets:
     kind: file
     spec:
       file: ./Jenkinsfile_k8s
-      matchPattern: >-
+      matchpattern: >-
         'golang:.*'
-      replacePattern: >-
+      replacepattern: >-
         'golang:{{ source `latestGoVersion` }}'
     scmid: default
 
