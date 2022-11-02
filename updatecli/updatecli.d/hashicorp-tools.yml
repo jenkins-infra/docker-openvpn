@@ -1,4 +1,5 @@
-title: Bump `hashicorp-tools` docker image version from latest image release
+---
+name: Bump `hashicorp-tools` docker image version
 
 scms:
   default:
@@ -46,8 +47,8 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateJenkinsFile
+    title: Bump `hashicorp-tools` docker image version to {{ source "dockerHashicorpToolsImageVersion" }}
     spec:
       labels:
         - dependencies
+        - hashicorp-tools

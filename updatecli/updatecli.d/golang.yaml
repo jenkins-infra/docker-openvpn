@@ -1,5 +1,5 @@
 ---
-title: "Bump golang version"
+name: Bump golang version
 
 scms:
   default:
@@ -29,12 +29,22 @@ sources:
       - trimprefix: "go"
   updatedGoMod:
     kind: shell
-    depends_on:
+    dependson:
       - latestGoVersion
     spec:
       command: ./updatecli/scripts/updateGomodGoversion.sh ./utils/easyvpn/go.mod {{ source "latestGoVersion" }}
       environments:
         - name: PATH
+
+conditions:
+  checkForDockerImage:
+    name: "Check for a Docker image golang:<versions> used by the Makefile and Jenkinsfiles"
+    kind: dockerimage
+    disablesourceinput: true
+    spec:
+      architecture: amd64
+      image: golang
+      tag: '{{ source "latestGoVersion" }}'
 
 targets:
   updateGomod:
@@ -69,10 +79,8 @@ pullrequests:
   default:
     kind: github
     scmid: default
-    targets:
-      - updateGomod
-      - updateMakefile
-      - updateJenkinsfile
+    title: Bump golang version to {{ source "latestGoVersion" }}
     spec:
       labels:
         - dependencies
+        - golang
