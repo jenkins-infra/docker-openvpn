@@ -44,9 +44,9 @@ function ensure_required_variables {
   : "${AUTH_LDAP_GROUPS_MEMBER:? AUTH_LDAP_GROUPS_MEMBER required}"
 }
 
-function copy_clients_certificates {
+function copy_client_configurations_directory {
   if [[ -z "${OPENVPN_NETWORK}" ]]; then
-    echo "No OPENVPN_NETWORK env var set, no cdd copied."
+    echo "No OPENVPN_NETWORK env var set: no ccd copied."
   else
     mkdir -p /etc/openvpn/server/cdd
     cp /home/openvpn/available-ccd-folders/${OPENVPN_NETWORK}/* /etc/openvpn/server/cdd
@@ -68,7 +68,7 @@ function start_openvpn {
 }
 
 ensure_required_variables
-copy_clients_certificates
+copy_client_configurations_directory
 configure_tun
 configure_certificates
 configure_openvpn
