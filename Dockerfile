@@ -16,7 +16,7 @@ RUN addgroup --gid 101 openvpn \
 
 COPY --chown=openvpn cert/pki/ca.crt /etc/openvpn/server/ca.crt
 COPY --chown=openvpn cert/pki/crl.pem /etc/openvpn/server/crl.pem
-COPY --chown=openvpn cert/ccd /home/openvpn/available-ccd-folders
+COPY --chown=openvpn cert/ccd /home/openvpn/available-ccds
 
 COPY docker/config/server.conf /etc/openvpn/server/server.conf
 COPY docker/config/auth-ldap.conf /etc/openvpn/server/auth-ldap.conf
