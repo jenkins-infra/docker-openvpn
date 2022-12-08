@@ -44,6 +44,15 @@ function ensure_required_variables {
   : "${AUTH_LDAP_GROUPS_MEMBER:? AUTH_LDAP_GROUPS_MEMBER required}"
 }
 
+function copy_clients_certificates {
+  if [[ -z "${OPENVPN_NETWORK}" ]]; then
+    echo "No OPENVPN_NETWORK env var set, no cdd copied."
+  else
+    mkdir -p /etc/openvpn/server/cdd
+    cp /home/openvpn/available-ccd-folders/${OPENVPN_NETWORK}/* /etc/openvpn/server/cdd
+  fi
+}
+
 # Use ~ in order to avoid wrong interpration with / in sed command.
 # Sed should be replaced by something more robust in the futur.
 
@@ -59,6 +68,7 @@ function start_openvpn {
 }
 
 ensure_required_variables
+copy_clients_certificates
 configure_tun
 configure_certificates
 configure_openvpn

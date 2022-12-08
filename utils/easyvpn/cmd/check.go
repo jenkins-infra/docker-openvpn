@@ -10,6 +10,7 @@ import (
 func init() {
 	rootCmd.AddCommand(checkCmd)
 	checkCmd.Flags().StringVarP(&CertDir, "cert", "c", "cert", "Cert Directory")
+	checkCmd.Flags().StringVarP(&Network, "network", "net", "default", "Network")
 }
 
 var checkCmd = &cobra.Command{
@@ -22,7 +23,7 @@ var checkCmd = &cobra.Command{
 		if result, _ := checks.IsAllCertsSigned(CertDir); !result {
 			rc = 1
 		}
-		if result, _ := checks.IsAllClientConfigured(CertDir); !result {
+		if result, _ := checks.IsAllClientConfigured(CertDir, Network); !result {
 			rc = 1
 		}
 

@@ -17,6 +17,7 @@ func init() {
 	revokeCmd.Flags().BoolVarP(&Commit, "commit", "", true, "git commit changes")
 	revokeCmd.Flags().BoolVarP(&Push, "push", "", true, "git push changes")
 	revokeCmd.Flags().StringVarP(&CertDir, "cert", "c", "cert", "Cert Directory")
+	checkCmd.Flags().StringVarP(&Network, "network", "net", "default", "Network")
 }
 
 var revokeCmd = &cobra.Command{
@@ -34,7 +35,7 @@ var revokeCmd = &cobra.Command{
 			}
 		}
 		for i := range args {
-			network.DeleteClientConfig(path.Join(CertDir, "ccd", args[i]))
+			network.DeleteClientConfig(path.Join(CertDir, "ccd", Network, args[i]))
 		}
 
 		fileToDelete := []string{
@@ -59,7 +60,7 @@ var revokeCmd = &cobra.Command{
 					path.Join(CertDir, "pki", "certs_by_serial"),
 					path.Join(CertDir, "pki", "index.txt.attr"),
 					path.Join(CertDir, "pki", "revoked"),
-					path.Join(CertDir, "ccd", args[i]),
+					path.Join(CertDir, "ccd", Network, args[i]),
 				}
 				git.Add(files)
 				git.Commit(files, msg)
