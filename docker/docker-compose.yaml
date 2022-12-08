@@ -15,7 +15,7 @@ services:
         - "AUTH_LDAP_GROUPS_MEMBER=cn=all"
         - "OPENVPN_NETWORK=mocked-vnet"
     volumes:
-        - ./mock/vpn/ccd:/home/openvpn/available-ccd-folders:ro
+        - ./mock/vpn/ccd:/home/openvpn/available-ccds:ro
         - ./mock/vpn/ca.crt:/etc/openvpn/server/ca.crt:ro
         - ./mock/ldap/ca.crt:/usr/local/share/ca-certificates/ldapca.crt:ro
         - ./mock/vpn/vpn.crt:/etc/openvpn/server/server.crt:ro
