@@ -48,8 +48,8 @@ function copy_client_configurations_directory {
   if [[ -z "${OPENVPN_NETWORK}" ]]; then
     echo "No OPENVPN_NETWORK env var set: no ccd copied."
   else
-    mkdir -p /etc/openvpn/server/cdd
-    cp /home/openvpn/available-ccd-folders/${OPENVPN_NETWORK}/* /etc/openvpn/server/cdd
+    mkdir -p /etc/openvpn/server/ccd
+    cp /home/openvpn/available-ccds/${OPENVPN_NETWORK}/* /etc/openvpn/server/ccd
   fi
 }
 
