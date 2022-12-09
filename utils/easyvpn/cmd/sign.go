@@ -55,7 +55,7 @@ var signCmd = &cobra.Command{
 		}
 
 		for i := 0; i < len(args); i++ {
-			network.CreateClientConfig(args[i], ccd)
+			network.CreateClientConfig(args[i], path.Join(ccd, net))
 
 			// Commit changes
 			if commit {
