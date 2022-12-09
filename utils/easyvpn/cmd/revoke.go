@@ -17,7 +17,7 @@ func init() {
 	revokeCmd.Flags().BoolVarP(&Commit, "commit", "", true, "git commit changes")
 	revokeCmd.Flags().BoolVarP(&Push, "push", "", true, "git push changes")
 	revokeCmd.Flags().StringVarP(&CertDir, "cert", "c", "cert", "Cert Directory")
-	checkCmd.Flags().StringVarP(&Network, "network", "net", "default", "Network")
+	revokeCmd.Flags().StringVarP(&Network, "network", "", "default", "Network")
 }
 
 var revokeCmd = &cobra.Command{

@@ -10,7 +10,6 @@ import (
 func init() {
 	rootCmd.AddCommand(checkCmd)
 	checkCmd.Flags().StringVarP(&CertDir, "cert", "c", "cert", "Cert Directory")
-	checkCmd.Flags().StringVarP(&Network, "network", "net", "default", "Network")
 }
 
 var checkCmd = &cobra.Command{
