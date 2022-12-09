@@ -82,8 +82,6 @@ Feel free to follow the next action points:
   ```
 
 
-Note: if you ever need to access the private.vpn.jenkins.io (distinct from vpn.jenkins.io), please specify it in your request and set it as `remote` in your openvpn configuration file.
-
   * Some important rules:
     * The file name does not matter but it MUST have an extension `.ovpn` to let your system detect it
     * The content of the file does not support the `~` shortcut, neither variables (`$HOME`/`%HOME%`). Please use absolute paths.
@@ -188,7 +186,7 @@ gh pr checkout <Pull Request ID>
 ```
 
 * Sign the certificate request: `./easyvpn sign <CN_to_sign>`
-  * by default this will create a Client Configuration file for the "default" VPN (vpn.jenkins.io), and store this file into the `./cert/ccd/default/` folder
+  * by default this will create a Client Configuration file for the "default" VPN (vpn.jenkins.io), and store this file in  `./cert/ccd/default/`
   * For private.vpn.jenkins.io, you have to add the "private" network as argument: `./easyvpn sign --net=private <CN_to_sign>`. The generated ccd file will be stored in `./cert/ccd/private/`
 * A git commit is automatically created on the local branch
 * Push the approval commit on the current pull request with `git push` (the remote and local branch name are configured by the `gh` command line)
