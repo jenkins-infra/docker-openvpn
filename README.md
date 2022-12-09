@@ -81,7 +81,6 @@ Feel free to follow the next action points:
   group nobody
   ```
 
-
   * Some important rules:
     * The file name does not matter but it MUST have an extension `.ovpn` to let your system detect it
     * The content of the file does not support the `~` shortcut, neither variables (`$HOME`/`%HOME%`). Please use absolute paths.
