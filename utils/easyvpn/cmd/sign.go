@@ -24,7 +24,7 @@ func init() {
 	signCmd.Flags().StringVarP(&certDir, "certsDir", "", "cert", "Cert Directory")
 	signCmd.Flags().StringVarP(&ccd, "ccd", "", "cert/ccd", "Client Config Directory")
 	signCmd.Flags().StringVarP(&config, "config", "", "config.yaml", "Network Configuration File")
-	signCmd.Flags().StringVarP(&net, "net", "", "default", "Network to assign the cn")
+	signCmd.Flags().StringVarP(&net, "net", "n", "default", "Network to assign the cn")
 
 }
 
