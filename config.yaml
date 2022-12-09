@@ -26,7 +26,7 @@ networks:
     - name: private
       # private-vnet-vpn, defined in jenkins-infra/azure-net
       iprange: 10.248.0.0/28
-      netmask: 255.255.254.0
+      netmask: 255.255.255.240
       routes:
           # private-vnet, defined in jenkins-infra/azure-net
           - 10.248.0.0/14
