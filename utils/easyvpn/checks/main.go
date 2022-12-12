@@ -51,7 +51,7 @@ func IsAllCertsSigned(certDir string) (bool, []error) {
 
 		if reqCN[0] != crtCN[0] {
 			result = false
-			msg := fmt.Sprintf("Requested and signed certificte mismatch:\n\t%v should match %v\n", req[i], crt[i])
+			msg := fmt.Sprintf("Requested and signed certificate mismatch:\n\t%v should match %v\n", req[i], crt[i])
 			err := errors.New(msg)
 			fmt.Println(err)
 			errs = append(errs, err)
@@ -61,11 +61,11 @@ func IsAllCertsSigned(certDir string) (bool, []error) {
 }
 
 // IsAllClientConfigured validate that all signed certificate have client configuration
-func IsAllClientConfigured(certDir string) (bool, []error) {
+func IsAllClientConfigured(certDir string, net string) (bool, []error) {
 
 	var errs []error
 	result := true
-	clientConfig := helpers.GetUsernameFile(path.Join(certDir, "ccd"), "")
+	clientConfig := helpers.GetUsernameFile(path.Join(certDir, "ccd", net), "")
 	crt := helpers.GetUsernameFile(path.Join(certDir, "pki/issued"), ".crt")
 
 	sort.Slice(clientConfig, func(i, j int) bool { return clientConfig[i] < clientConfig[j] })

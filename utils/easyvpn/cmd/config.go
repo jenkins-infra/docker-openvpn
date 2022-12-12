@@ -33,9 +33,9 @@ var configCmd = &cobra.Command{
 
 		if delete == true {
 			for j := 0; j < len(args); j++ {
-				network.DeleteClientConfig(path.Join(ccd, args[j]))
+				network.DeleteClientConfig(path.Join(ccd, net, args[j]))
 				if commit {
-					msg := fmt.Sprintf("[infra-admin] Delete %v network configuration", args[j])
+					msg := fmt.Sprintf("[infra-admin] Delete %v in '%v' network configuration", args[j], net)
 					files := []string{
 						path.Join(ccd, args[j]),
 					}
@@ -54,12 +54,12 @@ var configCmd = &cobra.Command{
 			}
 
 			for j := 0; j < len(args); j++ {
-				network.CreateClientConfig(args[j], ccd)
+				network.CreateClientConfig(args[j], path.Join(ccd, net))
 
 				if commit {
-					msg := fmt.Sprintf("[infra-admin] Update %v network configuration", args[j])
+					msg := fmt.Sprintf("[infra-admin] Update %v in '%v' network configuration", args[j], net)
 					files := []string{
-						path.Join(ccd, args[j]),
+						path.Join(ccd, net, args[j]),
 					}
 					git.Add(files)
 					git.Commit(files, msg)
