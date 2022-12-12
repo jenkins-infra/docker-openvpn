@@ -45,12 +45,9 @@ function ensure_required_variables {
 }
 
 function copy_client_configurations_directory {
-  if [[ -z "${OPENVPN_NETWORK}" ]]; then
-    echo "No OPENVPN_NETWORK env var set: no ccd copied."
-  else
-    mkdir -p /etc/openvpn/server/ccd
-    cp /home/openvpn/available-ccds/${OPENVPN_NETWORK}/* /etc/openvpn/server/ccd
-  fi
+  : "${OPENVPN_NETWORK:? OPENVPN_NETWORK required}"
+  mkdir -p /etc/openvpn/server/ccd
+  cp /home/openvpn/available-ccds/${OPENVPN_NETWORK}/* /etc/openvpn/server/ccd
 }
 
 # Use ~ in order to avoid wrong interpration with / in sed command.
