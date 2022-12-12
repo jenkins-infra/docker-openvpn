@@ -24,7 +24,7 @@ func init() {
 	signCmd.Flags().StringVarP(&certDir, "certsDir", "", "cert", "Cert Directory")
 	signCmd.Flags().StringVarP(&ccd, "ccd", "", "cert/ccd", "Client Config Directory")
 	signCmd.Flags().StringVarP(&config, "config", "", "config.yaml", "Network Configuration File")
-	signCmd.Flags().StringVarP(&net, "net", "", "default", "Network to assign the cn")
+	signCmd.Flags().StringVarP(&net, "net", "n", "default", "Network to assign the cn")
 
 }
 
@@ -55,7 +55,7 @@ var signCmd = &cobra.Command{
 		}
 
 		for i := 0; i < len(args); i++ {
-			network.CreateClientConfig(args[i], ccd)
+			network.CreateClientConfig(args[i], path.Join(ccd, net))
 
 			// Commit changes
 			if commit {
@@ -66,7 +66,7 @@ var signCmd = &cobra.Command{
 					path.Join(CertDir, "pki", "index.txt.attr"),
 					path.Join(CertDir, "pki", "certs_by_serial"),
 					path.Join(CertDir, "pki", "serial"),
-					path.Join(CertDir, "ccd", args[i]),
+					path.Join(CertDir, "ccd", net, args[i]),
 				}
 				git.Add(files)
 				git.Commit(files, msg)

@@ -2,8 +2,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
@@ -13,6 +14,9 @@ var rootCmd = &cobra.Command{
 
 // CertDir define cert directory path
 var CertDir string
+
+// Net define network to use (determine the ccd to use)
+var Network string
 
 // Commit define if changes must be committed or not
 var Commit bool

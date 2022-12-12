@@ -22,7 +22,7 @@ var checkCmd = &cobra.Command{
 		if result, _ := checks.IsAllCertsSigned(CertDir); !result {
 			rc = 1
 		}
-		if result, _ := checks.IsAllClientConfigured(CertDir); !result {
+		if result, _ := checks.IsAllClientConfigured(CertDir, Network); !result {
 			rc = 1
 		}
 
