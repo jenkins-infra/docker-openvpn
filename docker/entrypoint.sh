@@ -11,7 +11,7 @@ function ensure_required_variables {
   : "${AUTH_LDAP_GROUPS_MEMBER:? AUTH_LDAP_GROUPS_MEMBER required}"
   : "${OPENVPN_SERVER_SUBNET:? OPENVPN_SERVER_SUBNET required}"
   : "${OPENVPN_SERVER_MASK:? OPENVPN_SERVER_MASK required}"
-  : "${OPENVPN_NETWORK:? OPENVPN_NETWORK required}"
+  : "${OPENVPN_NETWORK_NAME:? OPENVPN_NETWORK_NAME required}"
 }
 
 function configure_tun {
@@ -49,7 +49,7 @@ function configure_certificates {
 
 function copy_client_configurations_directory {
   mkdir -p /etc/openvpn/server/ccd
-  cp /home/openvpn/available-ccds/${OPENVPN_NETWORK}/* /etc/openvpn/server/ccd
+  cp /home/openvpn/available-ccds/${OPENVPN_NETWORK_NAME}/* /etc/openvpn/server/ccd
 }
 
 # Use ~ in order to avoid wrong interpration with / in sed command.

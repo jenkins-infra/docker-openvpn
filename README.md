@@ -249,6 +249,9 @@ This image can be configured at runtime with different environment variables:
 * `AUTH_LDAP_URL` **Define ldap endpoint url**
 * `AUTH_LDAP_PASSWORD` **Define user dn password**
 * `AUTH_LDAP_GROUPS_MEMBER` **Define required group member to authenticate**
+* `OPENVPN_NETWORK_NAME` **Define the network name from config.yaml to use**
+* `OPENVPN_SERVER_SUBNET` **Define the VPN subnet**
+* `OPENVPN_SERVER_MASK` **Define the mask associated to the VPN subnet**
 
 Some examples can be found inside [docker-compose.yaml](docker/docker-compose.yaml)
 
