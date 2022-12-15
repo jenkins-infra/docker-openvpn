@@ -13,7 +13,9 @@ services:
         - "AUTH_LDAP_URL=ldaps://ldap"
         - "AUTH_LDAP_BINDDN=cn=admin,dc=jenkins-ci,dc=org"
         - "AUTH_LDAP_GROUPS_MEMBER=cn=all"
-        - "OPENVPN_NETWORK=mocked-vnet"
+        - "OPENVPN_NETWORK_NAME=mocked-vnet"
+        - "OPENVPN_SERVER_SUBNET=10.8.0.0"
+        - "OPENVPN_SERVER_MASK=255.255.254.0"
     volumes:
         - ./mock/vpn/ccd:/home/openvpn/available-ccds:ro
         - ./mock/vpn/ca.crt:/etc/openvpn/server/ca.crt:ro
