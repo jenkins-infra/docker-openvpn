@@ -4,6 +4,16 @@ set -e
 
 OPENVPN_CONF_DIR='/etc/openvpn/server'
 
+function ensure_required_variables {
+  : "${AUTH_LDAP_PASSWORD:? AUTH_LDAP_PASSWORD required}"
+  : "${AUTH_LDAP_URL:? AUTH_LDAP_URL required}"
+  : "${AUTH_LDAP_BINDDN:? AUTH_LDAP_BINDDN required}"
+  : "${AUTH_LDAP_GROUPS_MEMBER:? AUTH_LDAP_GROUPS_MEMBER required}"
+  : "${OPENVPN_SERVER_SUBNET:? OPENVPN_SERVER_SUBNET required}"
+  : "${OPENVPN_SERVER_MASK:? OPENVPN_SERVER_MASK required}"
+  : "${OPENVPN_NETWORK:? OPENVPN_NETWORK required}"
+}
+
 function configure_tun {
   [ -d /dev/net ] ||
     mkdir -p /dev/net
@@ -37,15 +47,7 @@ function configure_certificates {
   fi
 }
 
-function ensure_required_variables {
-  : "${AUTH_LDAP_PASSWORD:? AUTH_LDAP_PASSWORD required}"
-  : "${AUTH_LDAP_URL:? AUTH_LDAP_URL required}"
-  : "${AUTH_LDAP_BINDDN:? AUTH_LDAP_BINDDN required}"
-  : "${AUTH_LDAP_GROUPS_MEMBER:? AUTH_LDAP_GROUPS_MEMBER required}"
-}
-
 function copy_client_configurations_directory {
-  : "${OPENVPN_NETWORK:? OPENVPN_NETWORK required}"
   mkdir -p /etc/openvpn/server/ccd
   cp /home/openvpn/available-ccds/${OPENVPN_NETWORK}/* /etc/openvpn/server/ccd
 }
@@ -53,7 +55,12 @@ function copy_client_configurations_directory {
 # Use ~ in order to avoid wrong interpration with / in sed command.
 # Sed should be replaced by something more robust in the futur.
 
-function configure_openvpn {
+function configure_openvpn_server {
+  sed -i "s~OPENVPN_SERVER_SUBNET~$OPENVPN_SERVER_SUBNET~g" "$OPENVPN_CONF_DIR/server.conf"
+  sed -i "s~OPENVPN_SERVER_MASK~$OPENVPN_SERVER_MASK~g" "$OPENVPN_CONF_DIR/server.conf"
+}
+
+function configure_openvpn_ldap {
   sed -i "s~AUTH_LDAP_PASSWORD~$AUTH_LDAP_PASSWORD~g" "$OPENVPN_CONF_DIR/auth-ldap.conf"
   sed -i "s~AUTH_LDAP_URL~$AUTH_LDAP_URL~g" "$OPENVPN_CONF_DIR/auth-ldap.conf"
   sed -i "s~AUTH_LDAP_BINDDN~$AUTH_LDAP_BINDDN~g" "$OPENVPN_CONF_DIR/auth-ldap.conf"
@@ -68,5 +75,6 @@ ensure_required_variables
 copy_client_configurations_directory
 configure_tun
 configure_certificates
-configure_openvpn
+configure_openvpn_server
+configure_openvpn_ldap
 start_openvpn
