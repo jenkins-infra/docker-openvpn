@@ -10,7 +10,7 @@ function ensure_required_variables {
   : "${AUTH_LDAP_BINDDN:? AUTH_LDAP_BINDDN required}"
   : "${AUTH_LDAP_GROUPS_MEMBER:? AUTH_LDAP_GROUPS_MEMBER required}"
   : "${OPENVPN_SERVER_SUBNET:? OPENVPN_SERVER_SUBNET required}"
-  : "${OPENVPN_SERVER_MASK:? OPENVPN_SERVER_MASK required}"
+  : "${OPENVPN_SERVER_NETMASK:? OPENVPN_SERVER_NETMASK required}"
   : "${OPENVPN_NETWORK_NAME:? OPENVPN_NETWORK_NAME required}"
 }
 
@@ -57,7 +57,7 @@ function copy_client_configurations_directory {
 
 function configure_openvpn_server {
   sed -i "s~OPENVPN_SERVER_SUBNET~$OPENVPN_SERVER_SUBNET~g" "$OPENVPN_CONF_DIR/server.conf"
-  sed -i "s~OPENVPN_SERVER_MASK~$OPENVPN_SERVER_MASK~g" "$OPENVPN_CONF_DIR/server.conf"
+  sed -i "s~OPENVPN_SERVER_NETMASK~$OPENVPN_SERVER_NETMASK~g" "$OPENVPN_CONF_DIR/server.conf"
 }
 
 function configure_openvpn_ldap {
