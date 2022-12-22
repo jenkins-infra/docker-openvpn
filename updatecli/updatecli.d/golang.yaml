@@ -75,9 +75,9 @@ targets:
         'golang:{{ source `latestGoVersion` }}'
     scmid: default
 
-pullrequests:
+actions:
   default:
-    kind: github
+    kind: github/pullrequest
     scmid: default
     title: Bump golang version to {{ source "latestGoVersion" }}
     spec:
