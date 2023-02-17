@@ -6,10 +6,8 @@ parallel(
     podTemplate(
       containers: [
         containerTemplate(
-          name: 'golang',
-          image: 'golang:1.19.5',
-          command: 'cat',
-          ttyEnabled: true,
+          name: 'jnlp',
+          image: dockerImage,
           resourceRequestCpu: '2',
           resourceLimitCpu: '2',
           resourceRequestMemory: '2Gi',
@@ -18,11 +16,9 @@ parallel(
       ]
     ) {
       node(POD_LABEL) {
-        container('golang') {
-          checkout scm
-          dir('utils/easyvpn') {
-            sh 'make build_linux'
-          }
+        checkout scm
+        dir('utils/easyvpn') {
+          sh 'make build_linux'
         }
       }
     }
