@@ -38,7 +38,7 @@ sources:
 
 conditions:
   checkForDockerImage:
-    name: "Check for a Docker image golang:<versions> used by the Makefile and Jenkinsfiles"
+    name: "Check for a Docker image golang:<versions> used by the Makefile"
     kind: dockerimage
     disablesourceinput: true
     spec:
@@ -62,17 +62,6 @@ targets:
       file: ./utils/easyvpn/Makefile
       matchpattern: 'GOLANG_VERSION \?= .*'
       replacepattern: 'GOLANG_VERSION ?= {{ source "latestGoVersion" }}'
-    scmid: default
-  updateJenkinsfile:
-    name: "Update the golang docker image version for the Jenkinsfile pod container agent"
-    sourceid: latestGoVersion
-    kind: file
-    spec:
-      file: ./Jenkinsfile_k8s
-      matchpattern: >-
-        'golang:.*'
-      replacepattern: >-
-        'golang:{{ source `latestGoVersion` }}'
     scmid: default
 
 actions:
