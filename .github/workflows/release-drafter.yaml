@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   push:
   release:
+    types: [released]
 jobs:
   update_release_draft:
     runs-on: ubuntu-20.04
