@@ -204,7 +204,7 @@ gh pr checkout <Pull Request ID>
 * Push the revocation commit (PR or branch, whatever you choose)
 * The Docker image tag should be automatically updated in the next 24h in the [puppet](https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp) configuration.
 
-#### HowTo review certificate revocation list
+#### HowTo renew certificate revocation list
 
 If the [CRL (Certificate Revocation list)](https://en.wikipedia.org/wiki/Certificate_revocation_list) expired, then the OpenVPN logs will contain errors like 'VERIFY ERROR: depth=0, error=CRL has expired:...'
 We can run `openssl crl -in ./cert/pki/crl.pem -noout -text` to validate that the CRL expired and that we need to generate a new one.
@@ -216,7 +216,7 @@ To generate a new CRL:
 * Publish the new crl.pem - `git add ./cert/pki/crl.pem && git commit ./cert/pki/crl.pem -s -m 'Renew revocation list certificate'`
 * Delete local ca.key - `rm ./cert/pki/private/ca.key`
 
-### How to Renew Server-side Certificate?
+### HowTo Renew Server-side Certificate?
 
 * Build EASYVPN binary by running one of the following commands depending on your operating system:
   * `make init_osx`
