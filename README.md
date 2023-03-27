@@ -32,6 +32,7 @@ Then this certificate must be signed by an administrator who also assigns you a 
 Feel free to follow the next action points:
 
 * Open an issue on [jenkins-infra/helpdesk](https://github.com/jenkins-infra/helpdesk) describing the reason why you need an access to the VPN
+  * If you need to access infra.ci.jenkins.io or release.ci.jenkins.io, mention it in your request to get access to the private VPN needed for these instances.
 * [Fork](https://help.github.com/articles/fork-a-repo/) this repository on your own Github account: [fork the repo](https://github.com/jenkins-infra/docker-openvpn/fork)
 * Clone your fork locally: `git clone https://github.com/<your-github-username>/docker-openvpn && cd docker-openvpn`
 * Build EASYVPN binary by running one of the following commands depending on your operating system:
@@ -88,6 +89,10 @@ Feel free to follow the next action points:
     * on macOS, we recommend using [Tunnelblick](https://tunnelblick.net/), an OpenVPN client
     * on Linux, we recommend using [NetworkManager](https://wiki.archlinux.org/title/NetworkManager) client. Note that in that case, **you must enable** the option `Use this connection only for resources on its network`
     * on Windows, we recommend using [OpenVPN Connect](https://openvpn.net/client-connect-vpn-for-windows/) client.
+
+* If you asked access to the private VPN in order to operate on infra.ci.jenkins.io or release.ci.jenkins.io,
+  you'll need to create another OpenVPN configuration file like the one for vpn.jenkins.io, with the same configuration file as above but named `private-jenkins-infra.ovpn`,
+  and with `remote private.vpn.jenkins.io 443` instead of `remote vpn.private.jenkins.io 443` on the second line.
 
 * ⚠️ When connecting, your VPN client requires a username and password. Use your Jenkins project account (same username + password as accounts.jenkins.io, issues.jenkins.io, ci.jenkins.io).
 
