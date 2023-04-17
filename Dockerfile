@@ -1,5 +1,6 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
+# We want to use the latest available packages
 # hadolint ignore=DL3008
 RUN addgroup --gid 101 openvpn \
   && useradd -d /var/lib/ldap/ -g openvpn -m -u 101 openvpn \
