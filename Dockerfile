@@ -12,8 +12,7 @@ RUN addgroup --gid 101 openvpn \
     openvpn \
     openvpn-auth-ldap \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-  && mkdir /etc/ldap/ssl
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY --chown=openvpn cert/pki/ca.crt /etc/openvpn/server/ca.crt
 COPY --chown=openvpn cert/pki/crl.pem /etc/openvpn/server/crl.pem
