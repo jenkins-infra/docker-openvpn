@@ -22,7 +22,6 @@ COPY docker/config/server.conf /etc/openvpn/server/server.conf
 COPY docker/config/auth-ldap.conf /etc/openvpn/server/auth-ldap.conf
 
 COPY docker/entrypoint.sh /entrypoint.sh
-RUN chmod 0750 /entrypoint.sh
 
 LABEL io.jenkins-infra.tools="curl,dnsmasq,openvpn"
 
