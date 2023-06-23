@@ -4,8 +4,8 @@ go 1.20
 
 require (
 	// runc is not directly needed but it allows dependabot to bump it
-	github.com/opencontainers/runc v1.1.2 // indirect
-	github.com/spf13/cobra v1.6.1
+	github.com/opencontainers/runc v1.1.5 // indirect
+	github.com/spf13/cobra v1.7.0
 	go.mozilla.org/sops/v3 v3.7.3
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -29,7 +29,7 @@ require (
 	github.com/aws/aws-sdk-go v1.44.202 // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/cenkalti/backoff/v3 v3.2.2 // indirect
-	github.com/cloudflare/circl v1.3.2 // indirect
+	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/fatih/color v1.14.1 // indirect
 	github.com/golang-jwt/jwt/v4 v4.4.3 // indirect

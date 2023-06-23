@@ -26,30 +26,30 @@ function configure_certificates {
   # then this command ensures that these CAs are added to the default CA bundle
   update-ca-certificates
 
-  if [ ! -f '/etc/openvpn/server/ca.crt' ]; then
+  if [ ! -f "${OPENVPN_CONF_DIR}"/ca.crt ]; then
     : "${OPENVPN_CA_PEM:? Missing OPENVPN_CA_PEM}"
-    echo "$OPENVPN_CA_PEM" > /etc/openvpn/server/ca.crt
+    echo "$OPENVPN_CA_PEM" > "${OPENVPN_CONF_DIR}"/ca.crt
   fi
 
-  if [ ! -f '/etc/openvpn/server/server.key' ]; then
+  if [ ! -f "${OPENVPN_CONF_DIR}"/server.key ]; then
     : "${OPENVPN_SERVER_KEY:? Missing OPENVPN_SERVER_KEY }"
-    echo "$OPENVPN_SERVER_KEY" > /etc/openvpn/server/server.key
+    echo "$OPENVPN_SERVER_KEY" > "${OPENVPN_CONF_DIR}"/server.key
   fi
 
-  if [ ! -f '/etc/openvpn/server/server.crt' ]; then
+  if [ ! -f "${OPENVPN_CONF_DIR}"/server.crt ]; then
     : "${OPENVPN_SERVER_PEM:? Missing OPENVPN_SERVER_PEM }"
-    echo "$OPENVPN_SERVER_PEM" > /etc/openvpn/server/server.crt
+    echo "$OPENVPN_SERVER_PEM" > "${OPENVPN_CONF_DIR}"/server.crt
   fi
 
-  if [ ! -f '/etc/openvpn/server/dh.pem' ]; then
+  if [ ! -f "${OPENVPN_CONF_DIR}"/dh.pem ]; then
     : "${OPENVPN_DH_PEM:? Missing OPENVPN_DH_PEM }"
-    echo "$OPENVPN_DH_PEM" > /etc/openvpn/server/dh.pem
+    echo "$OPENVPN_DH_PEM" > "${OPENVPN_CONF_DIR}"/dh.pem
   fi
 }
 
 function copy_client_configurations_directory {
-  mkdir -p /etc/openvpn/server/ccd
-  cp /home/openvpn/available-ccds/${OPENVPN_NETWORK_NAME}/* /etc/openvpn/server/ccd
+  mkdir -p "${OPENVPN_CONF_DIR}"/ccd
+  cp /home/openvpn/available-ccds/"${OPENVPN_NETWORK_NAME}"/* "${OPENVPN_CONF_DIR}"/ccd
 }
 
 # Use ~ in order to avoid wrong interpration with / in sed command.
@@ -68,6 +68,9 @@ function configure_openvpn_ldap {
 }
 
 function start_openvpn {
+  chown -R openvpn "${OPENVPN_CONF_DIR}"
+  chmod 0600 "${OPENVPN_CONF_DIR}"/*
+  chmod 0700 "${OPENVPN_CONF_DIR}" "${OPENVPN_CONF_DIR}/ccd"
   openvpn --config "$OPENVPN_CONF_DIR/server.conf"
 }
 
