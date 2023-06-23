@@ -92,7 +92,7 @@ Feel free to follow the next action points:
 
 * If you asked access to the private VPN in order to operate on infra.ci.jenkins.io or release.ci.jenkins.io,
   you'll need to create another OpenVPN configuration file like the one for vpn.jenkins.io, with the same configuration file as above but named `private-jenkins-infra.ovpn`,
-  and with `remote private.vpn.jenkins.io 443` instead of `remote vpn.private.jenkins.io 443` on the second line.
+  and with `remote private.vpn.jenkins.io 443` instead of `remote vpn.jenkins.io 443` on the second line.
 
 * ⚠️ When connecting, your VPN client requires a username and password. Use your Jenkins project account (same username + password as accounts.jenkins.io, issues.jenkins.io, ci.jenkins.io).
 
