@@ -15,7 +15,7 @@ services:
         - "AUTH_LDAP_GROUPS_MEMBER=cn=all"
         - "OPENVPN_NETWORK_NAME=mocked-vnet"
         - "OPENVPN_SERVER_SUBNET=10.8.0.0"
-        - "OPENVPN_SERVER_NETMASK=255.255.254.0"
+        - "OPENVPN_SERVER_NETMASK=255.255.255.0"
     volumes:
         - ./mock/vpn/ccd:/home/openvpn/available-ccds:ro
         - ./mock/vpn/ca.crt:/etc/openvpn/server/ca.crt:ro
