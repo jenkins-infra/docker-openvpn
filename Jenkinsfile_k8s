@@ -1,6 +1,6 @@
 properties([buildDiscarder(logRotator(daysToKeepStr: '15'))])
  
-def dockerImage = 'jenkinsciinfra/hashicorp-tools:0.6.4' // Tracked by updatecli
+def dockerImage = 'jenkinsciinfra/hashicorp-tools:1.0.0' // Tracked by updatecli
 
 parallel(
   failFast: true,
