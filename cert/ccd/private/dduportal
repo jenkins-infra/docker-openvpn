@@ -5,3 +5,5 @@ push "route 10.244.0.0 255.252.0.0"
 push "route 10.248.0.0 255.252.0.0"
 # public-db vnet
 push "route 10.252.0.0 255.255.248.0"
+# cert-ci-jenkins-io vnet
+push "route 10.252.8.0 255.255.248.0"
