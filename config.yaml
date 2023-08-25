@@ -22,3 +22,6 @@ networks:
           - 10.244.0.0/14
           # public-db vnet, defined in jenkins-infra/azure-net
           - 10.252.0.0/21
+          # cert-ci-jenkins-io vnet, defined in jenkins-infra/azure-net
+          # TODO: add manually to users whom require access to this instance (JenSec, Infra)
+          # - 10.252.8.0/21
