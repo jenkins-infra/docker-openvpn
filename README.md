@@ -39,6 +39,7 @@ Feel free to follow the next action points:
   * `make init_osx`
   * `make init_linux`
   * `make init_windows` then copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
+
 * Generate your private key and certificate request: `./easyvpn request <your-jenkins-username>`
   Your private key will be generated in `./cert/pki/private`
 
@@ -61,11 +62,11 @@ Feel free to follow the next action points:
   cp ./cert/pki/ca.crt ~/.cert/jenkins-infra/ca.crt
   ```
 
-* Then, create the following configuration file (wether your are on Linux, macOS or Windows) `jenkins-infra.ovpn` on your Desktop:
+* Then, create the following configuration file (wether your are on Linux, macOS or Windows) `private-jenkins-infra.ovpn` on your Desktop:
 
   ```text
   client
-  remote vpn.jenkins.io 443
+  remote private.vpn.jenkins.io 443
   ca "/absolute/path/to/.cert/ca.crt"
   cert "/absolute/path/to/.cert/<your-jenkins-username>.crt"
   key "/absolute/path/to/.cert/<your-jenkins-username>.key"
@@ -89,10 +90,6 @@ Feel free to follow the next action points:
     * on macOS, we recommend using [Tunnelblick](https://tunnelblick.net/), an OpenVPN client
     * on Linux, we recommend using [NetworkManager](https://wiki.archlinux.org/title/NetworkManager) client. Note that in that case, **you must enable** the option `Use this connection only for resources on its network`
     * on Windows, we recommend using [OpenVPN Connect](https://openvpn.net/client-connect-vpn-for-windows/) client.
-
-* If you asked access to the private VPN in order to operate on infra.ci.jenkins.io or release.ci.jenkins.io,
-  you'll need to create another OpenVPN configuration file like the one for vpn.jenkins.io, with the same configuration file as above but named `private-jenkins-infra.ovpn`,
-  and with `remote private.vpn.jenkins.io 443` instead of `remote vpn.jenkins.io 443` on the second line.
 
 * ⚠️ When connecting, your VPN client requires a username and password. Use your Jenkins project account (same username + password as accounts.jenkins.io, issues.jenkins.io, ci.jenkins.io).
 
@@ -190,8 +187,7 @@ gh pr checkout <Pull Request ID>
 ```
 
 * Sign the certificate request: `./easyvpn sign <CN_to_sign>`
-  * by default this will create a Client Configuration file for the "default" VPN (vpn.jenkins.io), and store this file in  `./cert/ccd/default/`
-  * For private.vpn.jenkins.io, you have to add the "private" network as argument: `./easyvpn sign --net=private <CN_to_sign>`. The generated ccd file will be stored in `./cert/ccd/private/`
+  * by default this will create a Client Configuration file for the "private" VPN (private.vpn.jenkins.io), and store this file in  `./cert/ccd/private/`
 * A git commit is automatically created on the local branch
 * Push the approval commit on the current pull request with `git push` (the remote and local branch name are configured by the `gh` command line)
 * Approve and merge the Pull Request to the `main` branch with the signed CRL
@@ -228,16 +224,16 @@ To generate a new CRL:
   * `make init_linux`
   * `make init_windows` and copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
 * Decrypt the required files as described in [HowTo Decrypt the Certificate Authority Key](#howto-decrypt-the-certificate-authority-key)
-* Revoke actual certificate (even if it is already expired): `./easyvpn revoke vpn.jenkins.io`
-* Generate a new certificate + key, with the server DNS as argument: `./easyvpn request vpn.jenkins.io`
+* Revoke actual certificate (even if it is already expired): `./easyvpn revoke private.vpn.jenkins.io`
+* Generate a new certificate + key, with the server DNS as argument: `./easyvpn request private.vpn.jenkins.io`
 
-  > The generated key is in `./cert/pki/private/vpn.jenkins.io.key` **must** remain **secret**!
+  > The generated key is in `./cert/pki/private/private.vpn.jenkins.io.key` **must** remain **secret**!
 
 * Sign the request as a "server" request:
 
   ```shell
   cd ./certs # Running the signing command from this folder is mandatory.
-  ./easyrsa --batch sign-req server vpn.jenkins.io
+  ./easyrsa --batch sign-req server private.vpn.jenkins.io
   ```
 
 * Ensure that you git-added, git-commited and pushed the changes, without ANY secrets (which should be git-ignored)

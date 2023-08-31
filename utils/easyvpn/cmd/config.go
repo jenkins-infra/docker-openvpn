@@ -19,7 +19,7 @@ func init() {
 	rootCmd.AddCommand(configCmd)
 	configCmd.Flags().StringVarP(&ccd, "ccd", "", "cert/ccd", "Client Config Directory")
 	configCmd.Flags().StringVarP(&configuration, "config", "c", "config.yaml", "Network Configuration File")
-	configCmd.Flags().StringVarP(&net, "net", "", "default", "Network assigned")
+	configCmd.Flags().StringVarP(&net, "net", "", "private", "Network assigned")
 	configCmd.Flags().BoolVarP(&commit, "commit", "", true, "Commit changes")
 	configCmd.Flags().BoolVarP(&commit, "push", "", true, "Push changes")
 	configCmd.Flags().BoolVarP(&delete, "delete", "d", false, "Delete Network Configuration File")

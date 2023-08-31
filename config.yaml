@@ -3,25 +3,17 @@
 # https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp
 #
 networks:
-    - name: default
-      iprange: 10.8.0.0/24
-      netmask: 255.255.255.0
-      routes:
-          # prod-jenkins-public-prod/data-tier
-          - 10.0.2.0/24
-          # prod-jenkins-private-prod-vnet
-          - 10.240.0.0/14
-    - name: private
-      # Abstract local network for the VPN
-      iprange: 10.9.0.0/24
-      netmask: 255.255.255.0
-      routes:
-          # private-vnet, defined in jenkins-infra/azure-net
-          - 10.248.0.0/14
-          # public vnet, defined in jenkins-infra/azure-net
-          - 10.244.0.0/14
-          # public-db vnet, defined in jenkins-infra/azure-net
-          - 10.252.0.0/21
-          # cert-ci-jenkins-io vnet, defined in jenkins-infra/azure-net
-          # TODO: add manually to users whom require access to this instance (JenSec, Infra)
-          # - 10.252.8.0/21
+  - name: private
+    # Abstract local network for the VPN
+    iprange: 10.9.0.0/24
+    netmask: 255.255.255.0
+    routes:
+      # private-vnet, defined in jenkins-infra/azure-net
+      - 10.248.0.0/14
+      # public vnet, defined in jenkins-infra/azure-net
+      - 10.244.0.0/14
+      # public-db vnet, defined in jenkins-infra/azure-net
+      - 10.252.0.0/21
+      # cert-ci-jenkins-io vnet, defined in jenkins-infra/azure-net
+      # TODO: add manually to users whom require access to this instance (JenSec, Infra)
+      # - 10.252.8.0/21
