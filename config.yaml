@@ -17,3 +17,6 @@ networks:
       # cert-ci-jenkins-io vnet, defined in jenkins-infra/azure-net
       # TODO: add manually to users whom require access to this instance (JenSec, Infra)
       # - 10.252.8.0/21
+      # trusted-ci-jenkins-io vnet, defined in jenkins-infra/azure-net
+      # TODO: add manually to users whom require access to this instance (JenSec, Infra)
+      # - 10.252.0.0/21
