@@ -215,7 +215,8 @@ To generate a new CRL:
 * Decrypt the required files as described in [HowTo Decrypt the Certificate Authority Key](#howto-decrypt-the-certificate-authority-key)
 * Generate a new crl.pem - `cd cert ; ./easyrsa gen-crl ; cd ..`
 * Publish the new crl.pem - `git add ./cert/pki/crl.pem && git commit ./cert/pki/crl.pem -s -m 'Renew revocation list certificate'`
-* Delete local ca.key - `rm ./cert/pki/private/ca.key`
+* Before pushing, Delete local ca.key - `rm ./cert/pki/private/ca.key`
+* Check new expiration date with : `openssl crl -nextupdate -in /Users/smerle/code/docker-openvpn/cert/pki/crl.pem -noout`
 
 ### HowTo Renew Server-side Certificate?
 
