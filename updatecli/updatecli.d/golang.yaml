@@ -1,5 +1,5 @@
 ---
-name: Bump golang version
+name: Bump Golang version
 
 scms:
   default:
@@ -15,26 +15,8 @@ scms:
 
 sources:
   latestGoVersion:
-    kind: githubrelease
-    name: Get the latest Golang version
-    spec:
-      owner: "golang"
-      repository: "go"
-      token: "{{ requiredEnv .github.token }}"
-      username: "{{ .github.username }}"
-      versionfilter:
-        kind: regex
-        pattern: 'go1\.(\d*)\.(\d*)$'
-    transformers:
-      - trimprefix: "go"
-  updatedGoMod:
-    kind: shell
-    dependson:
-      - latestGoVersion
-    spec:
-      command: ./updatecli/scripts/updateGomodGoversion.sh ./utils/easyvpn/go.mod {{ source "latestGoVersion" }}
-      environments:
-        - name: PATH
+      name: Get latest Golang version
+      kind: golang
 
 conditions:
   checkForDockerImage:
@@ -48,11 +30,11 @@ conditions:
 
 targets:
   updateGomod:
-    name: "Update the golang version in the go.mod files"
-    sourceid: updatedGoMod
-    kind: file
+    name: 'Update Golang version to {{ source "latestGoVersion" }}'
+    kind: golang/gomod
+    sourceid: latestGoVersion
     spec:
-      file: ./utils/easyvpn/go.mod
+      file: utils/easyvpn/go.mod
     scmid: default
   updateMakefile:
     name: "Update the golang docker image version in the Makefile for easyvpn"
