@@ -1,6 +1,4 @@
 properties([buildDiscarder(logRotator(daysToKeepStr: '15'))])
- 
-def dockerImage = 'jenkinsciinfra/hashicorp-tools:1.0.16' // Tracked by updatecli
 
 parallel(
   failFast: true,
@@ -9,7 +7,7 @@ parallel(
       containers: [
         containerTemplate(
           name: 'jnlp',
-          image: dockerImage,
+          image: 'jenkinsciinfra/hashicorp-tools:latest',
           resourceRequestCpu: '2',
           resourceLimitCpu: '2',
           resourceRequestMemory: '2Gi',
@@ -26,6 +24,6 @@ parallel(
     }
   },
   'docker-and-updatecli': {
-    parallelDockerUpdatecli([imageName: 'openvpn', updatecliConfig: [containerMemory: '1024Mi', updatecliDockerImage: dockerImage]])
+    parallelDockerUpdatecli([imageName: 'openvpn'])
   },
 )
