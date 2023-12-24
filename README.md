@@ -24,7 +24,7 @@ See [HowTo Get client access](#howto-get-client-access) below.
 
 ## Client
 
-### HowTo get client access
+### How To get client access
 
 To access the Jenkins infrastructure private network, you need a certificate containing your [Jenkins username](https://accounts.jenkins.io/) as CN ([commonName](https://docs.oracle.com/javase/7/docs/technotes/tools/solaris/keytool.html#DName)).
 Then this certificate must be signed by an administrator who also assigns you a static IP configuration.
