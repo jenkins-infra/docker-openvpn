@@ -1,7 +1,11 @@
 ifconfig-push 10.9.0.13 255.255.255.0
 # public vnet
 push "route 10.244.0.0 255.252.0.0"
+# public-sponsorship vnet
+push "route 10.200.0.0 255.252.0.0"
 # private vnet
 push "route 10.248.0.0 255.252.0.0"
+# infra-ci-sponsorship vnet
+push "route 10.206.0.0 255.255.254.0"
 # public-db vnet
 push "route 10.252.0.0 255.255.248.0"

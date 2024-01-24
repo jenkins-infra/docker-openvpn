@@ -1,11 +1,19 @@
 ifconfig-push 10.9.0.3 255.255.255.0
 # public vnet
 push "route 10.244.0.0 255.252.0.0"
+# public-sponsorship vnet
+push "route 10.200.0.0 255.252.0.0"
 # private vnet
 push "route 10.248.0.0 255.252.0.0"
+# infra-ci-sponsorship vnet
+push "route 10.206.0.0 255.255.254.0"
 # public-db vnet
 push "route 10.252.0.0 255.255.248.0"
 # cert-ci-jenkins-io vnet
 push "route 10.252.8.0 255.255.248.0"
+# cert-ci-jenkins-io-sponsorship vnet
+push "route 10.205.8.0 255.255.255.0"
 # trusted-ci-jenkins-io vnet
 push "route 10.252.0.0 255.255.248.0"
+# trusted-ci-jenkins-io-sponsorship vnet
+push "route 10.204.0.0 255.255.255.0"
