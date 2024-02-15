@@ -3,23 +3,10 @@ properties([buildDiscarder(logRotator(daysToKeepStr: '15'))])
 parallel(
   failFast: true,
   'Build Easyvpn': {
-    podTemplate(
-      containers: [
-        containerTemplate(
-          name: 'jnlp',
-          image: 'jenkinsciinfra/hashicorp-tools:latest',
-          resourceRequestCpu: '2',
-          resourceLimitCpu: '2',
-          resourceRequestMemory: '2Gi',
-          resourceLimitMemory: '2Gi',
-        ),
-      ]
-    ) {
-      node(POD_LABEL) {
-        checkout scm
-        dir('utils/easyvpn') {
-          sh 'make build_linux'
-        }
+    node('linux-arm64') {
+      checkout scm
+      dir('utils/easyvpn') {
+        sh 'make build_linux'
       }
     }
   },
