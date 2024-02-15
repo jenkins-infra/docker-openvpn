@@ -8,7 +8,7 @@ parallel(
       dir('utils/easyvpn') {
         sh 'make build_linux'
       }
-    }    
+    }
   },
   'docker-and-updatecli': {
     parallelDockerUpdatecli([imageName: 'openvpn'])
