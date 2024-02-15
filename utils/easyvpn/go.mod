@@ -1,6 +1,6 @@
 module github.com/jenkins-infra/docker-openvpn/utils/easyvpn
 
-go 1.21
+go 1.22
 
 require (
 	// runc is not directly needed but it allows dependabot to bump it
