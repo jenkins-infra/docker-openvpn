@@ -1,0 +1,194 @@
+---
+name: Update Vnet public-vnet
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  public-vnet:
+    name: Get json informations
+    kind: json
+    scmid: default
+    spec:
+      file: https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
+      key: "vnets.public-vnet.[0]"
+  public-vnet-digest:
+    name: Get vnet with correct netmask
+    kind: shell
+    # scmid: default
+    spec:
+      command: ./updatecli/scripts/CIDRtoNetmask.sh {{ source "public-vnet" }}
+
+targets:
+  update_smerle:
+    name: 'Update smerle public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/smerle
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_danielbeck:
+    name: 'Update danielbeck public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/danielbeck
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_dduportal:
+    name: 'Update dduportal public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/dduportal
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_halkeye:
+    name: 'Update halkeye public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/halkeye
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_hlemeur:
+    name: 'Update hlemeur public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/hlemeur
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_kevingrdj:
+    name: 'Update kevingrdj public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/kevingrdj
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_krisstern:
+    name: 'Update krisstern public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/krisstern
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_lemeurherveCB:
+    name: 'Update lemeurherveCB public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/lemeurherveCB
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_markewaite:
+    name: 'Update markewaite public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/markewaite
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_notmyfault:
+    name: 'Update notmyfault public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/notmyfault
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_smerleCB:
+    name: 'Update smerleCB public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/smerleCB
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_timja:
+    name: 'Update timja public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/timja
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_wfollonier:
+    name: 'Update wfollonier public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/wfollonier
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+  update_yafenkin:
+    name: 'Update yafenkin public-vnets {{ source "public-vnet-digest" }}'
+    kind: file
+    sourceid: public-vnet-digest
+    spec:
+      file: ./cert/ccd/private/yafenkin
+      matchpattern: >-
+        (# public vnet.*\npush "route )(.*)"
+      replacepattern: >-
+        ${1}{{ source "public-vnet-digest" }}"
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Update smerle public-vnets {{ source "public-vnet-digest" }}
+    spec:
+      labels:
+        - network
