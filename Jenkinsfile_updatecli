@@ -1,4 +1,4 @@
 updatecli(action: 'diff')
 if (env.BRANCH_IS_PRIMARY) {
-    updatecli(action: 'apply', cronTriggerExpression: '@daily')
+    updatecli(action: 'apply', cronTriggerExpression: '@weekly')
 }
