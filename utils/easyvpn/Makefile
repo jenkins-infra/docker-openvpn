@@ -1,6 +1,6 @@
 .PHONY: build_osx build_windows build_linux init_osx init_linux init_windows
 
-GOLANG_VERSION ?= 1.22.5
+GOLANG_VERSION ?= 1.22.6
 
 build_osx:
 	go mod download
