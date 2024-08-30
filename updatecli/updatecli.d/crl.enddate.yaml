@@ -39,7 +39,7 @@ targets:
     spec:
       environments:
         - name: PATH
-        - name: GITHUB_TOKEN
+        - name: GH_TOKEN
       command: |
         gh issue create --title "[private.vpn.jenkins.io] ({{ source "currentEndDate" }}) VPN CRL expires" \
                         --body "follow https://github.com/jenkins-infra/docker-openvpn?tab=readme-ov-file#howto-renew-certificate-revocation-list \
