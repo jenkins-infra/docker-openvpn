@@ -1,0 +1,5 @@
+ifconfig-push 10.9.0.2 255.255.255.0
+# private.privatek8s.jenkins.io. (private ingress)
+push "route 10.248.1.5 255.255.255.255"
+# infra-ci-sponsorship vnet
+push "route 10.206.0.0 255.255.252.0"
