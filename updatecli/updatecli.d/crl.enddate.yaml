@@ -1,0 +1,48 @@
+---
+# yamllint disable rule:line-length
+name: "CRL Renew cert for the VPN"
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  currentEndDate:
+    name: Get current `end_date` date
+    kind: shell
+    spec:
+      command: openssl crl -in ./cert/pki/crl.pem -noout -nextupdate | cut -d= -f2
+    transformers:
+      - addprefix: "'"
+      - addsuffix: "'"
+
+conditions:
+  checkIfEndDateSoonExpired:
+    kind: shell
+    sourceid: currentEndDate
+    spec:
+      # Current end_date date value passed as argument
+      command: bash ./updatecli/scripts/datediff.sh
+      environments:
+        - name: PATH
+targets:
+  createIssue:
+    kind: shell
+    spec:
+      environments:
+        - name: PATH
+        - name: GITHUB_TOKEN
+      command: |
+        gh issue create --title "[private.vpn.jenkins.io] ({{ source "currentEndDate" }}) VPN CRL expires" \
+                        --body "follow https://github.com/jenkins-infra/docker-openvpn?tab=readme-ov-file#howto-renew-certificate-revocation-list \
+                          See https://github.com/jenkins-infra/helpdesk/issues/4266 for details." \
+                        --label vpn \
+                        --label end_dates
