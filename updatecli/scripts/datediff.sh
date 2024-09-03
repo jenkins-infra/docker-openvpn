@@ -17,7 +17,7 @@ expirydateepoch=$("${DATE_BIN}" "+%s" -d "$currentexpirydate")
 
 datediff=$(((expirydateepoch-currentdateepoch)/(60*60*24))) # diff per days
 
-if [ "$datediff" -lt 300 ] # launch renew 30 days before expiration
+if [ "$datediff" -lt 30 ] # launch renew 30 days before expiration
 then
     echo "time for update"
     exit 0
