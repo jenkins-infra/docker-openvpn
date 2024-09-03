@@ -36,13 +36,9 @@ conditions:
 targets:
   createIssue:
     kind: shell
+    sourceid: currentEndDate
     spec:
       environments:
         - name: PATH
-        - name: GH_TOKEN
-      command: |
-        gh issue create --title "[private.vpn.jenkins.io] ({{ source "currentEndDate" }}) VPN CRL expires" \
-                        --body "follow https://github.com/jenkins-infra/docker-openvpn?tab=readme-ov-file#howto-renew-certificate-revocation-list \
-                          See https://github.com/jenkins-infra/helpdesk/issues/4266 for details." \
-                        --label vpn \
-                        --label end_dates
+        - name: UPDATECLI_GITHUB_TOKEN
+      command: bash ./updatecli/scripts/createIssue.sh
