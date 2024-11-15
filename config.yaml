@@ -28,3 +28,5 @@ networks:
       - 52.204.62.78/32
       # census.jenkins.io VM
       - 52.202.38.86/32
+      # aws.ci.jenkins.io VM
+      - 3.147.151.207/32

@@ -9,3 +9,5 @@ push "route 10.248.0.0 255.252.0.0"
 push "route 10.206.0.0 255.255.252.0"
 # public-db vnet
 push "route 10.252.0.0 255.255.248.0"
+# aws.ci.jenkins.io VM
+push "route 3.147.151.207 255.255.255.255"
