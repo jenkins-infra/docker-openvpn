@@ -4,4 +4,4 @@ push "route 10.248.1.5 255.255.255.255"
 # infra-ci-sponsorship vnet
 push "route 10.206.0.0 255.255.252.0"
 # aws.ci.jenkins.io VM
-push "route 3.147.151.207 255.255.255.255"
+push "route 3.146.166.108 255.255.255.255"
