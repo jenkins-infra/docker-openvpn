@@ -1,0 +1,69 @@
+name: Update list of IPs restricted to VPN access only
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ .github.user }}"
+      email: "{{ .github.email }}"
+      owner: "{{ .github.owner }}"
+      repository: "{{ .github.repository }}"
+      token: "{{ requiredEnv .github.token }}"
+      username: "{{ .github.username }}"
+      branch: "{{ .github.branch }}"
+
+sources:
+  aws-ci-jenkins-io:
+    kind: json
+    spec:
+      file: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
+      # Outbound IPs are also public "inbound" IPs for EC2 instances
+      # The 2nd element is the IPv4 (1st is IPv6)
+      key: .aws\.ci\.jenkins\.io.outbound_ips.controller.[1]
+
+targets:
+  openvpn-cli-config:
+    name: Update ci.jenkins.io public IP in the YAML configuration of our OpenVPN CLI
+    kind: yaml
+    sourceid: aws-ci-jenkins-io
+    transformers:
+      - addsuffix: '/32'
+    spec:
+      file: config.yaml
+      # That is a rather fragile pattern. TODO: improve our CLI to use maps instead of arrays
+      key: $.networks[0].routes[7]
+    scmid: default
+  ccd-user-configs:
+    name: Update ci.jenkins.io public IP in the user CCD routing configurations
+    kind: file
+    disablesourceinput: true
+    spec:
+      files:
+        - cert/ccd/private/abayer
+        - cert/ccd/private/danielbeck
+        - cert/ccd/private/dduportal
+        - cert/ccd/private/jayfranco_cb
+        - cert/ccd/private/kevingrdj
+        - cert/ccd/private/kohsuke
+        - cert/ccd/private/krisstern
+        - cert/ccd/private/markewaite
+        - cert/ccd/private/notmyfault
+        - cert/ccd/private/smerle
+        - cert/ccd/private/timja
+        - cert/ccd/private/wfollonier
+      matchpattern: |
+        # aws.ci.jenkins.io VM
+        push "route (.*) 255.255.255.255"
+      replacepattern: |
+        # aws.ci.jenkins.io VM
+        push "route {{ source "aws-ci-jenkins-io" }} 255.255.255.255"
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    title: Update list of IPs restricted to VPN access only
+    spec:
+      labels:
+        - enhancement
