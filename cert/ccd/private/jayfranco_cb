@@ -5,3 +5,6 @@ push "route 10.248.1.5 255.255.255.255"
 push "route 10.206.0.0 255.255.252.0"
 # aws.ci.jenkins.io VM
 push "route 3.146.166.108 255.255.255.255"
+# EKS cluster "cijenkinsio-agents-2" (2 public IPs)
+push "route 3.146.156.247 255.255.255.255"
+push "route 3.130.164.212 255.255.255.255"
