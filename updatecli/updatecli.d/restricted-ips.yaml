@@ -1,4 +1,4 @@
-name: Update list of IPs restricted to VPN access only
+name: Update list of IPs restricted to VPN access only & update vnets
 
 scms:
   default:
@@ -20,7 +20,13 @@ sources:
       # Outbound IPs are also public "inbound" IPs for EC2 instances
       # The 2nd element is the IPv4 (1st is IPv6)
       key: .aws\.ci\.jenkins\.io.outbound_ips.controller.[1]
-
+  azure-public-db-vnet:
+    kind: json
+    spec:
+      file: https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
+      key: .vnets.public-db-vnet.[0]
+    transformers:
+      - trimsuffix: '/21'
 targets:
   openvpn-cli-config:
     name: Update ci.jenkins.io public IP in the YAML configuration of our OpenVPN CLI
@@ -57,6 +63,39 @@ targets:
       replacepattern: |
         # aws.ci.jenkins.io VM
         push "route {{ source "aws-ci-jenkins-io" }} 255.255.255.255"
+    scmid: default
+  openvpn-cli-config-public-db-vnet:
+    name: Update public-db vnet IP in the YAML configuration of our OpenVPN CLI
+    kind: yaml
+    sourceid: azure-public-db-vnet
+    spec:
+      file: config.yaml
+      # That is a rather fragile pattern. TODO: improve our CLI to use maps instead of arrays
+      key: $.networks[0].routes[2]
+    transformers:
+      - addsuffix: '/21'
+    scmid: default
+  ccd-user-configs-public-db-vnet:
+    name: Update public-db vnet IP in the user CCD routing configurations
+    kind: file
+    disablesourceinput: true
+    spec:
+      files:
+        - cert/ccd/private/danielbeck
+        - cert/ccd/private/dduportal
+        - cert/ccd/private/kevingrdj
+        - cert/ccd/private/krisstern
+        - cert/ccd/private/markewaite
+        - cert/ccd/private/notmyfault
+        - cert/ccd/private/smerle
+        - cert/ccd/private/timja
+        - cert/ccd/private/wfollonier
+      matchpattern: |
+        # public-db vnet
+        push "route (.*) 255\.255\..*\..*"
+      replacepattern: |
+        # public-db vnet
+        push "route {{ source "azure-public-db-vnet" }} 255.255.248.0"
     scmid: default
 
 actions:
