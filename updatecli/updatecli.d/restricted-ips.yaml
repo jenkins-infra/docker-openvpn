@@ -13,27 +13,38 @@ scms:
       branch: "{{ .github.branch }}"
 
 sources:
-  aws-ci-jenkins-io:
+  aws-ci-jenkins-io-cidr:
     kind: json
     spec:
       file: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
       # Outbound IPs are also public "inbound" IPs for EC2 instances
       # The 2nd element is the IPv4 (1st is IPv6)
       key: .aws\.ci\.jenkins\.io.outbound_ips.controller.[1]
-  azure-public-db-vnet:
+    transformers:
+      - addsuffix: '/32'
+  aws-ci-jenkins-io-netmask:
+    kind: shell
+    dependson:
+      - aws-ci-jenkins-io-cidr
+    spec:
+      command: bash ./updatecli/scripts/netmask.sh {{ source "aws-ci-jenkins-io-cidr" }}
+  azure-public-db-vnet-cidr:
     kind: json
     spec:
       file: https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       key: .vnets.public-db-vnet.[0]
-    transformers:
-      - trimsuffix: '/21'
+  azure-public-db-vnet-netmask:
+    kind: shell
+    dependson:
+      - azure-public-db-vnet-cidr
+    spec:
+      command: bash ./updatecli/scripts/netmask.sh {{ source "azure-public-db-vnet-cidr" }}
+
 targets:
   openvpn-cli-config:
     name: Update ci.jenkins.io public IP in the YAML configuration of our OpenVPN CLI
     kind: yaml
-    sourceid: aws-ci-jenkins-io
-    transformers:
-      - addsuffix: '/32'
+    sourceid: aws-ci-jenkins-io-cidr
     spec:
       file: config.yaml
       # That is a rather fragile pattern. TODO: improve our CLI to use maps instead of arrays
@@ -59,21 +70,19 @@ targets:
         - cert/ccd/private/wfollonier
       matchpattern: |
         # aws.ci.jenkins.io VM
-        push "route (.*) 255.255.255.255"
+        push "route (.*) 255\.255\..*\..*"
       replacepattern: |
         # aws.ci.jenkins.io VM
-        push "route {{ source "aws-ci-jenkins-io" }} 255.255.255.255"
+        push "route {{ source "aws-ci-jenkins-io-netmask" }}"
     scmid: default
   openvpn-cli-config-public-db-vnet:
     name: Update public-db vnet IP in the YAML configuration of our OpenVPN CLI
     kind: yaml
-    sourceid: azure-public-db-vnet
+    sourceid: azure-public-db-vnet-cidr
     spec:
       file: config.yaml
       # That is a rather fragile pattern. TODO: improve our CLI to use maps instead of arrays
       key: $.networks[0].routes[2]
-    transformers:
-      - addsuffix: '/21'
     scmid: default
   ccd-user-configs-public-db-vnet:
     name: Update public-db vnet IP in the user CCD routing configurations
@@ -95,7 +104,7 @@ targets:
         push "route (.*) 255\.255\..*\..*"
       replacepattern: |
         # public-db vnet
-        push "route {{ source "azure-public-db-vnet" }} 255.255.248.0"
+        push "route {{ source "azure-public-db-vnet-netmask" }}"
     scmid: default
 
 actions:
