@@ -10,7 +10,7 @@ parallel(
       }
     }
   },
-  'docker-and-updatecli': {
-    parallelDockerUpdatecli([imageName: 'openvpn'])
+  'Build and publish docker image': {
+    buildDockerAndPublishImage('openvpn')
   },
 )
