@@ -8,4 +8,4 @@ push "route 3.146.166.108 255.255.255.255"
 # EKS cluster "cijenkinsio-agents-2" public IP 1
 push "route 3.146.156.247 255.255.255.255"
 # EKS cluster "cijenkinsio-agents-2" public IP 2
-push "route 3.130.164.212 255.255.255.255"
+push "route 3.140.57.67 255.255.255.255"
