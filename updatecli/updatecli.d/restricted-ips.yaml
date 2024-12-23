@@ -54,7 +54,7 @@ sources:
     dependson:
       - aws-ci-jenkins-io-agents-2-hostname
     spec:
-      command: dig +short {{ source "aws-ci-jenkins-io-agents-2-hostname" }} | head -n1
+      command: dig +short {{ source "aws-ci-jenkins-io-agents-2-hostname" }} | sort `# sorting is required as dig result is unordered` | head -n1
     transformers:
       - addsuffix: '/32'
   aws-ci-jenkins-io-agents-2-ip-2:
@@ -62,7 +62,7 @@ sources:
     dependson:
       - aws-ci-jenkins-io-agents-2-hostname
     spec:
-      command: dig +short {{ source "aws-ci-jenkins-io-agents-2-hostname" }} | tail -n1
+      command: dig +short {{ source "aws-ci-jenkins-io-agents-2-hostname" }} | sort `# sorting is required as dig result is unordered` | tail -n1
     transformers:
       - addsuffix: '/32'
   aws-ci-jenkins-io-agents-2-netmask-1:
