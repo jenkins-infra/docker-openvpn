@@ -39,9 +39,47 @@ sources:
       - azure-public-db-vnet-cidr
     spec:
       command: bash ./updatecli/scripts/netmask.sh {{ source "azure-public-db-vnet-cidr" }}
+  aws-ci-jenkins-io-agents-2-hostname:
+    kind: json
+    spec:
+      file: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
+      # Outbound IPs are also public "inbound" IPs for EC2 instances
+      # The 2nd element is the IPv4 (1st is IPv6)
+      key: .aws\.ci\.jenkins\.io.cijenkinsio-agents-2.cluster_endpoint
+    transformers:
+      # DNS only work on the hostname
+      - trimprefix: 'https://'
+  aws-ci-jenkins-io-agents-2-ip-1:
+    kind: shell
+    dependson:
+      - aws-ci-jenkins-io-agents-2-hostname
+    spec:
+      command: dig +short {{ source "aws-ci-jenkins-io-agents-2-hostname" }} | head -n1
+    transformers:
+      - addsuffix: '/32'
+  aws-ci-jenkins-io-agents-2-ip-2:
+    kind: shell
+    dependson:
+      - aws-ci-jenkins-io-agents-2-hostname
+    spec:
+      command: dig +short {{ source "aws-ci-jenkins-io-agents-2-hostname" }} | tail -n1
+    transformers:
+      - addsuffix: '/32'
+  aws-ci-jenkins-io-agents-2-netmask-1:
+    kind: shell
+    dependson:
+      - aws-ci-jenkins-io-agents-2-ip-1
+    spec:
+      command: bash ./updatecli/scripts/netmask.sh {{ source "aws-ci-jenkins-io-agents-2-ip-1" }}
+  aws-ci-jenkins-io-agents-2-netmask-2:
+    kind: shell
+    dependson:
+      - aws-ci-jenkins-io-agents-2-ip-2
+    spec:
+      command: bash ./updatecli/scripts/netmask.sh {{ source "aws-ci-jenkins-io-agents-2-ip-2" }}
 
 targets:
-  openvpn-cli-config:
+  openvpn-cli-config-aws.ci.jenkins.io:
     name: Update ci.jenkins.io public IP in the YAML configuration of our OpenVPN CLI
     kind: yaml
     sourceid: aws-ci-jenkins-io-cidr
@@ -50,7 +88,7 @@ targets:
       # That is a rather fragile pattern. TODO: improve our CLI to use maps instead of arrays
       key: $.networks[0].routes[7]
     scmid: default
-  ccd-user-configs:
+  ccd-user-configs--aws.ci.jenkins.io:
     name: Update ci.jenkins.io public IP in the user CCD routing configurations
     kind: file
     disablesourceinput: true
@@ -105,6 +143,68 @@ targets:
       replacepattern: |
         # public-db vnet
         push "route {{ source "azure-public-db-vnet-netmask" }}"
+    scmid: default
+  openvpn-cli-config-aws-ci-jenkins-io-agents-2-ip-1:
+    name: Update ci-jenkins-io-agents-2 EKS public IP 1 in the YAML configuration of our OpenVPN CLI
+    kind: yaml
+    sourceid: aws-ci-jenkins-io-agents-2-ip-1
+    spec:
+      file: config.yaml
+      # That is a rather fragile pattern. TODO: improve our CLI to use maps instead of arrays
+      key: $.networks[0].routes[8]
+    scmid: default
+  ccd-user-configs-aws-ci-jenkins-io-agents-2-ip-1:
+    name: Update ci-jenkins-io-agents-2 EKS public IP 1 in the user CCD routing configurations
+    kind: file
+    disablesourceinput: true
+    spec:
+      files:
+        - cert/ccd/private/danielbeck
+        - cert/ccd/private/dduportal
+        - cert/ccd/private/jayfranco_cb
+        - cert/ccd/private/kevingrdj
+        - cert/ccd/private/markewaite
+        - cert/ccd/private/notmyfault
+        - cert/ccd/private/smerle
+        - cert/ccd/private/timja
+        - cert/ccd/private/wfollonier
+      matchpattern: |
+        # EKS cluster "cijenkinsio-agents-2" public IP 1
+        push "route (.*) 255\.255\..*\..*"
+      replacepattern: |
+        # EKS cluster "cijenkinsio-agents-2" public IP 1
+        push "route {{ source "aws-ci-jenkins-io-agents-2-netmask-1" }}"
+    scmid: default
+  openvpn-cli-config-aws-ci-jenkins-io-agents-2-ip-2:
+    name: Update ci-jenkins-io-agents-2 EKS public IP 2 in the YAML configuration of our OpenVPN CLI
+    kind: yaml
+    sourceid: aws-ci-jenkins-io-agents-2-ip-2
+    spec:
+      file: config.yaml
+      # That is a rather fragile pattern. TODO: improve our CLI to use maps instead of arrays
+      key: $.networks[0].routes[9]
+    scmid: default
+  ccd-user-configs-aws-ci-jenkins-io-agents-2-ip-2:
+    name: Update ci-jenkins-io-agents-2 EKS public IP 2 in the user CCD routing configurations
+    kind: file
+    disablesourceinput: true
+    spec:
+      files:
+        - cert/ccd/private/danielbeck
+        - cert/ccd/private/dduportal
+        - cert/ccd/private/jayfranco_cb
+        - cert/ccd/private/kevingrdj
+        - cert/ccd/private/markewaite
+        - cert/ccd/private/notmyfault
+        - cert/ccd/private/smerle
+        - cert/ccd/private/timja
+        - cert/ccd/private/wfollonier
+      matchpattern: |
+        # EKS cluster "cijenkinsio-agents-2" public IP 2
+        push "route (.*) 255\.255\..*\..*"
+      replacepattern: |
+        # EKS cluster "cijenkinsio-agents-2" public IP 2
+        push "route {{ source "aws-ci-jenkins-io-agents-2-netmask-2" }}"
     scmid: default
 
 actions:
