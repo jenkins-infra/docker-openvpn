@@ -32,4 +32,4 @@ networks:
       - 3.146.166.108/32
       # EKS cluster "cijenkinsio-agents-2" (2 public IPs)
       - 3.140.57.67/32
-      - 3.140.57.67/32
+      - 3.19.0.193/32
