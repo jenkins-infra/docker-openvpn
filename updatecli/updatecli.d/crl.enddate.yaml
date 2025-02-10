@@ -33,6 +33,7 @@ conditions:
       command: bash ./updatecli/scripts/datediff.sh
       environments:
         - name: PATH
+
 targets:
   createIssue:
     kind: shell

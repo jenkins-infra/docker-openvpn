@@ -4,23 +4,24 @@ set -eux -o pipefail
 
 command -v "gh" >/dev/null 2>&1 || { echo "ERROR: gh command not found. Exiting."; exit 1; }
 
-cmd=$(cat <<- EOM
+cmd=$(cat <<-EOM
     gh issue create --title "[private.vpn.jenkins.io] $1 VPN CRL expires" \
                     --body "follow https://github.com/jenkins-infra/docker-openvpn?tab=readme-ov-file#howto-renew-certificate-revocation-list \
                             See https://github.com/jenkins-infra/helpdesk/issues/4266 for details." \
                     --label crl \
                     --label updatecli \
+                    --label triage \
                     --repo jenkins-infra/helpdesk
 EOM
 )
 
-if test "$DRY_RUN" == "false"
+if test "${DRY_RUN:=true}" == "false"
 then
     export GITHUB_TOKEN="${UPDATECLI_GITHUB_TOKEN}"
     alreadyOpened=$(gh issue list --repo jenkins-infra/helpdesk --state open --search "label:crl label:updatecli" | wc -l)
     if test "$alreadyOpened" -eq 0
     then
-        "${cmd}"
+        eval "${cmd}"
     else
         echo "issue already opened"
     fi
