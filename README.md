@@ -225,16 +225,16 @@ To generate a new CRL:
   * `make init_linux`
   * `make init_windows` and copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
 * Decrypt the required files as described in [HowTo Decrypt the Certificate Authority Key](#howto-decrypt-the-certificate-authority-key)
-* Revoke actual certificate (even if it is already expired): `./easyvpn revoke private.vpn.jenkins.io`
-* Generate a new certificate + key, with the server DNS as argument: `./easyvpn request private.vpn.jenkins.io`
+* Revoke actual certificate (even if it is already expired): `./easyvpn revoke vpn.jenkins.io`
+* Generate a new certificate + key, with the server DNS as argument: `./easyvpn request vpn.jenkins.io`
 
-  > The generated key is in `./cert/pki/private/private.vpn.jenkins.io.key` **must** remain **secret**!
+  > The generated key is in `./cert/pki/private/vpn.jenkins.io.key` **must** remain **secret**!
 
 * Sign the request as a "server" request:
 
   ```shell
-  cd ./certs # Running the signing command from this folder is mandatory.
-  ./easyrsa --batch sign-req server private.vpn.jenkins.io
+  cd ./cert # Running the signing command from this folder is mandatory.
+  ./easyrsa --batch sign-req server vpn.jenkins.io
   ```
 
 * Ensure that you git-added, git-commited and pushed the changes, without ANY secrets (which should be git-ignored)
