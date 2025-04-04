@@ -3,6 +3,8 @@ ifconfig-push 10.9.0.12 255.255.255.0
 push "route 10.248.0.0 255.252.0.0"
 # pkg.origin.jenkins.io VM
 push "route 52.202.51.185 255.255.255.255"
+# azure.ci.jenkins.io VM
+push "route 172.200.138.43 255.255.255.255"
 # aws.ci.jenkins.io VM
 push "route 3.146.166.108 255.255.255.255"
 # cert-ci-jenkins-io vnet

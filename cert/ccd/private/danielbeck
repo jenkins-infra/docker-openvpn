@@ -25,6 +25,8 @@ push "route 52.202.51.185 255.255.255.255"
 push "route 52.204.62.78 255.255.255.255"
 # census.jenkins.io VM
 push "route 52.202.38.86 255.255.255.255"
+# azure.ci.jenkins.io VM
+push "route 172.200.138.43 255.255.255.255"
 # aws.ci.jenkins.io VM
 push "route 3.146.166.108 255.255.255.255"
 # EKS cluster "cijenkinsio-agents-2" public IP 1
