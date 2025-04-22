@@ -10,6 +10,8 @@ networks:
     routes:
       # private-vnet, defined in jenkins-infra/azure-net
       - 10.248.0.0/14
+      # private_sponsored-vnet, defined in jenkins-infra/azure-net
+      - 10.240.0.0/14
       # public vnet, defined in jenkins-infra/azure-net
       - 10.244.0.0/14
       # public-db vnet, defined in jenkins-infra/azure-net
