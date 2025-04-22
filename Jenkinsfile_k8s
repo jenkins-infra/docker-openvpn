@@ -11,9 +11,8 @@ parallel(
     }
   },
   'docker-image': {
-    buildDockerAndPublishImage(
-      'openvpn',
+    buildDockerAndPublishImage('openvpn', [
       automaticSemanticVersioning: true,
-    )
+    ])
   },
 )
