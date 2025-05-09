@@ -2,9 +2,10 @@ package helpers
 
 import (
 	"fmt"
-	"go.mozilla.org/sops/v3/decrypt"
 	"log"
 	"os"
+
+	"go.mozilla.org/sops/v3/decrypt"
 )
 
 // DecryptPrivateDir decrypt ca private key and ca private key password
@@ -24,7 +25,7 @@ func DecryptPrivateDir() {
 		}
 
 		defer file.Close()
-		fmt.Fprintf(file, string(out))
+		fmt.Fprintf(file, "%s", string(out))
 	}
 
 }

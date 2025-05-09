@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"path"
 	"slices"
-	"sort"
 	"strings"
 
 	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/easyrsa"
@@ -20,8 +19,8 @@ func IsAllCertsSigned(certDir string) (bool, []error) {
 	req := helpers.GetUsernameFile(path.Join(certDir, "pki/reqs"), ".req")
 	crt := helpers.GetUsernameFile(path.Join(certDir, "pki/issued"), ".crt")
 
-	sort.Slice(req, func(i, j int) bool { return req[i] < req[j] })
-	sort.Slice(crt, func(i, j int) bool { return crt[i] < crt[j] })
+	slices.Sort(req)
+	slices.Sort(crt)
 
 	if len(req) != len(crt) {
 		result = false
@@ -72,8 +71,8 @@ func IsAllClientConfigured(certDir string, net string) (bool, []error) {
 		return s == "vpn.jenkins.io.crt"
 	})
 
-	sort.Slice(clientConfig, func(i, j int) bool { return clientConfig[i] < clientConfig[j] })
-	sort.Slice(crt, func(i, j int) bool { return crt[i] < crt[j] })
+	slices.Sort(clientConfig)
+	slices.Sort(crt)
 
 	if len(clientConfig) != len(crt) {
 		result = false

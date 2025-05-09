@@ -19,14 +19,16 @@ func easyrsa(args ...string) error {
 
 	var outb, errb bytes.Buffer
 	cmd.Stdout = &outb
-	//cmd.Stderr = &errb
+	cmd.Stderr = &errb
 
 	err := cmd.Run()
 
 	fmt.Printf("Exec: %v/easyrsa %v\n", cmd.Dir, strings.Join(cmd.Args[1:], " "))
 	fmt.Printf("%v", outb.String())
 	fmt.Printf("---\n")
-	//fmt.Printf("%v\n", errb.String())
+	if cmd.ProcessState.ExitCode() != -1 {
+		fmt.Printf("%v\n", errb.String())
+	}
 
 	if err != nil {
 		fmt.Println(errb.String())

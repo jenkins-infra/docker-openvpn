@@ -30,7 +30,7 @@ var requestCmd = &cobra.Command{
 			}
 		}
 		if Commit {
-			for i := 0; i < len(args); i++ {
+			for i := range args {
 				msg := "[infra-admin] Submit certificate request for " + args[i]
 				files := []string{
 					path.Join(CertDir, "pki/reqs", args[i]+".req"),

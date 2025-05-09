@@ -32,7 +32,7 @@ var configCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 
 		if delete == true {
-			for j := 0; j < len(args); j++ {
+			for j := range args {
 				network.DeleteClientConfig(path.Join(ccd, net, args[j]))
 				if commit {
 					msg := fmt.Sprintf("[infra-admin] Delete %v in '%v' network configuration", args[j], net)
