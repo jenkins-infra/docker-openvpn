@@ -8,4 +8,5 @@ var (
 	clientConfigsDir string
 	configuration    string
 	mainNetwork      string
+	cleanup          bool
 )

@@ -2,76 +2,78 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-	"path"
+	"log"
 
-	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/git"
-	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/network"
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/config"
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/users"
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v2"
+)
+
+var (
+	configAllRoutes bool
+	configRoutes    []string
 )
 
 func init() {
 	rootCmd.AddCommand(configCmd)
-	configCmd.Flags().StringVarP(&clientConfigsDir, "ccd", "", "cert/ccd", "Client Config Directory")
-	configCmd.Flags().StringVarP(&configuration, "config", "c", "config.yaml", "Network Configuration File")
-	configCmd.Flags().StringVarP(&mainNetwork, "net", "", "private", "Network assigned")
-	configCmd.Flags().BoolVarP(&commit, "commit", "", true, "Commit changes")
-	configCmd.Flags().BoolVarP(&push, "push", "", true, "Push changes")
-	configCmd.Flags().BoolVarP(&delete, "delete", "d", false, "Delete Network Configuration File")
+	configCmd.Flags().BoolVarP(&configAllRoutes, "all-routes", "", false, "Should the user have all routes (e.g. admin user)?")
+	configCmd.Flags().StringVarP(&configuration, "config", "c", "config.yaml", "Network Configuration File.")
+	configCmd.Flags().StringVarP(&mainNetwork, "net", "", "private", "Network assigned.")
+	configCmd.Flags().StringSliceVarP(&configRoutes, "routes", "r", []string{}, "List of custom routes in the specified network.\nMutually exclusive with the flag 'all-routes'.")
 }
 
 var configCmd = &cobra.Command{
 	Use:   "config",
 	Short: "Configure client network ip",
-	Args:  cobra.MinimumNArgs(1),
+	Args:  cobra.MinimumNArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if delete {
-			for j := range args {
-				err := os.Remove(path.Join(clientConfigsDir, mainNetwork, args[j]))
-				if err != nil {
-					fmt.Println(err)
-					fmt.Println("Continuing despite error...")
-				}
-				if commit {
-					msg := fmt.Sprintf("[infra-admin] Delete %v in '%v' network configuration", args[j], mainNetwork)
-					files := []string{
-						path.Join(clientConfigsDir, args[j]),
-					}
-					git.Add(files)
-					git.Commit(files, msg)
-				}
-			}
-		} else {
-			globalConfig := network.ReadConfigFile(clientConfigsDir)
+		globalConfig := &config.Config{}
+		err := globalConfig.ReadConfigFile(configuration)
+		if err != nil {
+			log.Fatalf("[ERROR] configuration file %q is invalid: could not read or parse it: %s\n", configuration, err)
+		}
 
-			network, ok := globalConfig.Networks[mainNetwork]
+		_, ok := globalConfig.Networks[mainNetwork]
+		if !ok {
+			log.Fatalf("[ERROR] configuration file %q is invalid: could not find the network %q\n", configuration, mainNetwork)
+		}
+
+		if configAllRoutes && len(configRoutes) > 0 {
+			log.Fatalln("[ERROR] Both flags 'routes' and 'all-routes' provided, but they are mutually exclusives.")
+		}
+
+		for _, routeToCheck := range configRoutes {
+			_, ok := globalConfig.Networks[mainNetwork].Routes[routeToCheck]
 			if !ok {
-				fmt.Printf("Network %s not found: check config file %s.\n", mainNetwork, configuration)
-				os.Exit(1)
-			}
-
-			for j := range args {
-				user := args[j]
-				fmt.Printf("Generating CCD configuration for user %s\n", user)
-				err := network.CreateClientConfig(user, path.Join(clientConfigsDir, mainNetwork))
-				if err != nil {
-					panic(err)
-				}
-
-				if commit {
-					msg := fmt.Sprintf("[infra-admin] Update %v in '%v' network configuration", user, mainNetwork)
-					files := []string{
-						path.Join(clientConfigsDir, mainNetwork, user),
-					}
-					git.Add(files)
-					git.Commit(files, msg)
-				}
+				log.Fatalf("[ERROR] The route %q provided by the flag 'routes' does not exist in the configuration file %s for the network %q.", routeToCheck, configuration, mainNetwork)
 			}
 		}
 
-		if push {
-			git.Push()
+		userList := args
+		newUserConfigs := map[string]users.User{}
+		for _, username := range userList {
+			newUser := users.User{
+				Id:        globalConfig.GetNextUserId(),
+				Name:      username,
+				AllRoutes: configAllRoutes,
+			}
+			if len(configRoutes) > 0 {
+				newUser.Routes = map[string][]string{
+					mainNetwork: configRoutes,
+				}
+			}
+			newUserConfigs[username] = newUser
+			yamlContent, err := yaml.Marshal(newUserConfigs)
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Printf("Add the following YAML snippet in your configuration file %s under the key '$.users':\n\n", configuration)
+
+			fmt.Println("---")
+			fmt.Println(string(yamlContent))
+			fmt.Println("...")
 		}
 	},
 }
