@@ -220,26 +220,20 @@ To generate a new CRL:
 
 ### HowTo Renew Server-side Certificate?
 
-* Build EASYVPN binary by running one of the following commands depending on your operating system:
-  * `make init_osx`
-  * `make init_linux`
-  * `make init_windows` and copy `./utils/easyvpn/easyvpn.exe` at the root of this repository
+* Revoke actual certificate (even if it is already expired): `./easyvpn revoke --commit=false --push=false vpn.jenkins.io`
 * Decrypt the required files as described in [HowTo Decrypt the Certificate Authority Key](#howto-decrypt-the-certificate-authority-key)
-* Revoke actual certificate (even if it is already expired): `./easyvpn revoke vpn.jenkins.io`
-* Generate a new certificate + key, with the server DNS as argument: `./easyvpn request vpn.jenkins.io`
+* Generate a new certificate + key with `cert/easyrsa` (to avoid generating unused CCD):
+  * Browse to the subdirectory `./certs/`
+  * Request the certificate: `./easyrsa --batch --req-cn=vpn.jenkins.io gen-req vpn.jenkins.io nopass`
+  * Sign the certificate with the CA authority, as "server" request: `./easyrsa --batch sign-req server vpn.jenkins.io`
 
   > The generated key is in `./cert/pki/private/vpn.jenkins.io.key` **must** remain **secret**!
 
-* Sign the request as a "server" request:
-
-  ```shell
-  cd ./cert # Running the signing command from this folder is mandatory.
-  ./easyrsa --batch sign-req server vpn.jenkins.io
-  ```
+  * (Optional) export the Diffie-Hellman keys: `./easyrsa gen-dh`
 
 * Ensure that you git-added, git-commited and pushed the changes, without ANY secrets (which should be git-ignored)
 
-* Update the secrets in the encrypted hieradata for OpenVPN in <https://github.com/jenkins-infra/jenkins-infra>
+* Update the secrets (CA certificate, server certificate, server key and eventually DH.pem keys) in the encrypted hieradata for OpenVPN in <https://github.com/jenkins-infra/jenkins-infra>
 
 ## Docker
 

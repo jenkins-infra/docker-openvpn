@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"path"
+	"slices"
 	"sort"
 	"strings"
 
@@ -67,6 +68,9 @@ func IsAllClientConfigured(certDir string, net string) (bool, []error) {
 	result := true
 	clientConfig := helpers.GetUsernameFile(path.Join(certDir, "ccd", net), "")
 	crt := helpers.GetUsernameFile(path.Join(certDir, "pki/issued"), ".crt")
+	crt = slices.DeleteFunc(crt, func(s string) bool {
+		return s == "vpn.jenkins.io.crt"
+	})
 
 	sort.Slice(clientConfig, func(i, j int) bool { return clientConfig[i] < clientConfig[j] })
 	sort.Slice(crt, func(i, j int) bool { return crt[i] < crt[j] })
