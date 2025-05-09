@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"os"
 	"path"
@@ -41,7 +40,7 @@ push "route {{ . }}"
 
 // ReadConfigFile reads a network configuration file
 func ReadConfigFile(path string) *Config {
-	file, err := ioutil.ReadFile(path)
+	file, err := os.ReadFile(path)
 	config := Config{}
 
 	if err != nil {
@@ -126,7 +125,7 @@ func getAllUsedIP(ccd string) ([]string, error) {
 	dir, err := os.Open(ccd)
 	CheckErr(err)
 	files, err := dir.Readdirnames(-1)
-	for i := 0; i < len(files); i++ {
+	for i := range files {
 		file := path.Join(ccd, files[i])
 		if isConfigFileExist(file) {
 			ip, _ := readClientConfigFile(file)
@@ -220,7 +219,7 @@ func (n *Network) getFreeIP(ccd string) (string, error) {
 	iprange, err := n.iprange()
 	ipUsed, err := getAllUsedIP(ccd)
 
-	for j := 0; j < len(ipUsed); j++ {
+	for j := range ipUsed {
 		// Restart from 0 as ipUsed is not sorted
 		for i := 0; i < len(iprange); i++ {
 			if network.Contains(net.ParseIP(ipUsed[j])) && (iprange[i] == ipUsed[j]) {
@@ -235,7 +234,7 @@ func (n *Network) getFreeIP(ccd string) (string, error) {
 	if len(iprange) < 2 {
 		msg := fmt.Sprintf("%v doesn't have free ip anymore", networkCIDR)
 		err := errors.New(msg)
-		fmt.Printf(msg)
+		fmt.Printf("%s", msg)
 		return "", err
 	}
 	return iprange[1], nil
