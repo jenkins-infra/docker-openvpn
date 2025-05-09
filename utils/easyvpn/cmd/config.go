@@ -44,12 +44,11 @@ var configCmd = &cobra.Command{
 				}
 			}
 		} else {
+			globalConfig := network.ReadConfigFile(config)
 
-			config := network.ReadConfigFile(config)
-			network, err := config.GetNetworkByName(net)
-
-			if err != nil {
-				fmt.Println(err)
+			network, ok := globalConfig.Networks[net]
+			if !ok {
+				fmt.Printf("Network %s not found: check config file %s.\n", net, config)
 				os.Exit(1)
 			}
 
