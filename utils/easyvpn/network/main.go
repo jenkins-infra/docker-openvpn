@@ -4,26 +4,27 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"net"
 	"os"
 	"path"
 	"strings"
 	"text/template"
+
+	"gopkg.in/yaml.v2"
 )
 
 // Config represents a list of network
 type Config struct {
-	Networks []Network `yaml:"networks"`
+	Networks map[string]Network `yaml:"networks"`
 }
 
 // Network represents a network information
 type Network struct {
-	Name    string   `yaml:"name"`
-	IPRange string   `yaml:"iprange"`
-	NetMask string   `yaml:"netmask"`
-	Routes  []string `yaml:"routes"`
+	Name    string
+	IPRange string            `yaml:"iprange"`
+	NetMask string            `yaml:"netmask"`
+	Routes  map[string]string `yaml:"routes"`
 }
 
 type clientConfig struct {
@@ -38,17 +39,6 @@ push "route {{ . }}"
 	{{- end }}
 `
 
-// GetNetworkByName searchs for a network name in network configuration
-func (c *Config) GetNetworkByName(name string) (*Network, error) {
-	for i := 0; i < len(c.Networks); i++ {
-		if c.Networks[i].Name == name {
-			net := Network(c.Networks[i])
-			return &net, nil
-		}
-	}
-	return nil, fmt.Errorf("network %v not found", name)
-}
-
 // ReadConfigFile reads a network configuration file
 func ReadConfigFile(path string) *Config {
 	file, err := ioutil.ReadFile(path)
@@ -58,12 +48,18 @@ func ReadConfigFile(path string) *Config {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	err = yaml.Unmarshal(file, &config)
 
+	err = yaml.Unmarshal(file, &config)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+
+	for key, network := range config.Networks {
+		network.Name = key
+		config.Networks[key] = network
+	}
+
 	return &config
 }
 
@@ -172,8 +168,8 @@ func DeleteClientConfig(path string) error {
 // convertRoutesFormat() convert 192.168.0.1/24 CIDR to 192.168.0.1 255.255.255.0
 func (n *Network) convertRoutesFormat() []string {
 	var result []string
-	for i := 0; i < len(n.Routes); i++ {
-		ip, network, err := net.ParseCIDR(n.Routes[i])
+	for _, route := range n.Routes {
+		ip, network, err := net.ParseCIDR(route)
 		CheckErr(err)
 		networkMask := net.IP(network.Mask).String()
 		result = append(result, fmt.Sprintf("%v %v", ip.String(), networkMask))
