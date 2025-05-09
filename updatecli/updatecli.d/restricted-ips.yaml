@@ -32,8 +32,7 @@ targets:
     sourceid: azure-public-db-vnet-cidr
     spec:
       file: config.yaml
-      # That is a rather fragile pattern. TODO: improve our CLI to use maps instead of arrays
-      key: $.networks[0].routes[2]
+      key: $.networks.private.routes.public-db
     scmid: default
   ccd-user-configs-public-db-vnet:
     name: Update public-db vnet IP in the user CCD routing configurations

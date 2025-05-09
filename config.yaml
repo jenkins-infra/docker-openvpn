@@ -12,7 +12,6 @@ networks:
       private-sponsored: 10.240.0.0/14
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       public: 10.244.0.0/14
-      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       public-db: 10.253.0.0/21
       # TODO: add manually to users whom require access to this instance (JenSec, Infra)
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
