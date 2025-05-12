@@ -2,6 +2,9 @@
 
 GOLANG_VERSION ?= 1.24.3
 
+lint:
+	golangci-lint run
+
 build_osx:
 	go mod download
 	GO111MODULE=on CGO_ENABLED=0 GOOS=darwin go build -a -installsuffix cgo -v .

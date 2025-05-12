@@ -6,6 +6,7 @@ parallel(
     node('linux-arm64') {
       checkout scm
       dir('utils/easyvpn') {
+        sh 'make lint'
         sh 'make build_linux'
       }
     }
