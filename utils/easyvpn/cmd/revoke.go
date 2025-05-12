@@ -27,15 +27,16 @@ var revokeCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		helpers.DecryptPrivateDir()
 		errors := easyrsa.RevokeClientCert(args)
-		if errors != nil {
-			for _, err := range errors {
-				if err != nil {
-					fmt.Printf("%v\n", err)
-				}
+		for _, err := range errors {
+			if err != nil {
+				fmt.Printf("%v\n", err)
 			}
 		}
 		for i := range args {
-			network.DeleteClientConfig(path.Join(CertDir, "ccd", Network, args[i]))
+			err := network.DeleteClientConfig(path.Join(CertDir, "ccd", Network, args[i]))
+			if err != nil {
+				panic(err)
+			}
 		}
 
 		fileToDelete := []string{
