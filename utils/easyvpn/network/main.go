@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
+	"log"
 	"net"
 	"os"
 	"path"
 	"strings"
 	"text/template"
 
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 // Config represents a list of network
@@ -102,8 +103,12 @@ func readClientConfigFile(cn string) (ip, mask string) {
 	var IP, netmask string
 	file, err := os.Open(cn)
 	CheckErr(err)
+	defer func() {
+		if err := file.Close(); err != nil {
+			panic(err)
+		}
+	}()
 
-	defer file.Close()
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
@@ -142,16 +147,22 @@ func isClientConfigured(cn string, clientNetwork string) bool {
 	}
 
 	file, err := os.Open(cn)
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			panic(err)
+		}
+	}()
 	CheckErr(err)
 
 	ip, _ := readClientConfigFile(cn)
 
 	_, network, err := net.ParseCIDR(clientNetwork)
-	if network.Contains(net.ParseIP(ip)) {
-		return true
+	if err != nil {
+		log.Fatalf("%s\n", err)
+		return false
 	}
-	return false
+
+	return network.Contains(net.ParseIP(ip))
 }
 
 // DeleteClientConfig remove a client network configuration
@@ -197,7 +208,11 @@ func (n *Network) CreateClientConfig(cn string, ccd string) error {
 
 	file, err := os.Create(path.Join(ccd, cn))
 	CheckErr(err)
-	defer file.Close()
+	defer func() {
+		if err := file.Close(); err != nil {
+			panic(err)
+		}
+	}()
 
 	err = tmpl.Execute(file, config)
 
@@ -207,17 +222,24 @@ func (n *Network) CreateClientConfig(cn string, ccd string) error {
 
 func (n *Network) getFreeIP(ccd string) (string, error) {
 	_, network, err := net.ParseCIDR(n.IPRange)
-
 	if err != nil {
-		fmt.Println(err)
+		return "", err
 	}
+
 	networkMask, _ := network.Mask.Size()
 	networkIP := network.IP.String()
 
 	networkCIDR := fmt.Sprintf("%v/%v", networkIP, networkMask)
 
 	iprange, err := n.iprange()
+	if err != nil {
+		return "", err
+	}
+
 	ipUsed, err := getAllUsedIP(ccd)
+	if err != nil {
+		return "", err
+	}
 
 	for j := range ipUsed {
 		// Restart from 0 as ipUsed is not sorted

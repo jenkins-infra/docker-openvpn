@@ -21,13 +21,19 @@ func DecryptPrivateDir() {
 
 		file, err := os.Create(dirname + file)
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 
-		defer file.Close()
-		fmt.Fprintf(file, "%s", string(out))
+		defer func() {
+			if err := file.Close(); err != nil {
+				panic(err)
+			}
+		}()
+		_, err = fmt.Fprintf(file, "%s", string(out))
+		if err != nil {
+			panic(err)
+		}
 	}
-
 }
 
 // CleanPrivateDir delete decrypte ca private key and the file containing his password

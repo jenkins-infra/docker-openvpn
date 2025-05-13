@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path"
 
@@ -31,9 +32,14 @@ var configCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 
-		if delete == true {
+		if delete {
 			for j := range args {
-				network.DeleteClientConfig(path.Join(ccd, net, args[j]))
+				err := network.DeleteClientConfig(path.Join(ccd, net, args[j]))
+				if err != nil {
+					log.Fatal(err)
+					os.Exit(1)
+				}
+
 				if commit {
 					msg := fmt.Sprintf("[infra-admin] Delete %v in '%v' network configuration", args[j], net)
 					files := []string{
@@ -53,7 +59,10 @@ var configCmd = &cobra.Command{
 			}
 
 			for j := 0; j < len(args); j++ {
-				network.CreateClientConfig(args[j], path.Join(ccd, net))
+				err := network.CreateClientConfig(args[j], path.Join(ccd, net))
+				if err != nil {
+					panic(err)
+				}
 
 				if commit {
 					msg := fmt.Sprintf("[infra-admin] Update %v in '%v' network configuration", args[j], net)

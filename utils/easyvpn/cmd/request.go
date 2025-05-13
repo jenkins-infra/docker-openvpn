@@ -22,11 +22,9 @@ var requestCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		errors := easyrsa.RequestClientCert(args)
-		if errors != nil {
-			for _, err := range errors {
-				if err != nil {
-					fmt.Printf("%v\n", err)
-				}
+		for _, err := range errors {
+			if err != nil {
+				fmt.Printf("%v\n", err)
 			}
 		}
 		if Commit {

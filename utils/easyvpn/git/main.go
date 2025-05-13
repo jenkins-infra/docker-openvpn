@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-var debug = false
-
 const defaultBranch string = "main"
 
 func git(args ...string) (string, error) {
@@ -34,28 +32,36 @@ func git(args ...string) (string, error) {
 // Commit create a new commit
 func Commit(files []string, msg string) {
 	args := []string{"commit"}
-	for _, file := range files {
-		args = append(args, file)
-	}
+	args = append(args, files...)
 	args = append(args, "-m")
 	args = append(args, msg)
 
-	git(args...)
+	out, err := git(args...)
+	if err != nil {
+		fmt.Println(out)
+		panic(err)
+	}
 }
 
 // Add create a new commit
 func Add(files []string) {
 	args := []string{"add"}
-	for _, file := range files {
-		args = append(args, file)
+	args = append(args, files...)
+	out, err := git(args...)
+	if err != nil {
+		fmt.Println(out)
+		panic(err)
 	}
-	git(args...)
 }
 
 // Pull fetch from origin
 func Pull() {
 	args := []string{"pull"}
-	git(args...)
+	out, err := git(args...)
+	if err != nil {
+		fmt.Println(out)
+		panic(err)
+	}
 }
 
 // getRepoOwner returns local branch
@@ -77,7 +83,7 @@ func getRepoOwner() (string, error) {
 	} else if strings.HasPrefix(url, "https://github.com/") {
 		owner = strings.Split(url, "/")[3]
 	} else {
-		err := fmt.Errorf("Couldn't find current repository owner in %v", url)
+		err := fmt.Errorf("couldn't find current repository owner in %v", url)
 		return "", err
 	}
 	fmt.Printf("Current repository owner: %v\n", owner)
@@ -88,16 +94,26 @@ func getRepoOwner() (string, error) {
 func Push() {
 	branch := getLocalBranch()
 	owner, err := getRepoOwner()
-	args := []string{"push"}
-	git(args...)
-
-	if err == nil {
-		fmt.Printf("You can now open your Pull Request via \n\t https://github.com/jenkins-infra/docker-openvpn/compare/%v...%v:%v\n", defaultBranch, owner, branch)
+	if err != nil {
+		panic(err)
 	}
+
+	args := []string{"push"}
+	out, err := git(args...)
+	if err != nil {
+		fmt.Println(out)
+		panic(err)
+	}
+
+	fmt.Printf("You can now open your Pull Request via \n\t https://github.com/jenkins-infra/docker-openvpn/compare/%v...%v:%v\n", defaultBranch, owner, branch)
 }
 
 // Rebase from origin
 func Rebase() {
 	args := []string{"rebase", fmt.Sprintf("origin/%v", defaultBranch)}
-	git(args...)
+	out, err := git(args...)
+	if err != nil {
+		fmt.Println(out)
+		panic(err)
+	}
 }

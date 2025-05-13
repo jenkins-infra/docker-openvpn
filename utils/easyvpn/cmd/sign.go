@@ -36,11 +36,9 @@ var signCmd = &cobra.Command{
 		// Sign requested certificate(s)
 		helpers.DecryptPrivateDir()
 		errors := easyrsa.SignClientRequest(args)
-		if errors != nil {
-			for _, err := range errors {
-				if err != nil {
-					fmt.Printf("%v\n", err)
-				}
+		for _, err := range errors {
+			if err != nil {
+				fmt.Printf("%v\n", err)
 			}
 		}
 
@@ -54,7 +52,10 @@ var signCmd = &cobra.Command{
 		}
 
 		for i := range args {
-			network.CreateClientConfig(args[i], path.Join(ccd, net))
+			err := network.CreateClientConfig(args[i], path.Join(ccd, net))
+			if err != nil {
+				panic(err)
+			}
 
 			// Commit changes
 			if commit {
