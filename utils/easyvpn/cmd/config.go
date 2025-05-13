@@ -11,18 +11,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var delete bool
-var ccd string
-var configuration string
-var net string
-
 func init() {
 	rootCmd.AddCommand(configCmd)
 	configCmd.Flags().StringVarP(&ccd, "ccd", "", "cert/ccd", "Client Config Directory")
 	configCmd.Flags().StringVarP(&configuration, "config", "c", "config.yaml", "Network Configuration File")
 	configCmd.Flags().StringVarP(&net, "net", "", "private", "Network assigned")
 	configCmd.Flags().BoolVarP(&commit, "commit", "", true, "Commit changes")
-	configCmd.Flags().BoolVarP(&commit, "push", "", true, "Push changes")
+	configCmd.Flags().BoolVarP(&push, "push", "", true, "Push changes")
 	configCmd.Flags().BoolVarP(&delete, "delete", "d", false, "Delete Network Configuration File")
 }
 
@@ -58,16 +53,19 @@ var configCmd = &cobra.Command{
 				os.Exit(1)
 			}
 
-			for j := 0; j < len(args); j++ {
-				err := network.CreateClientConfig(args[j], path.Join(ccd, net))
+			for j := range args {
+				user := args[j]
+				fmt.Printf("Generating CCD configuration for user %s\n", user)
+				err := network.CreateClientConfig(user, path.Join(ccd, net))
 				if err != nil {
 					panic(err)
 				}
 
 				if commit {
-					msg := fmt.Sprintf("[infra-admin] Update %v in '%v' network configuration", args[j], net)
+					fmt.Println("KO")
+					msg := fmt.Sprintf("[infra-admin] Update %v in '%v' network configuration", user, net)
 					files := []string{
-						path.Join(ccd, net, args[j]),
+						path.Join(ccd, net, user),
 					}
 					git.Add(files)
 					git.Commit(files, msg)

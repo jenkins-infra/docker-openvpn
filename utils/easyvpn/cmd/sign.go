@@ -12,11 +12,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var certDir string
-var commit bool
-var config string
-var push bool
-
 func init() {
 	rootCmd.AddCommand(signCmd)
 	signCmd.Flags().BoolVarP(&commit, "commit", "", true, "git commit changes")
@@ -25,7 +20,6 @@ func init() {
 	signCmd.Flags().StringVarP(&ccd, "ccd", "", "cert/ccd", "Client Config Directory")
 	signCmd.Flags().StringVarP(&config, "config", "", "config.yaml", "Network Configuration File")
 	signCmd.Flags().StringVarP(&net, "net", "n", "private", "Network to assign the cn")
-
 }
 
 var signCmd = &cobra.Command{
