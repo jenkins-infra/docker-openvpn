@@ -12,18 +12,6 @@ var rootCmd = &cobra.Command{
 	Short: "Easyvpn is a client tool to manage Jenkins Infrastructure VPN",
 }
 
-// CertDir define cert directory path
-var CertDir string
-
-// Net define network to use (determine the ccd to use)
-var Network string
-
-// Commit define if changes must be committed or not
-var Commit bool
-
-// Push define if changes must be pushed or not
-var Push bool
-
 // Execute run the main command
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {

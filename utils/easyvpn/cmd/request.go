@@ -11,9 +11,9 @@ import (
 
 func init() {
 	rootCmd.AddCommand(requestCmd)
-	requestCmd.Flags().BoolVarP(&Commit, "commit", "", true, "git commit changes")
-	requestCmd.Flags().BoolVarP(&Push, "push", "", true, "git push changes")
-	requestCmd.Flags().StringVarP(&CertDir, "cert", "c", "cert", "Cert Directory")
+	requestCmd.Flags().BoolVarP(&commit, "commit", "", true, "git commit changes")
+	requestCmd.Flags().BoolVarP(&push, "push", "", true, "git push changes")
+	requestCmd.Flags().StringVarP(&certDir, "cert", "c", "cert", "Cert Directory")
 }
 
 var requestCmd = &cobra.Command{
@@ -27,18 +27,18 @@ var requestCmd = &cobra.Command{
 				fmt.Printf("%v\n", err)
 			}
 		}
-		if Commit {
+		if commit {
 			for i := range args {
 				msg := "[infra-admin] Submit certificate request for " + args[i]
 				files := []string{
-					path.Join(CertDir, "pki/reqs", args[i]+".req"),
+					path.Join(certDir, "pki/reqs", args[i]+".req"),
 				}
 				git.Add(files)
 				git.Commit(files, msg)
 			}
 		}
 
-		if Push {
+		if push {
 			git.Push()
 		}
 	},

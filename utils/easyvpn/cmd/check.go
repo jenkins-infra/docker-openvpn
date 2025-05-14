@@ -9,7 +9,8 @@ import (
 
 func init() {
 	rootCmd.AddCommand(checkCmd)
-	checkCmd.Flags().StringVarP(&CertDir, "cert", "c", "cert", "Cert Directory")
+	checkCmd.Flags().StringVarP(&certDir, "cert", "c", "cert", "Cert Directory")
+	checkCmd.Flags().StringVarP(&mainNetwork, "net", "", "private", "Network assigned")
 }
 
 var checkCmd = &cobra.Command{
@@ -19,10 +20,10 @@ var checkCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		rc := 0
 
-		if result, _ := checks.IsAllCertsSigned(CertDir); !result {
+		if result, _ := checks.IsAllCertsSigned(certDir); !result {
 			rc = 1
 		}
-		if result, _ := checks.IsAllClientConfigured(CertDir, Network); !result {
+		if result, _ := checks.IsAllClientConfigured(certDir, mainNetwork); !result {
 			rc = 1
 		}
 

@@ -1,12 +1,11 @@
 package cmd
 
 var (
-	certDir       string
-	commit        bool
-	config        string
-	push          bool
-	delete        bool
-	ccd           string
-	configuration string
-	net           string
+	certDir          string
+	commit           bool
+	push             bool
+	delete           bool
+	clientConfigsDir string
+	configuration    string
+	mainNetwork      string
 )

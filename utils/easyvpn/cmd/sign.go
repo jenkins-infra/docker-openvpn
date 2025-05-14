@@ -17,9 +17,9 @@ func init() {
 	signCmd.Flags().BoolVarP(&commit, "commit", "", true, "git commit changes")
 	signCmd.Flags().BoolVarP(&push, "push", "", true, "git push changes")
 	signCmd.Flags().StringVarP(&certDir, "certsDir", "", "cert", "Cert Directory")
-	signCmd.Flags().StringVarP(&ccd, "ccd", "", "cert/ccd", "Client Config Directory")
-	signCmd.Flags().StringVarP(&config, "config", "", "config.yaml", "Network Configuration File")
-	signCmd.Flags().StringVarP(&net, "net", "n", "private", "Network to assign the cn")
+	signCmd.Flags().StringVarP(&clientConfigsDir, "ccd", "", "cert/ccd", "Client Config Directory")
+	signCmd.Flags().StringVarP(&configuration, "config", "", "config.yaml", "Network Configuration File")
+	signCmd.Flags().StringVarP(&mainNetwork, "net", "n", "private", "Network to assign the cn")
 }
 
 var signCmd = &cobra.Command{
@@ -37,16 +37,16 @@ var signCmd = &cobra.Command{
 		}
 
 		// Generate client config
-		globalConfig := network.ReadConfigFile(config)
+		globalConfig := network.ReadConfigFile(configuration)
 
-		network, ok := globalConfig.Networks[net]
+		network, ok := globalConfig.Networks[mainNetwork]
 		if !ok {
-			fmt.Printf("Network %s not found: check config file %s.\n", net, config)
+			fmt.Printf("Network %s not found: check config file %s.\n", mainNetwork, configuration)
 			os.Exit(1)
 		}
 
 		for i := range args {
-			err := network.CreateClientConfig(args[i], path.Join(ccd, net))
+			err := network.CreateClientConfig(args[i], path.Join(clientConfigsDir, mainNetwork))
 			if err != nil {
 				panic(err)
 			}
@@ -55,12 +55,12 @@ var signCmd = &cobra.Command{
 			if commit {
 				msg := "[infra-admin] Sign certificate request for " + args[i]
 				files := []string{
-					path.Join(CertDir, "pki/issued", args[i]+".crt"),
-					path.Join(CertDir, "pki", "index.txt"),
-					path.Join(CertDir, "pki", "index.txt.attr"),
-					path.Join(CertDir, "pki", "certs_by_serial"),
-					path.Join(CertDir, "pki", "serial"),
-					path.Join(CertDir, "ccd", net, args[i]),
+					path.Join(certDir, "pki/issued", args[i]+".crt"),
+					path.Join(certDir, "pki", "index.txt"),
+					path.Join(certDir, "pki", "index.txt.attr"),
+					path.Join(certDir, "pki", "certs_by_serial"),
+					path.Join(certDir, "pki", "serial"),
+					path.Join(certDir, "ccd", mainNetwork, args[i]),
 				}
 				git.Add(files)
 				git.Commit(files, msg)
