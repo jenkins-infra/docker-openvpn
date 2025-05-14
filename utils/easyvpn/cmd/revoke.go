@@ -8,16 +8,15 @@ import (
 	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/easyrsa"
 	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/git"
 	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/helpers"
-	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/network"
 	"github.com/spf13/cobra"
 )
 
 func init() {
 	rootCmd.AddCommand(revokeCmd)
-	revokeCmd.Flags().BoolVarP(&Commit, "commit", "", true, "git commit changes")
-	revokeCmd.Flags().BoolVarP(&Push, "push", "", true, "git push changes")
-	revokeCmd.Flags().StringVarP(&CertDir, "cert", "c", "cert", "Cert Directory")
-	revokeCmd.Flags().StringVarP(&Network, "network", "n", "private", "Network")
+	revokeCmd.Flags().BoolVarP(&commit, "commit", "", true, "git commit changes")
+	revokeCmd.Flags().BoolVarP(&push, "push", "", true, "git push changes")
+	revokeCmd.Flags().StringVarP(&certDir, "cert", "c", "cert", "Cert Directory")
+	revokeCmd.Flags().StringVarP(&mainNetwork, "network", "n", "private", "mainNetwork")
 }
 
 var revokeCmd = &cobra.Command{
@@ -33,42 +32,44 @@ var revokeCmd = &cobra.Command{
 			}
 		}
 		for i := range args {
-			err := network.DeleteClientConfig(path.Join(CertDir, "ccd", Network, args[i]))
+			err := os.Remove(path.Join(certDir, "ccd", mainNetwork, args[i]))
 			if err != nil {
-				panic(err)
+				fmt.Println(err)
+				fmt.Println("Continuing despite error...")
 			}
 		}
 
 		fileToDelete := []string{
-			path.Join(CertDir, "pki", "index.txt.old"),
-			path.Join(CertDir, "pki", "index.txt.attr.old"),
+			path.Join(certDir, "pki", "index.txt.old"),
+			path.Join(certDir, "pki", "index.txt.attr.old"),
 		}
 
 		for i := range fileToDelete {
 			if err := os.Remove(fileToDelete[i]); err != nil {
 				fmt.Println(err)
+				fmt.Println("Continuing despite error...")
 			}
 		}
 
-		if Commit {
+		if commit {
 			for i := range args {
 				msg := "[infra-admin] Revoke " + args[i] + " certificate"
 				files := []string{
-					path.Join(CertDir, "pki", "crl.pem"),
-					path.Join(CertDir, "pki", "index.txt"),
-					path.Join(CertDir, "pki", "issued", args[i]+".crt"),
-					path.Join(CertDir, "pki", "reqs", args[i]+".req"),
-					path.Join(CertDir, "pki", "certs_by_serial"),
-					path.Join(CertDir, "pki", "index.txt.attr"),
-					path.Join(CertDir, "pki", "revoked"),
-					path.Join(CertDir, "ccd", Network, args[i]),
+					path.Join(certDir, "pki", "crl.pem"),
+					path.Join(certDir, "pki", "index.txt"),
+					path.Join(certDir, "pki", "issued", args[i]+".crt"),
+					path.Join(certDir, "pki", "reqs", args[i]+".req"),
+					path.Join(certDir, "pki", "certs_by_serial"),
+					path.Join(certDir, "pki", "index.txt.attr"),
+					path.Join(certDir, "pki", "revoked"),
+					path.Join(certDir, "ccd", mainNetwork, args[i]),
 				}
 				git.Add(files)
 				git.Commit(files, msg)
 			}
 		}
 
-		if Push {
+		if push {
 			git.Push()
 		}
 

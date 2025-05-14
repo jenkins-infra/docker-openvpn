@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path"
 
@@ -13,9 +12,9 @@ import (
 
 func init() {
 	rootCmd.AddCommand(configCmd)
-	configCmd.Flags().StringVarP(&ccd, "ccd", "", "cert/ccd", "Client Config Directory")
+	configCmd.Flags().StringVarP(&clientConfigsDir, "ccd", "", "cert/ccd", "Client Config Directory")
 	configCmd.Flags().StringVarP(&configuration, "config", "c", "config.yaml", "Network Configuration File")
-	configCmd.Flags().StringVarP(&net, "net", "", "private", "Network assigned")
+	configCmd.Flags().StringVarP(&mainNetwork, "net", "", "private", "Network assigned")
 	configCmd.Flags().BoolVarP(&commit, "commit", "", true, "Commit changes")
 	configCmd.Flags().BoolVarP(&push, "push", "", true, "Push changes")
 	configCmd.Flags().BoolVarP(&delete, "delete", "d", false, "Delete Network Configuration File")
@@ -29,48 +28,45 @@ var configCmd = &cobra.Command{
 
 		if delete {
 			for j := range args {
-				err := network.DeleteClientConfig(path.Join(ccd, net, args[j]))
+				err := os.Remove(path.Join(clientConfigsDir, mainNetwork, args[j]))
 				if err != nil {
-					log.Fatal(err)
-					os.Exit(1)
+					fmt.Println(err)
+					fmt.Println("Continuing despite error...")
 				}
-
 				if commit {
-					msg := fmt.Sprintf("[infra-admin] Delete %v in '%v' network configuration", args[j], net)
+					msg := fmt.Sprintf("[infra-admin] Delete %v in '%v' network configuration", args[j], mainNetwork)
 					files := []string{
-						path.Join(ccd, args[j]),
+						path.Join(clientConfigsDir, args[j]),
 					}
 					git.Add(files)
 					git.Commit(files, msg)
 				}
 			}
 		} else {
-			globalConfig := network.ReadConfigFile(config)
+			globalConfig := network.ReadConfigFile(clientConfigsDir)
 
-			network, ok := globalConfig.Networks[net]
+			network, ok := globalConfig.Networks[mainNetwork]
 			if !ok {
-				fmt.Printf("Network %s not found: check config file %s.\n", net, config)
+				fmt.Printf("Network %s not found: check config file %s.\n", mainNetwork, configuration)
 				os.Exit(1)
 			}
 
 			for j := range args {
 				user := args[j]
 				fmt.Printf("Generating CCD configuration for user %s\n", user)
-				err := network.CreateClientConfig(user, path.Join(ccd, net))
+				err := network.CreateClientConfig(user, path.Join(clientConfigsDir, mainNetwork))
 				if err != nil {
 					panic(err)
 				}
 
 				if commit {
-					fmt.Println("KO")
-					msg := fmt.Sprintf("[infra-admin] Update %v in '%v' network configuration", user, net)
+					msg := fmt.Sprintf("[infra-admin] Update %v in '%v' network configuration", user, mainNetwork)
 					files := []string{
-						path.Join(ccd, net, user),
+						path.Join(clientConfigsDir, mainNetwork, user),
 					}
 					git.Add(files)
 					git.Commit(files, msg)
 				}
-
 			}
 		}
 
