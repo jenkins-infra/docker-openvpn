@@ -1,24 +1,27 @@
-# Follow network settings are used to assign ip to vpn client
-# and accesses are limited by
-# https://github.com/jenkins-infra/jenkins-infra/blob/production/dist/profile/manifests/openvpn.pp
+# VPN networks and their configurations (CIDR/additional routes to peered networks, etc.)
 networks:
   private:
-    iprange: 10.9.0.0/24 # dmz subnet which holds the principal network interface of the VPN VM
-    netmask: 255.255.255.0
+    iprange: 10.9.0.0/24
     routes:
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       private: 10.248.0.0/14
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
-      private-sponsored: 10.240.0.0/14
+      private-sponsorship: 10.240.0.0/14
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       public: 10.244.0.0/14
+      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
+      public-sponsorship: 10.200.0.0/14
       public-db: 10.253.0.0/21
-      # TODO: add manually to users whom require access to this instance (JenSec, Infra)
+      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
+      infra.ci.jenkins.io-sponsorship: 10.206.0.0/22
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       cert.ci.jenkins.io: 10.252.8.0/21
-      # TODO: add manually to users whom require access to this instance (JenSec, Infra)
+      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
+      cert.ci.jenkins.io-sponsorship: 10.205.8.0/24
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       trusted.ci.jenkins.io: 10.252.0.0/21
+      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
+      trusted.ci.jenkins.io-sponsorship: 10.204.0.0/24
       # TODO: track with updatecli (Digital Ocean)
       archives.jenkins.io: 46.101.121.132/32
       # TODO: track with updatecli (AWS CloudBees)
@@ -29,3 +32,62 @@ networks:
       census.jenkins.io: 52.202.38.86/32
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure.json
       azure.ci.jenkins.io: 172.200.138.43/32
+users:
+  abayer:
+    id: 16
+    routes:
+      private:
+        - private
+        - private-sponsorship
+        - public
+        - usage.jenkins.io
+        - census.jenkins.io
+        - azure.ci.jenkins.io
+  danielbeck:
+    id: 5
+    all_routes: true
+  dduportal:
+    id: 3
+    all_routes: true
+  jayfranco_cb:
+    id: 2
+    all_routes: true
+  kevingrdj:
+    id: 11
+    all_routes: true
+  kohsuke:
+    id: 6
+    routes:
+      private:
+        - private
+        - public
+        - trusted.ci.jenkins.io
+        - archives.jenkins.io
+        - pkg.origin.jenkins.io
+        - usage.jenkins.io
+        - census.jenkins.io
+        - azure.ci.jenkins.io
+  krisstern:
+    id: 15
+    routes:
+      private:
+        - public
+        - private
+        - private-sponsorship
+        - public-db
+        - azure.ci.jenkins.io
+  markewaite:
+    id: 7
+    all_routes: true
+  notmyfault:
+    id: 8
+    all_routes: true
+  smerle:
+    id: 4
+    all_routes: true
+  timja:
+    id: 9
+    all_routes: true
+  wfollonier:
+    id: 10
+    all_routes: true

@@ -186,6 +186,9 @@ To validate and sign a client certificate, you are going to execute the followin
 gh pr checkout <Pull Request ID>
 ```
 
+* You have to specify the user and its allowed routes in the file `./config.yaml`. The command `./easyvpn config --help` generates configuration snippet to help you:
+  * If the user is an admin, you can specify all routes with `easyvpn config <CN_to_sign> --all-routes`
+  * Alternatively you can provide custom routes with the flag `--routes`: `./easyvpn config <CN_to_sign> --routes=private,public --routes=private-sponsorship`
 * Sign the certificate request: `./easyvpn sign <CN_to_sign>`
   * by default this will create a Client Configuration file for the "private" VPN (private.vpn.jenkins.io), and store this file in  `./cert/ccd/private/`
 * A git commit is automatically created on the local branch

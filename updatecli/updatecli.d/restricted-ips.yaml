@@ -18,12 +18,6 @@ sources:
     spec:
       file: https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       key: .vnets.public-db-vnet.[0]
-  azure-public-db-vnet-netmask:
-    kind: shell
-    dependson:
-      - azure-public-db-vnet-cidr
-    spec:
-      command: bash ./updatecli/scripts/netmask.sh {{ source "azure-public-db-vnet-cidr" }}
 
 targets:
   openvpn-cli-config-public-db-vnet:
@@ -33,28 +27,6 @@ targets:
     spec:
       file: config.yaml
       key: $.networks.private.routes.public-db
-    scmid: default
-  ccd-user-configs-public-db-vnet:
-    name: Update public-db vnet IP in the user CCD routing configurations
-    kind: file
-    disablesourceinput: true
-    spec:
-      files:
-        - cert/ccd/private/danielbeck
-        - cert/ccd/private/dduportal
-        - cert/ccd/private/kevingrdj
-        - cert/ccd/private/krisstern
-        - cert/ccd/private/markewaite
-        - cert/ccd/private/notmyfault
-        - cert/ccd/private/smerle
-        - cert/ccd/private/timja
-        - cert/ccd/private/wfollonier
-      matchpattern: |
-        # public-db vnet
-        push "route (.*) 255\.255\..*\..*"
-      replacepattern: |
-        # public-db vnet
-        push "route {{ source "azure-public-db-vnet-netmask" }}"
     scmid: default
 
 actions:

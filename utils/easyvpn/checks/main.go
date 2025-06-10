@@ -7,6 +7,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/config"
 	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/easyrsa"
 	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/helpers"
 )
@@ -61,18 +62,14 @@ func IsAllCertsSigned(certDir string) (bool, []error) {
 }
 
 // IsAllClientConfigured validate that all signed certificate have client configuration
-func IsAllClientConfigured(certDir string, net string) (bool, []error) {
+func IsAllClientConfigured(certDir string, net string, globalConfig config.Config) (bool, []error) {
 
 	var errs []error
 	result := true
 	clientConfig := helpers.GetUsernameFile(path.Join(certDir, "ccd", net), "")
-	crt := helpers.GetUsernameFile(path.Join(certDir, "pki/issued"), ".crt")
-	crt = slices.DeleteFunc(crt, func(s string) bool {
-		return s == "vpn.jenkins.io.crt"
-	})
+	crt := config.GetUsersWithCertificate(certDir, globalConfig)
 
 	slices.Sort(clientConfig)
-	slices.Sort(crt)
 
 	if len(clientConfig) != len(crt) {
 		result = false
