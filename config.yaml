@@ -10,28 +10,30 @@ networks:
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       public: 10.244.0.0/14
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
-      public-sponsorship: 10.200.0.0/14
+      public-jenkins-sponsorship: 10.200.0.0/14
       public-db: 10.253.0.0/21
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
-      infra.ci.jenkins.io-sponsorship: 10.206.0.0/22
+      infra-ci-jenkins-io-sponsorship: 10.206.0.0/22
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
-      cert.ci.jenkins.io: 10.252.8.0/21
+      cert-ci-jenkins-io: 10.252.8.0/21
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
-      cert.ci.jenkins.io-sponsorship: 10.205.8.0/24
+      cert-ci-jenkins-io-sponsorship: 10.205.8.0/24
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
-      trusted.ci.jenkins.io: 10.252.0.0/21
+      trusted-ci-jenkins-io: 10.252.0.0/21
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
-      trusted.ci.jenkins.io-sponsorship: 10.204.0.0/24
-      # TODO: track with updatecli (Digital Ocean)
+      trusted-ci-jenkins-io-sponsorship: 10.204.0.0/24
+      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
       archives.jenkins.io: 46.101.121.132/32
-      # TODO: track with updatecli (AWS CloudBees)
+      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
       pkg.origin.jenkins.io: 52.202.51.185/32
-      # TODO: track with updatecli (AWS CloudBees)
+      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
       usage.jenkins.io: 52.204.62.78/32
-      # TODO: track with updatecli (AWS CloudBees)
+      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
       census.jenkins.io: 52.202.38.86/32
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure.json
       azure.ci.jenkins.io: 172.200.138.43/32
+      # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
+      aws.ci.jenkins.io: 3.141.203.62/32
 users:
   abayer:
     id: 16
@@ -61,7 +63,7 @@ users:
       private:
         - private
         - public
-        - trusted.ci.jenkins.io
+        - trusted-ci-jenkins-io
         - archives.jenkins.io
         - pkg.origin.jenkins.io
         - usage.jenkins.io

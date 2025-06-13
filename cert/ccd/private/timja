@@ -1,31 +1,34 @@
+# Client Configuration for user "timja" in the VPN network "private"
 ifconfig-push 10.9.0.9 255.255.255.0
-# public vnet
-push "route 10.244.0.0 255.252.0.0"
-# public-sponsorship vnet
-push "route 10.200.0.0 255.252.0.0"
-# private vnet
-push "route 10.248.0.0 255.252.0.0"
-# private_sponsored vnet
-push "route 10.240.0.0 255.252.0.0"
-# infra-ci-sponsorship vnet
-push "route 10.206.0.0 255.255.252.0"
-# public-db vnet
-push "route 10.253.0.0 255.255.248.0"
+# archives.jenkins.io VM
+push "route 46.101.121.132 255.255.255.255"
+# aws.ci.jenkins.io VM
+push "route 3.141.203.62 255.255.255.255"
+# azure.ci.jenkins.io VM
+push "route 172.200.138.43 255.255.255.255"
+# census.jenkins.io VM
+push "route 52.202.38.86 255.255.255.255"
 # cert-ci-jenkins-io vnet
 push "route 10.252.8.0 255.255.248.0"
 # cert-ci-jenkins-io-sponsorship vnet
 push "route 10.205.8.0 255.255.255.0"
+# infra-ci-jenkins-io-sponsorship vnet
+push "route 10.206.0.0 255.255.252.0"
+# pkg.origin.jenkins.io VM
+push "route 52.202.51.185 255.255.255.255"
+# private vnet
+push "route 10.248.0.0 255.252.0.0"
+# private-sponsorship vnet
+push "route 10.240.0.0 255.252.0.0"
+# public vnet
+push "route 10.244.0.0 255.252.0.0"
+# public-db vnet
+push "route 10.253.0.0 255.255.248.0"
+# public-jenkins-sponsorship vnet
+push "route 10.200.0.0 255.252.0.0"
 # trusted-ci-jenkins-io vnet
 push "route 10.252.0.0 255.255.248.0"
 # trusted-ci-jenkins-io-sponsorship vnet
 push "route 10.204.0.0 255.255.255.0"
-# archives.jenkins.io VM
-push "route 46.101.121.132 255.255.255.255"
-# pkg.origin.jenkins.io VM
-push "route 52.202.51.185 255.255.255.255"
 # usage.jenkins.io VM
 push "route 52.204.62.78 255.255.255.255"
-# census.jenkins.io VM
-push "route 52.202.38.86 255.255.255.255"
-# azure.ci.jenkins.io VM
-push "route 172.200.138.43 255.255.255.255"
