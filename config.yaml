@@ -17,7 +17,7 @@ networks:
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       cert-ci-jenkins-io: 10.252.8.0/21
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
-      cert-ci-jenkins-io-sponsorship: 10.205.8.0/24
+      cert-ci-jenkins-io-sponsorship: 10.205.0.0/24
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       trusted-ci-jenkins-io: 10.252.0.0/21
       # TODO: track with updatecli from https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
