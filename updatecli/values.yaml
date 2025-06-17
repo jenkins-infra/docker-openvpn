@@ -1,8 +1,42 @@
 ---
 github:
-  user: "jenkins-infra-updatecli"
-  email: "178728+jenkins-infra-updatecli[bot]@users.noreply.github.com"
-  token: "UPDATECLI_GITHUB_TOKEN"
-  branch: "main"
-  owner: "jenkins-infra"
-  repository: "openvpn"
+  user: jenkins-infra-updatecli
+  email: '178728+jenkins-infra-updatecli[bot]@users.noreply.github.com'
+  token: UPDATECLI_GITHUB_TOKEN
+  branch: main
+  owner: jenkins-infra
+  repository: openvpn
+
+networks:
+  private:
+    routes:
+      - private
+      - private-sponsorship
+      - public
+      - public-jenkins-sponsorship
+      - public-db
+      - infra-ci-jenkins-io
+      - infra-ci-jenkins-io-sponsorship
+      - cert-ci-jenkins-io
+      - cert-ci-jenkins-io-sponsorship
+      - trusted-ci-jenkins-io
+      - trusted-ci-jenkins-io-sponsorship
+    servers:
+      archives.jenkins.io:
+        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
+        report_query: .archives\.jenkins\.io.service_ips.ipv4
+      azure.ci.jenkins.io:
+        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/azure.json
+        report_query: .azure\.ci\.jenkins\.io.service_ips.ipv4
+      aws.ci.jenkins.io:
+        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
+        report_query: .aws\.ci\.jenkins\.io.service_ips.ipv4
+      usage.jenkins.io:
+        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
+        report_query: .usage\.jenkins\.io.service_ips.ipv4
+      census.jenkins.io:
+        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
+        report_query: .census\.jenkins\.io.service_ips.ipv4
+      pkg.origin.jenkins.io:
+        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
+        report_query: .pkg\.origin\.jenkins\.io.service_ips.ipv4
