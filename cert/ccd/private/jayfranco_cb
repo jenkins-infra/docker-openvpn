@@ -11,7 +11,7 @@ push "route 52.202.38.86 255.255.255.255"
 # cert-ci-jenkins-io vnet
 push "route 10.252.8.0 255.255.248.0"
 # cert-ci-jenkins-io-sponsorship vnet
-push "route 10.205.8.0 255.255.255.0"
+push "route 10.205.0.0 255.255.255.0"
 # infra-ci-jenkins-io vnet
 push "route 10.5.0.0 255.255.252.0"
 # infra-ci-jenkins-io-sponsorship vnet
