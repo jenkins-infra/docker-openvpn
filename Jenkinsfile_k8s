@@ -12,6 +12,6 @@ parallel(
     }
   },
   'docker-image': {
-    buildDockerAndPublishImage('openvpn')
+    buildDockerAndPublishImage('openvpn', [targetplatforms: 'linux/amd64,linux/arm64'])
   },
 )
