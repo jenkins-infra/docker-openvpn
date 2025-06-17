@@ -76,22 +76,25 @@ targets:
     spec:
       command: >
         {
+          set -x
           # We need the 'easyvpn' command built (symlinked from the repository root)
           # Requires 'go' installed
           cd ./utils/easyvpn
           go build
           cd -
+          ./utils/easyvpn/easyvpn
         } || exit 2
 
         if [ "${DRY_RUN}" = "true" ];
         then
           echo "DRY_RUN: should run commands"
           exit 1
+        else
+          # Regenerate client config
+          ./utils/easyvpn/easyvpn --commit=false --push=false clientconfig --all
+          git status
+          git diff --exit-code
         fi
-
-        # Regenerate client config
-        ./utils/easyvpn/easyvpn --commit=false --push=false clientconfig --all
-        git diff --exit-code
       changedif:
         kind: 'exitcode'
         spec:
