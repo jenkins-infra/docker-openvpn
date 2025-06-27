@@ -20,6 +20,8 @@ networks:
       census.jenkins.io: 52.202.38.86/32
       azure.ci.jenkins.io: 172.200.138.43/32
       aws.ci.jenkins.io: 3.141.203.62/32
+      eks_cijenkinsioagents2_1: 3.149.71.89/32
+      eks_cijenkinsioagents2_2: 3.149.48.23/32
 users:
   abayer:
     id: 16
