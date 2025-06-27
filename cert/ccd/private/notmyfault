@@ -3,7 +3,7 @@ ifconfig-push 10.9.0.8 255.255.255.0
 # archives.jenkins.io VM
 push "route 46.101.121.132 255.255.255.255"
 # aws.ci.jenkins.io VM
-push "route 3.141.203.62 255.255.255.255"
+push "route 18.217.202.59 255.255.255.255"
 # azure.ci.jenkins.io VM
 push "route 172.200.138.43 255.255.255.255"
 # census.jenkins.io VM
