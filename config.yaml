@@ -22,6 +22,7 @@ networks:
       aws.ci.jenkins.io: 18.217.202.59/32
       eks_cijenkinsioagents2_1: 3.149.71.89/32
       eks_cijenkinsioagents2_2: 3.149.48.23/32
+      testissues.jenkins.io: 52.88.217.28/32
 users:
   abayer:
     id: 16
