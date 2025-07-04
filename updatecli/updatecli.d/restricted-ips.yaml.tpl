@@ -1,6 +1,7 @@
 {{ range $network, $network_setup := .networks }}
   {{ $subnets := $network_setup.routes }}
   {{ $servers := $network_setup.servers }}
+  {{ $multiValuedServers := $network_setup.multivalued_servers }}
 ---
 name: Update the {{ $network | quote }} network YAML configuration of our OpenVPN CLI
 
@@ -26,15 +27,40 @@ sources:
   {{ end }}
 
   {{ range $server, $server_data := $servers }}
+    {{ if $server_data.report_url }}
+      {{ if $server_data.resolve_dns }}
+  {{ $server }}-dns:
+    transformers:
+      - replacers:
+          - from: "https://"
+            to: ""
+          - from: "http://"
+            to: ""
+          - from: "/"
+            to: ""
+      {{ else }}
   {{ $server }}-cidr:
+    transformers:
+      - addsuffix: '/32'
+      {{ end }}
     kind: json
     spec:
       file: {{ $server_data.report_url }}
       key: {{ $server_data.report_query }}
-    transformers:
-      - addsuffix: '/32'
+    {{ end }}
+    {{ if $server_data.resolve_dns }}
+  {{ $server }}-cidr:
+    name: Get DNS values for {{ $server }}
+    kind: shell
+      {{ if $server_data.report_url }}
+    dependson:
+      - {{ $server }}-dns
+      {{ end }}
+    spec:
+      command: >
+        dig +short {{ empty $server_data.report_url | ternary $server (print `{{ source "` $server `-dns" }}`) }} | sort -u | grep -v '\.$' | tr '\n' ' ' | sed 's# #/32 #g' | xargs
+    {{ end }}
   {{ end }}
-
 targets:
   {{ range $subnet := $subnets }}
   config-{{ $subnet }}:
@@ -110,6 +136,5 @@ actions:
     spec:
       labels:
         - enhancement
-
 ...
 {{ end }}
