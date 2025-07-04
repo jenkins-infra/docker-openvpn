@@ -30,7 +30,7 @@ type Route struct {
 var clientConfigTemplate = `# Client Configuration for user "{{ .Name }}" in the VPN network "{{ .NetworkName }}"
 ifconfig-push {{ .IP }} {{ .Netmask }}
 	{{- range .Routes }}
-# {{ .Name }} {{ if eq .Netmask "255.255.255.255" }}VM{{ else }}vnet{{ end }}
+# {{ .Name }}{{ if ne .Netmask "255.255.255.255" }} vnet{{ end }}
 push "route {{ .IP }} {{ .Netmask }}"
 	{{- end }}
 `
@@ -71,18 +71,25 @@ func initClientConfig(userConfig users.User, networkConfig network.Network) (Cli
 	sort.Strings(keys)
 
 	// Add routes to the CC
-	for _, routeName := range keys {
-		routeCidr := routes[routeName]
-		routeIP, routeNetwork, err := net.ParseCIDR(routeCidr)
-		if err != nil {
-			return cc, err
+	for _, routeConfigName := range keys {
+		routes := strings.Split(routes[routeConfigName], " ")
+
+		for i, routeCidr := range routes {
+			routeIP, routeNetwork, err := net.ParseCIDR(routeCidr)
+			if err != nil {
+				return cc, err
+			}
+			routeName := routeConfigName
+			if len(routes) > 1 {
+				routeName = fmt.Sprintf("%s_%d", routeName, (i + 1))
+			}
+			userRoute := Route{
+				Name:    routeName,
+				IP:      routeIP.String(),
+				Netmask: net.IP(routeNetwork.Mask).String(),
+			}
+			cc.Routes = append(cc.Routes, userRoute)
 		}
-		userRoute := Route{
-			Name:    routeName,
-			IP:      routeIP.String(),
-			Netmask: net.IP(routeNetwork.Mask).String(),
-		}
-		cc.Routes = append(cc.Routes, userRoute)
 	}
 
 	return cc, nil
