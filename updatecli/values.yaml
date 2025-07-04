@@ -40,3 +40,6 @@ networks:
       pkg.origin.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
         report_query: .pkg\.origin\.jenkins\.io.service_ips.ipv4
+    multivalued_servers:
+      eks_cijenkinsioagents2: EFD41748F9C38AAB83FA81F34C59B313.gr7.us-east-2.eks.amazonaws.com
+      testissues.jenkins.io: null

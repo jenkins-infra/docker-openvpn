@@ -1,6 +1,7 @@
 {{ range $network, $network_setup := .networks }}
   {{ $subnets := $network_setup.routes }}
   {{ $servers := $network_setup.servers }}
+  {{ $multiValuedServers := $network_setup.multivalued_servers }}
 ---
 name: Update the {{ $network | quote }} network YAML configuration of our OpenVPN CLI
 
@@ -35,6 +36,16 @@ sources:
       - addsuffix: '/32'
   {{ end }}
 
+  {{ range $mvs_name, $mvs_data := $multiValuedServers }}
+    {{ $dns_record := $mvs_data | default $mvs_name}}
+  {{ $mvs_name }}-cidrs:
+    name: Get DNS values for {{ $mvs_name }}
+    kind: shell
+    spec:
+      command: >
+        dig +short {{ $dns_record }} | grep -v '\.$' | tr '\n' ' ' | sed 's# #/32 #g' | xargs
+  {{ end }}
+
 targets:
   {{ range $subnet := $subnets }}
   config-{{ $subnet }}:
@@ -56,6 +67,17 @@ targets:
     spec:
       file: config.yaml
       key: $.networks.{{ $network }}.routes.'{{ $server }}'
+  {{ end }}
+
+  {{ range $mvs_name, $mvs_data := $multiValuedServers }}
+  config-{{ $mvs_name }}:
+    name: Update {{ $mvs_name }} routes in the YAML configuration of our OpenVPN CLI
+    kind: yaml
+    sourceid: {{ $mvs_name }}-cidrs
+    scmid: default
+    spec:
+      file: config.yaml
+      key: $.networks.{{ $network }}.routes.'{{ $mvs_name }}'
   {{ end }}
 
   update-ccd:
