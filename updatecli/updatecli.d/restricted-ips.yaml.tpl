@@ -27,25 +27,40 @@ sources:
   {{ end }}
 
   {{ range $server, $server_data := $servers }}
+    {{ if $server_data.report_url }}
+      {{ if $server_data.resolve_dns }}
+  {{ $server }}-dns:
+    transformers:
+      - replacers:
+          - from: "https://"
+            to: ""
+          - from: "http://"
+            to: ""
+          - from: "/"
+            to: ""
+      {{ else }}
   {{ $server }}-cidr:
+    transformers:
+      - addsuffix: '/32'
+      {{ end }}
     kind: json
     spec:
       file: {{ $server_data.report_url }}
       key: {{ $server_data.report_query }}
-    transformers:
-      - addsuffix: '/32'
-  {{ end }}
-
-  {{ range $mvs_name, $mvs_data := $multiValuedServers }}
-    {{ $dns_record := $mvs_data | default $mvs_name}}
-  {{ $mvs_name }}-cidrs:
-    name: Get DNS values for {{ $mvs_name }}
+    {{ end }}
+    {{ if $server_data.resolve_dns }}
+  {{ $server }}-cidr:
+    name: Get DNS values for {{ $server }}
     kind: shell
+      {{ if $server_data.report_url }}
+    dependson:
+      - {{ $server }}-dns
+      {{ end }}
     spec:
       command: >
-        dig +short {{ $dns_record }} | grep -v '\.$' | tr '\n' ' ' | sed 's# #/32 #g' | xargs
+        dig +short {{ empty $server_data.report_url | ternary $server (print `{{ source "` $server `-dns" }}`) }} | sort -u | grep -v '\.$' | tr '\n' ' ' | sed 's# #/32 #g' | xargs
+    {{ end }}
   {{ end }}
-
 targets:
   {{ range $subnet := $subnets }}
   config-{{ $subnet }}:
@@ -67,17 +82,6 @@ targets:
     spec:
       file: config.yaml
       key: $.networks.{{ $network }}.routes.'{{ $server }}'
-  {{ end }}
-
-  {{ range $mvs_name, $mvs_data := $multiValuedServers }}
-  config-{{ $mvs_name }}:
-    name: Update {{ $mvs_name }} routes in the YAML configuration of our OpenVPN CLI
-    kind: yaml
-    sourceid: {{ $mvs_name }}-cidrs
-    scmid: default
-    spec:
-      file: config.yaml
-      key: $.networks.{{ $network }}.routes.'{{ $mvs_name }}'
   {{ end }}
 
   update-ccd:
@@ -132,6 +136,5 @@ actions:
     spec:
       labels:
         - enhancement
-
 ...
 {{ end }}
