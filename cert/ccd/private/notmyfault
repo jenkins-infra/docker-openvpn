@@ -1,26 +1,26 @@
 # Client Configuration for user "notmyfault" in the VPN network "private"
 ifconfig-push 10.9.0.8 255.255.255.0
-# archives.jenkins.io VM
+# archives.jenkins.io
 push "route 46.101.121.132 255.255.255.255"
-# aws.ci.jenkins.io VM
+# aws.ci.jenkins.io
 push "route 18.217.202.59 255.255.255.255"
-# azure.ci.jenkins.io VM
+# azure.ci.jenkins.io
 push "route 172.200.138.43 255.255.255.255"
-# census.jenkins.io VM
+# census.jenkins.io
 push "route 52.202.38.86 255.255.255.255"
 # cert-ci-jenkins-io vnet
 push "route 10.252.8.0 255.255.248.0"
 # cert-ci-jenkins-io-sponsorship vnet
 push "route 10.205.0.0 255.255.255.0"
-# eks_cijenkinsioagents2_1 VM
+# eks_cijenkinsioagents2_1
 push "route 3.149.71.89 255.255.255.255"
-# eks_cijenkinsioagents2_2 VM
+# eks_cijenkinsioagents2_2
 push "route 3.149.48.23 255.255.255.255"
 # infra-ci-jenkins-io vnet
 push "route 10.5.0.0 255.255.252.0"
 # infra-ci-jenkins-io-sponsorship vnet
 push "route 10.206.0.0 255.255.252.0"
-# pkg.origin.jenkins.io VM
+# pkg.origin.jenkins.io
 push "route 52.202.51.185 255.255.255.255"
 # private vnet
 push "route 10.248.0.0 255.252.0.0"
@@ -32,11 +32,11 @@ push "route 10.244.0.0 255.252.0.0"
 push "route 10.253.0.0 255.255.248.0"
 # public-jenkins-sponsorship vnet
 push "route 10.200.0.0 255.252.0.0"
-# testissues.jenkins.io VM
+# testissues.jenkins.io
 push "route 52.88.217.28 255.255.255.255"
 # trusted-ci-jenkins-io vnet
 push "route 10.252.0.0 255.255.248.0"
 # trusted-ci-jenkins-io-sponsorship vnet
 push "route 10.204.0.0 255.255.255.0"
-# usage.jenkins.io VM
+# usage.jenkins.io
 push "route 52.204.62.78 255.255.255.255"
