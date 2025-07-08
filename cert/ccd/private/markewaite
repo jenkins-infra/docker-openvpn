@@ -4,8 +4,6 @@ ifconfig-push 10.9.0.7 255.255.255.0
 push "route 46.101.121.132 255.255.255.255"
 # aws.ci.jenkins.io
 push "route 18.217.202.59 255.255.255.255"
-# azure.ci.jenkins.io
-push "route 172.200.138.43 255.255.255.255"
 # census.jenkins.io
 push "route 52.202.38.86 255.255.255.255"
 # cert-ci-jenkins-io vnet
@@ -30,8 +28,6 @@ push "route 10.240.0.0 255.252.0.0"
 push "route 10.244.0.0 255.252.0.0"
 # public-db vnet
 push "route 10.253.0.0 255.255.248.0"
-# public-jenkins-sponsorship vnet
-push "route 10.200.0.0 255.252.0.0"
 # testissues.jenkins.io_1
 push "route 34.223.151.29 255.255.255.255"
 # testissues.jenkins.io_2
