@@ -13,7 +13,6 @@ networks:
       - private
       - private-sponsorship
       - public
-      - public-jenkins-sponsorship
       - public-db
       - infra-ci-jenkins-io
       - infra-ci-jenkins-io-sponsorship
@@ -25,9 +24,6 @@ networks:
       archives.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
         report_query: .archives\.jenkins\.io.service_ips.ipv4
-      azure.ci.jenkins.io:
-        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/azure.json
-        report_query: .azure\.ci\.jenkins\.io.service_ips.ipv4
       aws.ci.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
         report_query: .aws\.ci\.jenkins\.io.service_ips.ipv4
@@ -42,7 +38,7 @@ networks:
         report_query: .pkg\.origin\.jenkins\.io.service_ips.ipv4
       eks_cijenkinsioagents2:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
-        report_query: .aws\.ci\.jenkins\.io.cijenkinsio-agents-2.cluster_endpoint
+        report_query: .aws\.ci\.jenkins\.io.agents_kubernetes_clusters.cijenkinsio-agents-2.cluster_endpoint
         resolve_dns: true
       testissues.jenkins.io:
         resolve_dns: true

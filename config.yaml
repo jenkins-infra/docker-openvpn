@@ -6,7 +6,6 @@ networks:
       private: 10.248.0.0/14
       private-sponsorship: 10.240.0.0/14
       public: 10.244.0.0/14
-      public-jenkins-sponsorship: 10.200.0.0/14
       public-db: 10.253.0.0/21
       infra-ci-jenkins-io: 10.5.0.0/22
       infra-ci-jenkins-io-sponsorship: 10.206.0.0/22
@@ -18,7 +17,6 @@ networks:
       pkg.origin.jenkins.io: 52.202.51.185/32
       usage.jenkins.io: 52.204.62.78/32
       census.jenkins.io: 52.202.38.86/32
-      azure.ci.jenkins.io: 172.200.138.43/32
       aws.ci.jenkins.io: 18.217.202.59/32
       eks_cijenkinsioagents2: 3.149.48.23/32 3.149.71.89/32
       testissues.jenkins.io: 34.223.151.29/32 52.88.217.28/32
@@ -32,7 +30,6 @@ users:
         - public
         - usage.jenkins.io
         - census.jenkins.io
-        - azure.ci.jenkins.io
   danielbeck:
     id: 5
     all_routes: true
@@ -56,7 +53,6 @@ users:
         - pkg.origin.jenkins.io
         - usage.jenkins.io
         - census.jenkins.io
-        - azure.ci.jenkins.io
   krisstern:
     id: 15
     routes:
@@ -65,7 +61,6 @@ users:
         - private
         - private-sponsorship
         - public-db
-        - azure.ci.jenkins.io
   markewaite:
     id: 7
     all_routes: true
