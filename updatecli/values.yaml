@@ -11,15 +11,11 @@ networks:
   private:
     routes:
       - private
-      - private-sponsorship
       - public
       - public-db
       - infra-ci-jenkins-io
-      - infra-ci-jenkins-io-sponsorship
       - cert-ci-jenkins-io
-      - cert-ci-jenkins-io-sponsorship
       - trusted-ci-jenkins-io
-      - trusted-ci-jenkins-io-sponsorship
     servers:
       archives.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
