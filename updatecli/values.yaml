@@ -38,3 +38,5 @@ networks:
         resolve_dns: true
       testissues.jenkins.io:
         resolve_dns: true
+      dockerhubmirror.azurecr.io:
+        resolve_dns: true
