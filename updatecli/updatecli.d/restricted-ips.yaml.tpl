@@ -58,7 +58,7 @@ sources:
       {{ end }}
     spec:
       command: >
-        dig +short {{ empty $server_data.report_url | ternary $server (print `{{ source "` $server `-dns" }}`) }} | sort -u | grep -v '\.$' | tr '\n' ' ' | sed 's# #/32 #g' | xargs
+        dig @8.8.8.8 +short {{ empty $server_data.report_url | ternary $server (print `{{ source "` $server `-dns" }}`) }} | sort -u | grep -v '\.$' | tr '\n' ' ' | sed 's# #/32 #g' | xargs
     {{ end }}
   {{ end }}
 targets:
