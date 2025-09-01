@@ -1,0 +1,10 @@
+# Client Configuration for user "atulajoshi" in the VPN network "private"
+ifconfig-push 10.9.0.12 255.255.255.0
+# aws.ci.jenkins.io
+push "route 18.217.202.59 255.255.255.255"
+# cert-ci-jenkins-io vnet
+push "route 10.252.8.0 255.255.248.0"
+# private vnet
+push "route 10.248.0.0 255.252.0.0"
+# trusted-ci-jenkins-io vnet
+push "route 10.252.0.0 255.255.248.0"
