@@ -17,6 +17,7 @@ networks:
       eks_cijenkinsioagents2: 3.149.48.23/32 3.149.71.89/32
       testissues.jenkins.io: 44.233.11.113/32 54.184.46.121/32
       dockerhubmirror.azurecr.io: 20.49.102.144/32
+      do.usage.jenkins.io: 138.197.183.107/32
 users:
   abayer:
     id: 16
