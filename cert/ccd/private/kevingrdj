@@ -27,9 +27,9 @@ push "route 10.244.0.0 255.252.0.0"
 # public-db vnet
 push "route 10.253.0.0 255.255.248.0"
 # testissues.jenkins.io_1
-push "route 44.233.11.113 255.255.255.255"
+push "route 34.209.111.241 255.255.255.255"
 # testissues.jenkins.io_2
-push "route 54.184.46.121 255.255.255.255"
+push "route 44.239.232.108 255.255.255.255"
 # trusted-ci-jenkins-io vnet
 push "route 10.252.0.0 255.255.248.0"
 # usage.jenkins.io
