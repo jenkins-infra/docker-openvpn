@@ -1,0 +1,6 @@
+# Client Configuration for user "jay_jenkins" in the VPN network "private"
+ifconfig-push 10.9.0.14 255.255.255.0
+# aws.ci.jenkins.io
+push "route 18.217.202.59 255.255.255.255"
+# private vnet
+push "route 10.248.0.0 255.252.0.0"
