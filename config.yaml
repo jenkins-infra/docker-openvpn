@@ -85,3 +85,9 @@ users:
     routes:
       private:
         - private # release.ci.jenkins.io and infra.ci.jenkins.io
+  jay_jenkins:
+    id: 14
+    routes:
+      private:
+        - private # release.ci.jenkins.io and infra.ci.jenkins.io
+        - aws.ci.jenkins.io
