@@ -71,14 +71,6 @@ users:
   wfollonier:
     id: 10
     all_routes: true
-  atulajoshi:
-    id: 12
-    routes:
-      private:
-        - private # release.ci.jenkins.io and infra.ci.jenkins.io
-        - trusted-ci-jenkins-io
-        - cert-ci-jenkins-io
-        - aws.ci.jenkins.io
   hlemeur:
     id: 13
     routes:

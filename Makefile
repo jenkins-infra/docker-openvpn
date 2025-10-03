@@ -21,4 +21,5 @@ init_linux:
 
 init_osx:
 	$(MAKE) -C utils/easyvpn init_osx
+	chmod +x $(PWD)/utils/easyvpn/easyvpn
 	ln -f -s $(PWD)/utils/easyvpn/easyvpn easyvpn
