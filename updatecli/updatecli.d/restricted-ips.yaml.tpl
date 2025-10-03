@@ -22,6 +22,7 @@ sources:
   {{ $subnet }}-cidr:
     kind: json
     spec:
+      engine: dasel/v2
       file: https://reports.jenkins.io/jenkins-infra-data-reports/azure-net.json
       key: .vnets.{{ $subnet }}-vnet.[0]
   {{ end }}
@@ -45,6 +46,7 @@ sources:
       {{ end }}
     kind: json
     spec:
+      engine: dasel/v2
       file: {{ $server_data.report_url }}
       key: {{ $server_data.report_query }}
     {{ end }}
