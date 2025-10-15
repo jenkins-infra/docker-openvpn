@@ -15,7 +15,7 @@ networks:
       census.jenkins.io: 52.202.38.86/32
       aws.ci.jenkins.io: 18.217.202.59/32
       eks_cijenkinsioagents2: 3.149.48.23/32 3.149.71.89/32
-      testissues.jenkins.io: 52.40.71.65/32 52.41.181.94/32
+      testissues.jenkins.io: 52.43.75.227/32 52.88.194.77/32
       dockerhubmirror.azurecr.io: 20.49.102.144/32
 users:
   abayer:
