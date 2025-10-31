@@ -12,7 +12,9 @@ networks:
       archives.jenkins.io: 46.101.121.132/32
       pkg.origin.jenkins.io: 52.202.51.185/32
       usage.jenkins.io: 64.227.123.95/32
-      census.jenkins.io: 52.202.38.86/32
+      census.jenkins.io: 64.226.127.59/32
+      # TODO: remove once migrated to DigitalOcean
+      census.aws.jenkins.io: 52.202.38.86/32
       aws.ci.jenkins.io: 18.217.202.59/32
       eks_cijenkinsioagents2: 3.149.48.23/32 3.149.71.89/32
       testissues.jenkins.io: 35.83.245.26/32 44.228.41.146/32
@@ -26,6 +28,7 @@ users:
         - public
         - usage.jenkins.io
         - census.jenkins.io
+        - census.aws.jenkins.io
   danielbeck:
     id: 5
     all_routes: true
@@ -49,6 +52,7 @@ users:
         - pkg.origin.jenkins.io
         - usage.jenkins.io
         - census.jenkins.io
+        - census.aws.jenkins.io
   krisstern:
     id: 15
     routes:
