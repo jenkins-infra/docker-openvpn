@@ -4,8 +4,10 @@ ifconfig-push 10.9.0.5 255.255.255.0
 push "route 46.101.121.132 255.255.255.255"
 # aws.ci.jenkins.io
 push "route 18.217.202.59 255.255.255.255"
-# census.jenkins.io
+# census.aws.jenkins.io
 push "route 52.202.38.86 255.255.255.255"
+# census.jenkins.io
+push "route 64.226.127.59 255.255.255.255"
 # cert-ci-jenkins-io vnet
 push "route 10.252.8.0 255.255.248.0"
 # dockerhubmirror.azurecr.io
