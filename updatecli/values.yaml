@@ -27,7 +27,7 @@ networks:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
         report_query: .usage\.jenkins\.io.service_ips.ipv4
       census.jenkins.io:
-        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
+        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
         report_query: .census\.jenkins\.io.service_ips.ipv4
       pkg.origin.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
