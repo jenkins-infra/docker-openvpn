@@ -1,7 +1,7 @@
 # Client Configuration for user "abayer" in the VPN network "private"
 ifconfig-push 10.9.0.16 255.255.255.0
 # census.jenkins.io
-push "route 64.226.127.59 255.255.255.255"
+push "route 52.202.38.86 255.255.255.255"
 # private vnet
 push "route 10.248.0.0 255.252.0.0"
 # public vnet
