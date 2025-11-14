@@ -36,7 +36,5 @@ networks:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
         report_query: .aws\.ci\.jenkins\.io.agents_kubernetes_clusters.cijenkinsio-agents-2.cluster_endpoint
         resolve_dns: true
-      testissues.jenkins.io:
-        resolve_dns: true
       dockerhubmirror.azurecr.io:
         resolve_dns: true
