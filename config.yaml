@@ -72,9 +72,7 @@ users:
     all_routes: true
   hlemeur:
     id: 13
-    routes:
-      private:
-        - private # release.ci.jenkins.io and infra.ci.jenkins.io
+    all_routes: true
   jay_jenkins:
     id: 14
     routes:
