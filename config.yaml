@@ -31,9 +31,6 @@ users:
   dduportal:
     id: 3
     all_routes: true
-  jayfranco_cb:
-    id: 2
-    all_routes: true
   kevingrdj:
     id: 11
     all_routes: true
