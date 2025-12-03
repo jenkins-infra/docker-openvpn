@@ -76,3 +76,4 @@ users:
       private:
         - private # release.ci.jenkins.io and infra.ci.jenkins.io
         - aws.ci.jenkins.io
+        - eks_cijenkinsioagents2
