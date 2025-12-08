@@ -5,7 +5,7 @@ go 1.25
 require (
 	// runc is not directly needed but it allows dependabot to bump it
 	github.com/opencontainers/runc v1.2.8 // indirect
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	go.mozilla.org/sops/v3 v3.7.3
 	gopkg.in/yaml.v2 v2.4.0
 )
