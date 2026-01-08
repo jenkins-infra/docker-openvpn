@@ -38,3 +38,44 @@ networks:
         resolve_dns: true
       dockerhubmirror.azurecr.io:
         resolve_dns: true
+
+certificates:
+  abayer:
+    cert_file: "cert/pki/issued/abayer.crt"
+    username: "abayer"
+  danielbeck:
+    cert_file: "cert/pki/issued/danielbeck.crt"
+    username: "danielbeck"
+  dduportal:
+    cert_file: "cert/pki/issued/dduportal.crt"
+    username: "dduportal"
+  hlemeur:
+    cert_file: "cert/pki/issued/hlemeur.crt"
+    username: "hlemeur"
+  jay_jenkins:
+    cert_file: "cert/pki/issued/jay_jenkins.crt"
+    username: "jay_jenkins"
+  kevingrdj:
+    cert_file: "cert/pki/issued/kevingrdj.crt"
+    username: "kevingrdj"
+  kohsuke:
+    cert_file: "cert/pki/issued/kohsuke.crt"
+    username: "kohsuke"
+  krisstern:
+    cert_file: "cert/pki/issued/krisstern.crt"
+    username: "krisstern"
+  markewaite:
+    cert_file: "cert/pki/issued/markewaite.crt"
+    username: "markewaite"
+  notmyfault:
+    cert_file: "cert/pki/issued/notmyfault.crt"
+    username: "notmyfault"
+  smerle:
+    cert_file: "cert/pki/issued/smerle.crt"
+    username: "smerle"
+  timja:
+    cert_file: "cert/pki/issued/timja.crt"
+    username: "timja"
+  wfollonier:
+    cert_file: "cert/pki/issued/wfollonier.crt"
+    username: "wfollonier"
