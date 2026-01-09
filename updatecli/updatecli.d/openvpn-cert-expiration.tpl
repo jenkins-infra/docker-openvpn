@@ -40,7 +40,7 @@ targets:
     spec:
       file: {{ $val.cert_file }}
       content: "EXPIRED - Certificate expiring soon, please renew"
-    # scmid: default
+    scmid: default
 
 actions:
   default:
