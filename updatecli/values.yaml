@@ -29,9 +29,6 @@ networks:
       census.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
         report_query: .census\.jenkins\.io.service_ips.ipv4
-      pkg.origin.jenkins.io:
-        report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws.json
-        report_query: .pkg\.origin\.jenkins\.io.service_ips.ipv4
       eks_cijenkinsioagents2:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
         report_query: .aws\.ci\.jenkins\.io.agents_kubernetes_clusters.cijenkinsio-agents-2.cluster_endpoint
