@@ -1,7 +1,7 @@
-{{ range $key, $val := .certificates }}
+{{- range $username, $_ := .certificates }}
 ---
 # yamllint disable rule:line-length
-name: "Check VPN certificate expiration for {{ $val.username }}"
+name: "Check VPN certificate expiration for {{ $username }}"
 
 scms:
   default:
@@ -16,10 +16,12 @@ scms:
 
 sources:
   certExpiryDate:
-    name: "Extract expiration date from {{ $val.username }}'s certificate"
+    name: "Extract expiration date from {{ $username }}'s certificate"
     kind: shell
     spec:
-      command: bash ./updatecli/scripts/cert-expiry-extract.sh {{ $val.cert_file }}
+      command: >
+        bash ./updatecli/scripts/cert-expiry-extract.sh
+        cert/pki/issued/{{ $username }}.crt
       environments:
         - name: PATH
 
@@ -34,13 +36,15 @@ conditions:
         - name: PATH
 
 targets:
-  markCertExpired:
-    name: "Mark {{ $val.username }}'s certificate as expiring"
+  markCertExpiring:
+    name: "Mark {{ $username }}'s certificate as expiring"
     kind: file
-    spec:
-      file: {{ $val.cert_file }}
-      content: "EXPIRED - Certificate expiring soon, please renew"
     scmid: default
+    spec:
+      file: cert/pki/issued/{{ $username }}.crt.expiring
+      content: |
+        Certificate for {{ $username }} expires on {{ source "certExpiryDate" }}.
+        Please renew your VPN certificate as soon as possible.
 
 actions:
   default:
@@ -48,23 +52,20 @@ actions:
     scmid: default
     spec:
       draft: true
-      title: "[DO NOT MERGE] VPN Certificate Expiring Soon: {{ $val.username }}"
+      title: "[DO NOT MERGE] VPN Certificate Expiring Soon: {{ $username }}"
       description: |
-        {{ $val.username }} your VPN certificate will expire on **{{ source "certExpiryDate" }}**.
-        
+        @{{ $username }} your VPN certificate will expire on **{{ source "certExpiryDate" }}**.
+
         ## Action Required
-        
-        Your certificate expires in less than 30 days. Please renew it as soon as possible to maintain VPN access.
-        
-        ### Renewal Instructions
-        
-        [TODO: Add link to certificate renewal documentation]
-        
+
+        Your VPN certificate expires in less than **30 days**.
+        Please renew it to avoid losing VPN access.
+
         ---
-        
-        **Note**: This is an automated notification PR and will not be merged. Please close this PR after acknowledging.
+        **Note:** This is an automated notification PR.
+        It is not meant to be merged and can be closed once acknowledged.
       labels:
         - vpn
         - certificate-expiration
         - action-required
-{{ end }}
+{{- end }}
