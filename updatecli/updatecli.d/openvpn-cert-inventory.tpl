@@ -1,5 +1,6 @@
 ---
 name: "Sync OpenVPN certificate inventory from cert/pki/issued"
+
 scms:
   default:
     kind: github
@@ -13,40 +14,48 @@ scms:
 
 sources:
   certificatesList:
-    name: "Discover certificates as comma-separated string"
+    name: "Discover OpenVPN certificate usernames"
     kind: shell
     spec:
       command: |
-        set -eu -o pipefail
+        set -eu
         for cert in cert/pki/issued/*.crt; do
           [ -e "$cert" ] || continue
           basename "$cert" .crt
-        done | sort | paste -sd ","
+        done | sort | paste -sd "," -
 
 targets:
   updateCertificates:
+    name: "Update certificate inventory in updatecli/values.yaml"
     kind: yaml
-    sourceid: certificatesList
     spec:
       file: updatecli/values.yaml
       key: $.certificates
       value: |
-        {{ range $index, $cert := splitList "," (source "certificatesList") }}        - {{ $cert }}
-        {{ end }}
-    # scmigid: default
+        {{- range $cert := splitList "," (source "certificatesList") }}
+        - {{ $cert }}
+        {{- end }}
+    # scmid: default
 
 actions:
   default:
     kind: github/pullrequest
     scmid: default
     spec:
+      draft: true
       title: "chore(updatecli): sync OpenVPN certificate inventory"
       description: |
-        Synced certificate inventory from cert/pki/issued/
-        
-        **Certificates:**
-        {{ range $index, $cert := splitList "," (source "certificatesList") }}
+        This PR synchronizes the OpenVPN certificate inventory from the
+        contents of `cert/pki/issued/`.
+
+        The following certificates were discovered:
+
+        {{- range $cert := splitList "," (source "certificatesList") }}
         - `{{ $cert }}`
         {{- end }}
+
+        This inventory is used by Updatecli pipelines that depend on the
+        list of active OpenVPN user certificates.
       labels:
         - vpn
+        - updatecli
