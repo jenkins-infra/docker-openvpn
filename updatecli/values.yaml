@@ -35,17 +35,5 @@ networks:
         resolve_dns: true
       dockerhubmirror.azurecr.io:
         resolve_dns: true
-certificates:
-  - abayer
-  - danielbeck
-  - dduportal
-  - hlemeur
-  - jay_jenkins
-  - kevingrdj
-  - kohsuke
-  - krisstern
-  - markewaite
-  - notmyfault
-  - smerle
-  - timja
-  - wfollonier
+
+certificates: abayer,danielbeck,dduportal,hlemeur,jay_jenkins,kevingrdj,kohsuke,krisstern,markewaite,notmyfault,smerle,timja,wfollonier
