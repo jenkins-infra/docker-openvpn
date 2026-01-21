@@ -1,4 +1,4 @@
-{{- range $username, $_ := .certificates }}
+{{- range $username := splitList "," .certificates }}
 ---
 # yamllint disable rule:line-length
 name: "Check VPN certificate expiration for {{ $username }}"
@@ -39,12 +39,12 @@ targets:
   markCertExpiring:
     name: "Mark {{ $username }}'s certificate as expiring"
     kind: file
-    scmid: default
     spec:
       file: cert/pki/issued/{{ $username }}.crt.expiring
       content: |
         Certificate for {{ $username }} expires on {{ source "certExpiryDate" }}.
         Please renew your VPN certificate as soon as possible.
+    scmid: default
 
 actions:
   default:
