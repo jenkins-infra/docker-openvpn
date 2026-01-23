@@ -19,9 +19,7 @@ sources:
     name: "Extract expiration date from {{ $username }}'s certificate"
     kind: shell
     spec:
-      command: >
-        bash ./updatecli/scripts/cert-expiry-extract.sh
-        cert/pki/issued/{{ $username }}.crt
+      command: bash ./updatecli/scripts/cert-expiry-extract.sh cert/pki/issued/{{ $username }}.crt
       environments:
         - name: PATH
 
