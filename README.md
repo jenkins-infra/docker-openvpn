@@ -199,6 +199,10 @@ gh pr checkout <Pull Request ID>
 
 ### HowTo revoke client access?
 
+> [!IMPORTANT]
+> Revoking a client access also renews the [CRL](https://github.com/jenkins-infra/docker-openvpn/tree/main?tab=readme-ov-file#howto-renew-certificate-revocation-list) and its expiration date.
+> Don't forget to update the team calendar event about the CRL expiration date when revoking a client
+
 * Build EASYVPN binary by running one of the following commands depending on your
   * `make init_osx`
   * `make init_linux`
