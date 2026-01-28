@@ -37,8 +37,9 @@ targets:
   markCertExpiring:
     name: "Mark {{ $username }}'s certificate as expiring"
     kind: file
+    disablesourceinput: true
     spec:
-      file: cert/pki/issued/{{ $username }}.crt.expiring
+      file: cert/pki/issued/{{ $username }}.crt
       content: |
         Certificate for {{ $username }} expires on {{ source "certExpiryDate" }}.
         Please renew your VPN certificate as soon as possible.
