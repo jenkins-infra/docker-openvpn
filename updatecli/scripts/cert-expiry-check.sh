@@ -1,6 +1,6 @@
 #!/bin/bash
 # Check if certificate expires within 30 days
-set -eu -o pipefail
+set -eux -o pipefail
 
 currentexpirydate="${1}"
 
