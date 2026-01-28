@@ -1,0 +1,58 @@
+---
+name: Check VPN CRL expiration
+
+scms:
+  default:
+    kind: github
+    spec:
+      user: "{{ $.github.user }}"
+      email: "{{ $.github.email }}"
+      owner: "{{ $.github.owner }}"
+      repository: "{{ $.github.repository }}"
+      token: "{{ requiredEnv $.github.token }}"
+      branch: "{{ $.github.branch }}"
+
+sources:
+  crlExpiryDate:
+    name: Extract CRL expiration date
+    kind: shell
+    spec:
+      command: bash ./updatecli/scripts/cert-expiry-extract.sh ./cert/pki/crl.pem crl
+
+conditions:
+  checkIfExpiringSoon:
+    name: Check if certificate expires within 30 days
+    kind: shell
+    sourceid: crlExpiryDate
+    spec:
+      command: bash ./updatecli/scripts/cert-expiry-check.sh
+
+targets:
+  markCertExpiring:
+    name: Mark CRL certificate as expiring
+    kind: file
+    disablesourceinput: true
+    spec:
+      file: ./cert/pki/crl.pem
+      content: |
+        Certificate Revocation List expires on {{ source "crlExpiryDate" }}.
+        Please renew the VPN CRL following https://github.com/jenkins-infra/docker-openvpn?tab=readme-ov-file#howto-renew-certificate-revocation-list.
+    scmid: default
+
+actions:
+  default:
+    kind: github/pullrequest
+    scmid: default
+    spec:
+      draft: true
+      title: "[DO NOT MERGE] VPN CRL Expiring Soon"
+      description: |
+        @jenkins-infra/jenkins-infra-sre-team The VPN CRL will expire on **{{ source "crlExpiryDate" }}**.
+
+        ## Action Required
+
+        Please create an issue on the helpdesk and follow instructions from https://github.com/jenkins-infra/docker-openvpn?tab=readme-ov-file#howto-renew-certificate-revocation-list.
+
+        ---
+        **Note:** This is an automated notification PR.
+        It is not meant to be merged and can be closed once acknowledged.
