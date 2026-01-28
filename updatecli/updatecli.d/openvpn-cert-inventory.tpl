@@ -22,8 +22,6 @@ sources:
           [ -e "$cert" ] || continue
           basename "$cert" .crt
         done | sort | paste -sd "," -
-      environments:
-        - name: PATH
 
 targets:
   updateCertificates:
@@ -33,7 +31,7 @@ targets:
     spec:
       file: updatecli/values.yaml
       key: $.certificates
-    # scmid: default
+    scmid: default
 
 actions:
   default:
