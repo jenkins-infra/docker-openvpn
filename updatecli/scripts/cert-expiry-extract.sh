@@ -19,7 +19,7 @@ case "${cert_type}" in
     "crl")
         # Extract the nextUpdate date from the certificate
         # Output format: nextUpdate=Jun  1 10:20:48 2026 GMT
-        expiry_raw="$(openssl crl --nextupdate -noout -in "${cert_file}" 2>/dev/null | cut -d= -f2)"
+        expiry_raw="$(openssl crl -nextupdate -noout -in "${cert_file}" 2>/dev/null | cut -d= -f2)"
         ;;
     *)
         echo "ERROR: unsupported certificate type ${cert_type}".
