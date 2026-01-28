@@ -1,6 +1,5 @@
 {{- range $username := splitList "," .certificates }}
 ---
-# yamllint disable rule:line-length
 name: "Check VPN certificate expiration for {{ $username }}"
 
 scms:
@@ -19,9 +18,7 @@ sources:
     name: "Extract expiration date from {{ $username }}'s certificate"
     kind: shell
     spec:
-      command: bash ./updatecli/scripts/cert-expiry-extract.sh cert/pki/issued/{{ $username }}.crt
-      environments:
-        - name: PATH
+      command: bash ./updatecli/scripts/cert-expiry-extract.sh cert/pki/issued/{{ $username }}.crt x509
 
 conditions:
   checkIfExpiringSoon:
@@ -30,8 +27,6 @@ conditions:
     sourceid: certExpiryDate
     spec:
       command: bash ./updatecli/scripts/cert-expiry-check.sh
-      environments:
-        - name: PATH
 
 targets:
   markCertExpiring:
@@ -64,7 +59,6 @@ actions:
         **Note:** This is an automated notification PR.
         It is not meant to be merged and can be closed once acknowledged.
       labels:
-        - vpn
         - certificate-expiration
         - action-required
 {{- end }}
