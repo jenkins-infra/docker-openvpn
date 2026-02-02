@@ -48,6 +48,3 @@ actions:
         {{- range $cert := splitList "," (source "certificatesList") }}
         - `{{ $cert }}`
         {{- end }}
-      labels:
-        - vpn
-        - updatecli
