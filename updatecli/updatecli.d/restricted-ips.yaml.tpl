@@ -86,50 +86,6 @@ targets:
       key: $.networks.{{ $network }}.routes.'{{ $server }}'
   {{ end }}
 
-  update-ccd:
-    name: Update Client Configuration files
-    kind: shell
-    disablesourceinput: true
-    scmid: default
-    # This target should only be executed if one of its dependencies is changed (e.g. only regenerate CCDs if config.yaml changed)
-    dependsonchange: true
-    # Note: conditional execution only depends on "targets" with a logical OR (e.g. any target changed triggers execution)
-    dependson:
-    {{ range $server, $server_data := $servers }}
-        - "target#config-{{ $server }}:or"
-    {{ end }}
-    {{ range $subnet := $subnets }}
-        - "target#config-{{ $subnet }}:or"
-    {{ end }}
-    spec:
-      command: >
-        {
-          set -x
-          # We need the 'easyvpn' command built (symlinked from the repository root)
-          # Requires 'go' installed
-          cd ./utils/easyvpn
-          go build
-          cd -
-          ./utils/easyvpn/easyvpn
-        } || exit 2
-
-        if [ "${DRY_RUN}" = "true" ];
-        then
-          echo "DRY_RUN: should run commands"
-          exit 1
-        else
-          # Regenerate client config
-          ./utils/easyvpn/easyvpn --commit=false --push=false clientconfig --all
-          git status
-          git diff --exit-code
-        fi
-      changedif:
-        kind: 'exitcode'
-        spec:
-          warning: 1
-          success: 0
-          failure: 2
-
 actions:
   default:
     kind: github/pullrequest

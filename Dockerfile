@@ -1,4 +1,15 @@
-FROM ubuntu:22.04
+FROM golang:1.26.1 AS easyvpn
+
+WORKDIR /easyvpn
+
+COPY utils/easyvpn .
+RUN make build_linux
+COPY config.yaml .
+RUN mkdir -p ./cert/ccd/private
+COPY ./cert/ ./cert
+RUN ./easyvpn --commit=false --push=false clientconfig --all
+
+FROM ubuntu:22.04 AS vpn-server
 
 # We want to use the latest available packages
 # hadolint ignore=DL3008
@@ -16,7 +27,7 @@ RUN addgroup --gid 101 openvpn \
 
 COPY --chown=openvpn cert/pki/ca.crt /etc/openvpn/server/ca.crt
 COPY --chown=openvpn cert/pki/crl.pem /etc/openvpn/server/crl.pem
-COPY --chown=openvpn cert/ccd /home/openvpn/available-ccds
+COPY --chown=openvpn --from=easyvpn /easyvpn/cert/ccd /home/openvpn/available-ccds
 
 COPY docker/config/server.conf /etc/openvpn/server/server.conf
 COPY docker/config/auth-ldap.conf /etc/openvpn/server/auth-ldap.conf

@@ -102,12 +102,25 @@ func CreateClientConfig(ccd string, userConfig users.User, networkConfig network
 		return fmt.Errorf("[ERROR] could not initialize the client configuration for user %q: %s", userConfig.Name, err)
 	}
 
-	err = cc.createClientConfig(ccd)
+	tmpl, err := template.New(cc.Name).Parse(clientConfigTemplate)
 	if err != nil {
 		return fmt.Errorf("[ERROR] could not generate client configuration file for user %q: %s", userConfig.Name, err)
 	}
 
-	return nil
+	ccFile := path.Join(ccd, cc.NetworkName, cc.Name)
+	file, err := os.Create(ccFile)
+	if err != nil {
+		return fmt.Errorf("[ERROR] could not generate client configuration file for user %q: %s", userConfig.Name, err)
+	}
+
+	err = tmpl.Execute(file, cc)
+	if err != nil {
+		return fmt.Errorf("[ERROR] could not generate client configuration file for user %q: %s", userConfig.Name, err)
+	}
+
+	err = file.Close()
+
+	return err
 }
 
 func (cc *ClientConfig) createClientConfig(ccd string) error {
