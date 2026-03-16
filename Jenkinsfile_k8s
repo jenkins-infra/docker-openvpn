@@ -1,20 +1,4 @@
-properties([buildDiscarder(logRotator(daysToKeepStr: '15'))])
-
-parallel(
-  failFast: true,
-  'Build Easyvpn': {
-    node('linux-arm64') {
-      checkout scm
-      dir('utils/easyvpn') {
-        sh 'make lint'
-        sh 'make build_linux'
-      }
-    }
-  },
-  'docker-image': {
-    buildDockerAndPublishImage('openvpn', [
-      publishToPrivateAzureRegistry: true,
-      targetplatforms: 'linux/amd64,linux/arm64',
-    ])
-  },
-)
+buildDockerAndPublishImage('openvpn', [
+  publishToPrivateAzureRegistry: true,
+  targetplatforms: 'linux/amd64',
+])

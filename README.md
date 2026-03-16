@@ -190,7 +190,6 @@ gh pr checkout <Pull Request ID>
   * If the user is an admin, you can specify all routes with `easyvpn config <CN_to_sign> --all-routes`
   * Alternatively you can provide custom routes with the flag `--routes`: `./easyvpn config <CN_to_sign> --routes=private,public --routes=trusted-ci-jenkins-io`
 * Sign the certificate request: `./easyvpn sign <CN_to_sign>`
-  * by default this will create a Client Configuration file for the "private" VPN (private.vpn.jenkins.io), and store this file in  `./cert/ccd/private/`
 * A git commit is automatically created on the local branch
 * Push the approval commit on the current pull request with `git push` (the remote and local branch name are configured by the `gh` command line)
 * Approve and merge the Pull Request to the `main` branch with the signed CRL
