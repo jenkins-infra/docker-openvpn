@@ -1,6 +1,6 @@
 module github.com/jenkins-infra/docker-openvpn/utils/easyvpn
 
-go 1.25
+go 1.26
 
 require (
 	// runc is not directly needed but it allows dependabot to bump it
@@ -30,7 +30,7 @@ require (
 	github.com/aws/aws-sdk-go v1.55.5 // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/cloudflare/circl v1.6.1 // indirect
+	github.com/cloudflare/circl v1.6.3 // indirect
 	github.com/dimchansky/utfbom v1.1.1 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/fatih/color v1.18.0 // indirect

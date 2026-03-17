@@ -31,13 +31,6 @@ var revokeCmd = &cobra.Command{
 				fmt.Printf("%v\n", err)
 			}
 		}
-		for i := range args {
-			err := os.Remove(path.Join(certDir, "ccd", mainNetwork, args[i]))
-			if err != nil {
-				fmt.Println(err)
-				fmt.Println("Continuing despite error...")
-			}
-		}
 
 		fileToDelete := []string{
 			path.Join(certDir, "pki", "index.txt.old"),
@@ -62,7 +55,6 @@ var revokeCmd = &cobra.Command{
 					path.Join(certDir, "pki", "certs_by_serial"),
 					path.Join(certDir, "pki", "index.txt.attr"),
 					path.Join(certDir, "pki", "revoked"),
-					path.Join(certDir, "ccd", mainNetwork, args[i]),
 				}
 				git.Add(files)
 				git.Commit(files, msg)

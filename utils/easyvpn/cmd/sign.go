@@ -6,7 +6,6 @@ import (
 	"path"
 	"strings"
 
-	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/clientconfig"
 	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/config"
 	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/easyrsa"
 	"github.com/jenkins-infra/docker-openvpn/utils/easyvpn/git"
@@ -20,7 +19,6 @@ func init() {
 	signCmd.Flags().BoolVarP(&push, "push", "", true, "git push changes")
 	signCmd.Flags().BoolVarP(&cleanup, "cleanup", "", true, "cleanup local sensitive files")
 	signCmd.Flags().StringVarP(&certDir, "certsDir", "", "cert", "Cert Directory")
-	signCmd.Flags().StringVarP(&clientConfigsDir, "ccd", "", "cert/ccd", "Client Config Directory")
 	signCmd.Flags().StringVarP(&configuration, "config", "", "config.yaml", "Network Configuration File")
 	signCmd.Flags().StringVarP(&mainNetwork, "net", "n", "private", "Network to assign the cn")
 }
@@ -68,14 +66,9 @@ var signCmd = &cobra.Command{
 			}
 		}
 
-		for i, username := range args {
-			fmt.Printf("Generating Client Configuration for user %s...\n", username)
-			err := clientconfig.CreateClientConfig(clientConfigsDir, globalConfig.Users[username], globalConfig.Networks[mainNetwork])
-			if err != nil {
-				log.Fatalf("[ERROR] could not initialize the client configuration for user %q: %s\n", username, err)
-			}
-			fmt.Println("Client Configuration added!")
+		// TODO: compare list of signed certificats with the list of configured users in config.yaml
 
+		for i, _ := range args {
 			if commit {
 				msg := "[infra-admin] Sign certificate request for " + args[i]
 				files := []string{
@@ -84,7 +77,6 @@ var signCmd = &cobra.Command{
 					path.Join(certDir, "pki", "index.txt.attr"),
 					path.Join(certDir, "pki", "certs_by_serial"),
 					path.Join(certDir, "pki", "serial"),
-					path.Join(certDir, "ccd", mainNetwork, args[i]),
 				}
 				git.Add(files)
 				git.Commit(files, msg)

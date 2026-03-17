@@ -17,7 +17,6 @@ services:
         - "OPENVPN_SERVER_SUBNET=10.8.0.0"
         - "OPENVPN_SERVER_NETMASK=255.255.255.0"
     volumes:
-        - ./mock/vpn/ccd:/home/openvpn/available-ccds:ro
         - ./mock/vpn/ca.crt:/etc/openvpn/server/ca.crt:ro
         - ./mock/ldap/ca.crt:/usr/local/share/ca-certificates/ldapca.crt:ro
         - ./mock/vpn/vpn.crt:/etc/openvpn/server/server.crt:ro
