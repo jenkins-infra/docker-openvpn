@@ -4,6 +4,7 @@ networks:
     iprange: 10.9.0.0/24
     routes:
       private: 10.248.0.0/14
+      privatek8s-sponsored: 10.6.0.0/21
       public: 10.244.0.0/14
       public-db: 10.253.0.0/21
       infra-ci-jenkins-io: 10.5.0.0/22
