@@ -73,8 +73,4 @@ users:
     all_routes: true
   jay_jenkins:
     id: 14
-    routes:
-      private:
-        - private # release.ci.jenkins.io and infra.ci.jenkins.io
-        - aws.ci.jenkins.io
-        - eks_cijenkinsioagents2
+    all_routes: true
