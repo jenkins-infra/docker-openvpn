@@ -1,6 +1,6 @@
 .PHONY: build_osx build_windows build_linux init_osx init_linux init_windows
 
-GOLANG_VERSION ?= 1.26.3
+GOLANG_VERSION ?= 1.26.4
 
 lint:
 	golangci-lint run
