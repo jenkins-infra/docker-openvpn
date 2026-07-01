@@ -53,6 +53,7 @@ users:
         - public
         - private
         - public-db
+        - privatek8s-sponsored
   markewaite:
     id: 7
     all_routes: true
