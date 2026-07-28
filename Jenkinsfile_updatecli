@@ -3,7 +3,6 @@ final String cronExpr = env.BRANCH_IS_PRIMARY ? '@daily' : ''
 properties([
     buildDiscarder(logRotator(numToKeepStr: '10')),
     disableConcurrentBuilds(abortPrevious: true),
-    pipelineTriggers([cron(cronExpr)]),
 ])
 
 timeout(time: 10, unit: 'MINUTES') {
@@ -11,6 +10,7 @@ timeout(time: 10, unit: 'MINUTES') {
     stage("Run updatecli action: ${updatecliAction}") {
         updatecli(
             action: updatecliAction,
+            cronTriggerExpression: cronExpr,
         )
     }
 }
