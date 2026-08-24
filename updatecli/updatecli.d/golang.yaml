@@ -45,6 +45,18 @@ targets:
       matchpattern: 'GOLANG_VERSION \?= .*'
       replacepattern: 'GOLANG_VERSION ?= {{ source "latestGoVersion" }}'
     scmid: default
+  updateDockerfile:
+    name: "Update the golang version used by the build stage in the Dockerfile"
+    kind: dockerfile
+    sourceid: latestGoVersion
+    spec:
+      file: Dockerfile
+      stage: easyvpn
+      instruction:
+        keyword: FROM
+        matcher: golang
+    scmid: default
+
 
 actions:
   default:
