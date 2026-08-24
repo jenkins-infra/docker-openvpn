@@ -13,25 +13,30 @@ networks:
       - private
       - public
       - public-db
-      - infra-ci-jenkins-io
+      - infra-ci-jenkins-io-sponsored
       - cert-ci-jenkins-io
-      - trusted-ci-jenkins-io
+      - trusted-ci-jenkins-io-sponsored
     servers:
       archives.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
-        report_query: .archives\.jenkins\.io.service_ips.ipv4
+        # In dasel/v3, the 'get()' and '.' (dot) operator are equivalent but get allows special characters such as literal dots
+        report_query: get("archives.jenkins.io").service_ips.ipv4
       aws.ci.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
-        report_query: .aws\.ci\.jenkins\.io.service_ips.ipv4
+        # In dasel/v3, the 'get()' and '.' (dot) operator are equivalent but get allows special characters such as literal dots
+        report_query: get("aws.ci.jenkins.io").service_ips.ipv4
       usage.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
-        report_query: .usage\.jenkins\.io.service_ips.ipv4
+        # In dasel/v3, the 'get()' and '.' (dot) operator are equivalent but get allows special characters such as literal dots
+        report_query: get("usage.jenkins.io").service_ips.ipv4
       census.jenkins.io:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/digitalocean.json
-        report_query: .census\.jenkins\.io.service_ips.ipv4
+        # In dasel/v3, the 'get()' and '.' (dot) operator are equivalent but get allows special characters such as literal dots
+        report_query: get("census.jenkins.io").service_ips.ipv4
       eks_cijenkinsioagents2:
         report_url: https://reports.jenkins.io/jenkins-infra-data-reports/aws-sponsorship.json
-        report_query: .aws\.ci\.jenkins\.io.agents_kubernetes_clusters.cijenkinsio-agents-2.cluster_endpoint
+        # In dasel/v3, the 'get()' and '.' (dot) operator are equivalent but get allows special characters such as literal dots
+        report_query: get("aws.ci.jenkins.io").agents_kubernetes_clusters.get("cijenkinsio-agents-2").cluster_endpoint
         resolve_dns: true
 
 certificates: abayer,danielbeck,dduportal,hlemeur,jay_jenkins,kevingrdj,kohsuke,krisstern,markewaite,notmyfault,smerle,timja,wfollonier
