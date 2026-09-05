@@ -14,7 +14,7 @@ networks:
       - public
       - public-db
       - infra-ci-jenkins-io-sponsored
-      - cert-ci-jenkins-io
+      - cert-ci-jenkins-io-sponsored
       - trusted-ci-jenkins-io-sponsored
     servers:
       archives.jenkins.io:
