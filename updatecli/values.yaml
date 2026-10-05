@@ -39,4 +39,4 @@ networks:
         report_query: get("aws.ci.jenkins.io").agents_kubernetes_clusters.get("cijenkinsio-agents-2").cluster_endpoint
         resolve_dns: true
 
-certificates: abayer,danielbeck,dduportal,hlemeur,jay_jenkins,kevingrdj,kohsuke,krisstern,markewaite,notmyfault,smerle,timja,wfollonier
+certificates: abayer,danielbeck,dduportal,gbhat,hlemeur,jay_jenkins,kevingrdj,kohsuke,krisstern,markewaite,notmyfault,smerle,timja,wfollonier
