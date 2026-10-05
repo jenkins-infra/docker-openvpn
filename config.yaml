@@ -74,3 +74,8 @@ users:
   jay_jenkins:
     id: 14
     all_routes: true
+  gbhat:
+    id: 2
+    routes:
+      private:
+      - cert-ci-jenkins-io-sponsored
