@@ -12,6 +12,7 @@ networks:
     routes:
       - private
       - public
+      - public-sponsored
       - public-db
       - infra-ci-jenkins-io-sponsored
       - cert-ci-jenkins-io-sponsored
