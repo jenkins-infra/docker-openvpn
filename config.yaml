@@ -79,3 +79,8 @@ users:
     routes:
       private:
       - cert-ci-jenkins-io-sponsored
+  apuig:
+    id: 2
+    routes:
+      private:
+      - cert-ci-jenkins-io-sponsored
