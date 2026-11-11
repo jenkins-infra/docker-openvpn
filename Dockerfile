@@ -1,4 +1,4 @@
-FROM golang:1.27.3 AS easyvpn
+FROM golang:1.27.4 AS easyvpn
 
 WORKDIR /easyvpn
 
