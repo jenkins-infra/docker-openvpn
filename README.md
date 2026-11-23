@@ -93,6 +93,8 @@ Feel free to follow the next action points:
 
 * ⚠️ When connecting, your VPN client requires a username and password. Use your Jenkins project account (same username + password as accounts.jenkins.io, issues.jenkins.io, ci.jenkins.io).
 
+[NetworkManager screenshots](docs-client-access/NetworkManager.md) are available in case they help with configuration.
+
 #### Windows only
 
 If you want to use multiple VPN connections at the same time with OpenVPN, you have to install a new TAP adapter. This can be very easily by running *as Admin* the `C:\Program Files\TAP-Windows\bin\addtap.bat`. The [TAP-Windows](https://community.openvpn.net/openvpn/wiki/ManagingWindowsTAPDrivers) tool is installed in parallel with OpenVPN.
