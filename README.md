@@ -62,14 +62,14 @@ Feel free to follow the next action points:
   cp ./cert/pki/ca.crt ~/.cert/jenkins-infra/ca.crt
   ```
 
-* Then, create the following configuration file (wether your are on Linux, macOS or Windows) `private-jenkins-infra.ovpn` on your Desktop:
+* Then, create the following configuration file (whether your are on Linux, macOS or Windows) `private-jenkins-infra.ovpn` on your Desktop:
 
   ```text
   client
   remote private.vpn.jenkins.io 443
-  ca "/absolute/path/to/.cert/ca.crt"
-  cert "/absolute/path/to/.cert/<your-jenkins-username>.crt"
-  key "/absolute/path/to/.cert/<your-jenkins-username>.key"
+  ca "/absolute/path/to/.cert/jenkins-infra/ca.crt"
+  cert "/absolute/path/to/.cert/jenkins-infra/<your-jenkins-username>.crt"
+  key "/absolute/path/to/.cert/jenkins-infra/<your-jenkins-username>.key"
   auth-user-pass
   dev tun
   proto tcp
